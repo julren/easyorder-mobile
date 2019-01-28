@@ -58,17 +58,19 @@ export default class MenuScreen extends React.Component {
 
   render() {
     return (
-      <Container>
-        <Tabs renderTabBar={() => <ScrollableTab />}>
-          {this.state.categories.map((category, index) => (
-            <Tab heading={category.name} key={index}>
-              <Content>
-                <MenuItemList categoryID={category.id} />
-              </Content>
-            </Tab>
-          ))}
-        </Tabs>
-      </Container>
+      <CartProvider>
+        <Container>
+          <Tabs renderTabBar={() => <ScrollableTab />}>
+            {this.state.categories.map((category, index) => (
+              <Tab heading={category.name} key={index}>
+                <Content>
+                  <MenuItemList categoryID={category.id} />
+                </Content>
+              </Tab>
+            ))}
+          </Tabs>
+        </Container>
+      </CartProvider>
     );
   }
 }
