@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { StyleSheet } from "react-native";
 import { MapView } from "expo";
 
 class RestaurantsMap extends Component {
@@ -31,5 +32,14 @@ class RestaurantsMap extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  map: {
+    ...StyleSheet.absoluteFillObject
+  },
+  mapContainer: {
+    height: 200
+  }
+});
 
 export default RestaurantsMap;

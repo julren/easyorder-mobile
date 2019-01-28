@@ -6,14 +6,16 @@ import {
 } from "react-navigation";
 
 import TabBarIcon from "../components/TabBarIcon";
-import AccountScreen from "../screens/AccountScreen";
-import RestaurantsScreen from "../screens/Restaurants";
-import MenuScreen from "../screens/MenuScreen";
-import CartScreen from "../screens/CartScreen";
-import MenuItemDetailScreen from "../screens/MenuItemDetailScreen";
+import AccountScreen from "../screens/account/AccountScreen";
+import RestaurantsScreen from "../screens/restaurants/RestaurantsScreen";
+import RestaurantsDetailScreen from "../screens/restaurantDetail/RestaurantDetailScreen";
+import MenuScreen from "../screens/menu/MenuScreen";
+import CartScreen from "../screens/cart/CartScreen";
+import MenuItemDetailScreen from "../screens/menuItemDetail/MenuItemDetailScreen";
 
 const RestaurantStack = createStackNavigator({
   Restaurants: RestaurantsScreen,
+  RestaurantDetail: RestaurantsDetailScreen,
   Menu: MenuScreen,
   MenuItemDetail: MenuItemDetailScreen,
   Cart: CartScreen

@@ -1,7 +1,5 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { ExpoLinksView } from "@expo/samples";
-import { firebaseRestaurants } from "../config/firebase";
 import {
   Text,
   Container,
@@ -12,22 +10,26 @@ import {
   Button,
   Content
 } from "native-base";
+import { CartProvider, CartConsumer } from "./CartContext";
+import CartItemsList from "./CartItemsList";
 
 export default class CartScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   static navigationOptions = {
     title: "Warenkorb"
   };
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
+    // let { cart } = this.props.navigation.getParam("cart", []);
     return (
       <ScrollView padded>
         <Container>
           <Content>
             <Text>Warenkorb</Text>
+            <CartItemsList />
           </Content>
         </Container>
       </ScrollView>

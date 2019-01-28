@@ -5,9 +5,9 @@ import {
   createBottomTabNavigator
 } from "react-navigation";
 
-import LoginScreen from "../screens/Auth/LogInScreen";
-import SignUpScreen from "../screens/Auth/SignUpScreen";
-import WelcomeScreen from "../screens/Auth/WelcomeScreen";
+import LoginScreen from "../screens/auth/LogInScreen";
+import SignUpScreen from "../screens/auth/SignUpScreen";
+import WelcomeScreen from "../screens/auth/WelcomeScreen";
 
 export default createStackNavigator({
   Welcome: WelcomeScreen,

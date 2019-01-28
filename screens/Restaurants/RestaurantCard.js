@@ -18,19 +18,14 @@ import StarRating from "react-native-star-rating";
 import { StyleSheet, Image } from "react-native";
 
 class RestaurantCard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    const { restaurant } = this.props;
+    const { restaurant, onRestaurantSelect } = this.props;
     return (
       <Card>
-        <CardItem cardBody button onPress={this.props.onViewMenu}>
+        <CardItem cardBody button onPress={onRestaurantSelect}>
           <Image
             source={{
-              uri:
-                "https://media-cdn.tripadvisor.com/media/photo-s/0e/cc/0a/dc/restaurant-chocolat.jpg"
+              uri: restaurant.media.coverPhoto
             }}
             style={{ height: 200, width: null, flex: 1 }}
           />
@@ -41,12 +36,14 @@ class RestaurantCard extends React.Component {
             <Text style={{ fontWeight: "400", fontSize: 18 }}>
               {restaurant.name}
             </Text>
+            <Text style={{ fontSize: 12 }}>{restaurant.desc}</Text>
           </Body>
           <Right>
             <StarRating
-              starSize={20}
+              starSize={10}
               maxStarts={5}
-              rating={4}
+              halfStarEnabled={true}
+              rating={4.5}
               fullStarColor="#FFD700"
               emptyStarColor="#d3d3d3"
             />
@@ -68,3 +65,30 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   }
 });
+
+const placeholderRestaurantValues = {
+  name: "",
+  desc: "",
+  cuisine: "",
+  priceClass: "",
+  adress: {
+    street: "",
+    postcode: "",
+    city: ""
+  },
+  contactInfo: {
+    email: "",
+    phone: ""
+  },
+  businessHours: [
+    {
+      day: "",
+      openingHour: "",
+      closingHour: ""
+    }
+  ],
+  media: {
+    coverPhoto: "",
+    logo: ""
+  }
+};

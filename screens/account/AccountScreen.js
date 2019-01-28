@@ -2,8 +2,8 @@ import React from "react";
 import { ExpoConfigView } from "@expo/samples";
 import { View, AsyncStorage } from "react-native";
 import { Container, Content, Text, Button } from "native-base";
-import firebase from "../config/firebase";
-import BarcodeScanner from "../components/BarcodeScanner";
+import firebase from "app/config/firebase";
+import BarcodeScanner from "../../components/BarcodeScanner";
 
 export default class AccountScreen extends React.Component {
   constructor(props) {
