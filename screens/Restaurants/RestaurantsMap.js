@@ -11,8 +11,10 @@ class RestaurantsMap extends Component {
   // Map adresesen api: https://nominatim.openstreetmap.org/search?q=fuerstenstr+14,+ergolding&format=json&polygon=1&addressdetails=1
 
   render() {
+    const { restaurantCoordinates } = this.props;
     return (
       <MapView
+        showsUserLocation
         style={styles.map}
         initialRegion={{
           latitude: 48.56859,

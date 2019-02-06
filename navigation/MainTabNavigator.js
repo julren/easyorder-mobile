@@ -12,13 +12,15 @@ import RestaurantsDetailScreen from "../screens/restaurantDetail/RestaurantDetai
 import MenuScreen from "../screens/menu/MenuScreen";
 import CartScreen from "../screens/cart/CartScreen";
 import MenuItemDetailScreen from "../screens/menuItemDetail/MenuItemDetailScreen";
+import CheckoutScreen from "../screens/checkout/CheckoutScreen";
 
 const RestaurantStack = createStackNavigator({
   Restaurants: RestaurantsScreen,
   RestaurantDetail: RestaurantsDetailScreen,
   Menu: MenuScreen,
   MenuItemDetail: MenuItemDetailScreen,
-  Cart: CartScreen
+  Cart: CartScreen,
+  Checkout: CheckoutScreen
 });
 
 RestaurantStack.navigationOptions = {

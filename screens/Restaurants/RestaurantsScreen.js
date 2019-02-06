@@ -1,5 +1,7 @@
 import React from "react";
-import { Image, Platform, ScrollView, StyleSheet, View } from "react-native";
+import { Image, Platform, ScrollView, StyleSheet } from "react-native";
+import { NavigationEvents } from "react-navigation";
+
 import {
   Container,
   Content,
@@ -10,14 +12,19 @@ import {
   Left,
   Right,
   Body,
+  View,
   Icon
 } from "native-base";
 import { firebaseRestaurants } from "../../config/firebase";
 import RestaurantCard from "./RestaurantCard";
 import { MapView } from "expo";
 import RestaurantsMap from "./RestaurantsMap";
+import { withCartContext } from "../cart/CartContext";
 
-export default class RestaurantsScreen extends React.Component {
+/**
+ * Screen that shows List of nearby restaurants
+ */
+class RestaurantsScreen extends React.Component {
   static navigationOptions = {
     title: "Restaurants"
   };
@@ -30,6 +37,7 @@ export default class RestaurantsScreen extends React.Component {
   }
 
   componentDidMount() {
+    // Get Restaurants from database
     firebaseRestaurants
       .get()
       .then(querySnapshot => {
@@ -47,16 +55,25 @@ export default class RestaurantsScreen extends React.Component {
   render() {
     const { restaurants } = this.state;
 
+    // Consumes Cart Context to be able to clear cart when the user goes back to list from restaurant view
+    const cartContext = this.props.cartContext;
+
     return (
       <Container>
-        <Content padder>
-          <Text>Restaurants</Text>
-          <Card>
-            <CardItem>
-              {/* <RestaurantsMap restaurants={restaurants} /> */}
-            </CardItem>
-          </Card>
+        {/* Helper from react-navigation. When Screen will focus (be active) clear cart of cartContext */}
+        <NavigationEvents
+          onWillFocus={payload => cartContext.clearCartAndRestaurant()}
+        />
 
+        {/* Kartenansicht der Restaurants */}
+        <Content padder>
+          {/* <Card>
+            <CardItem>
+               <RestaurantsMap restaurants={restaurants} />
+            </CardItem>
+          </Card> */}
+
+          {/* Liste der Restaurantdarstellung rendern */}
           {restaurants.map((restaurant, index) => (
             <RestaurantCard
               key={index}
@@ -73,3 +90,5 @@ export default class RestaurantsScreen extends React.Component {
     );
   }
 }
+
+export default withCartContext(RestaurantsScreen);

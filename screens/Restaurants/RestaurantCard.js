@@ -12,14 +12,22 @@ import {
   Left,
   Body,
   Right,
+  View,
   H3
 } from "native-base";
 import StarRating from "react-native-star-rating";
 import { StyleSheet, Image } from "react-native";
-
+import { displayNameForPriceClass } from "../../utils/dataPipes";
 class RestaurantCard extends React.Component {
   render() {
+    // TODO: distance, rating
+    const distance = 1.2;
+    const rating = 4;
     const { restaurant, onRestaurantSelect } = this.props;
+    const { name, priceClass, desc, cuisine, businessHours } = restaurant;
+    const { email, phone } = restaurant.contactInfo;
+    const { city, street, postcode } = restaurant.adress;
+
     return (
       <Card>
         <CardItem cardBody button onPress={onRestaurantSelect}>
@@ -27,30 +35,27 @@ class RestaurantCard extends React.Component {
             source={{
               uri: restaurant.media.coverPhoto
             }}
-            style={{ height: 200, width: null, flex: 1 }}
+            style={{ height: 150, width: null, flex: 1 }}
           />
         </CardItem>
 
-        <CardItem style={{ paddingBottom: 0 }}>
+        <CardItem style={{ paddingTop: 15, paddingBottom: 15 }}>
           <Body>
-            <Text style={{ fontWeight: "400", fontSize: 18 }}>
-              {restaurant.name}
+            <H3 style={{ fontWeight: "bold" }}>{name}</H3>
+            <Text style={{ fontSize: 12 }}>
+              {distance}km - {cuisine} - {displayNameForPriceClass(priceClass)}
             </Text>
-            <Text style={{ fontSize: 12 }}>{restaurant.desc}</Text>
           </Body>
           <Right>
             <StarRating
-              starSize={10}
+              starSize={15}
               maxStarts={5}
               halfStarEnabled={true}
-              rating={4.5}
+              rating={rating}
               fullStarColor="#FFD700"
               emptyStarColor="#d3d3d3"
             />
           </Right>
-        </CardItem>
-        <CardItem style={{ paddingTop: 5, color: "#37474f" }}>
-          <Text>{restaurant.city}</Text>
         </CardItem>
       </Card>
     );

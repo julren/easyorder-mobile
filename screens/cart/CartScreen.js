@@ -10,8 +10,8 @@ import {
   Button,
   Content
 } from "native-base";
-import { CartProvider, CartConsumer } from "./CartContext";
-import CartItemsList from "./CartItemsList";
+import CartOverview from "./CartOverview";
+import { CartConsumer } from "./CartContext";
 
 export default class CartScreen extends React.Component {
   static navigationOptions = {
@@ -23,13 +23,26 @@ export default class CartScreen extends React.Component {
   }
 
   render() {
-    // let { cart } = this.props.navigation.getParam("cart", []);
     return (
       <ScrollView padded>
         <Container>
           <Content>
-            <Text>Warenkorb</Text>
-            <CartItemsList />
+            <CartConsumer>
+              {({
+                cart,
+                addCartItem,
+                removeCartItem,
+                updateCartItemQuantity
+              }) => (
+                <React.Fragment>
+                  <CartOverview
+                    onCheckout={() => {
+                      this.props.navigation.navigate("Checkout");
+                    }}
+                  />
+                </React.Fragment>
+              )}
+            </CartConsumer>
           </Content>
         </Container>
       </ScrollView>

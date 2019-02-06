@@ -1,7 +1,18 @@
 import React from "react";
 import { ExpoConfigView } from "@expo/samples";
 import { View, AsyncStorage } from "react-native";
-import { Container, Content, Text, Button } from "native-base";
+import {
+  Container,
+  Content,
+  Text,
+  Button,
+  List,
+  ListItem,
+  Icon,
+  Left,
+  Body,
+  Separator
+} from "native-base";
 import firebase from "app/config/firebase";
 import BarcodeScanner from "../../components/BarcodeScanner";
 
@@ -58,18 +69,38 @@ export default class AccountScreen extends React.Component {
   }
 
   render() {
-    // /* Go ahead and delete ExpoConfigView and replace it with your
-    //  * content, we just wanted to give you a quick view of your config */
-    // <ExpoConfigView />
     return (
       <Container>
-        <Content padder>
-          <Text>{this.state.user.email}</Text>
-          <Button block onPress={this.logout}>
-            <Text>Logout</Text>
+        <Content>
+          <List>
+            <ListItem avatar>
+              <Left>
+                <Icon name="person" />
+              </Left>
+              <Body>
+                <Text>{this.state.user.email}</Text>
+                <Text note>Ein Benutzer</Text>
+              </Body>
+            </ListItem>
 
-            <BarcodeScanner />
-          </Button>
+            <Separator bordered />
+
+            <ListItem button>
+              <Text>Meine Bestellungen</Text>
+            </ListItem>
+            <ListItem button>
+              <Text>Meine Bewertungen</Text>
+            </ListItem>
+          </List>
+          <Separator bordered />
+
+          <ListItem>
+            <Body>
+              <Button block danger onPress={this.logout}>
+                <Text>Logout</Text>
+              </Button>
+            </Body>
+          </ListItem>
         </Content>
       </Container>
     );
