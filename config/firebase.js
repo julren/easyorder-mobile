@@ -23,6 +23,12 @@ db.settings({
 const firebaseRestaurants = db.collection("restaurants");
 const firebaseMenuCategories = db.collection("categories");
 const firebaseMenuItems = db.collection("menuItems");
+const firebaseOrders = db.collection("orders");
 
 export default firebase;
-export { firebaseRestaurants, firebaseMenuCategories, firebaseMenuItems };
+export {
+  firebaseRestaurants,
+  firebaseMenuCategories,
+  firebaseMenuItems,
+  firebaseOrders
+};

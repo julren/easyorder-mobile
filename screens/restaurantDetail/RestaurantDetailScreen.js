@@ -37,13 +37,7 @@ class RestaurantDetailScreen extends Component {
   render() {
     const restaurant = this.props.navigation.getParam("restaurant", "{}");
 
-    const {
-      name,
-      priceClass,
-      description,
-      cuisine,
-      businessHours
-    } = restaurant;
+    const { name, priceClass, description, businessHours } = restaurant;
     const { email, phone } = restaurant.contactInfo;
     const { city, street, postcode } = restaurant.adress;
     const lat = parseFloat(restaurant.adress.lat);

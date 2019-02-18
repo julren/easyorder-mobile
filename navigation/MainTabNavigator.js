@@ -13,15 +13,26 @@ import MenuScreen from "../screens/menu/MenuScreen";
 import CartScreen from "../screens/cart/CartScreen";
 import MenuItemDetailScreen from "../screens/menuItemDetail/MenuItemDetailScreen";
 import CheckoutScreen from "../screens/checkout/CheckoutScreen";
+import OrderOverviewScreen from "../screens/orderOverviewScreen/OrderOverviewScreen";
+import { LinearGradient } from "expo";
+import MyOrdersScreen from "../screens/account/MyOrdersScreen";
 
-const RestaurantStack = createStackNavigator({
-  Restaurants: RestaurantsScreen,
-  RestaurantDetail: RestaurantsDetailScreen,
-  Menu: MenuScreen,
-  MenuItemDetail: MenuItemDetailScreen,
-  Cart: CartScreen,
-  Checkout: CheckoutScreen
-});
+const RestaurantStack = createStackNavigator(
+  {
+    Restaurants: RestaurantsScreen,
+    RestaurantDetail: RestaurantsDetailScreen,
+    Menu: MenuScreen,
+    MenuItemDetail: MenuItemDetailScreen,
+    Cart: CartScreen,
+    Checkout: CheckoutScreen,
+    OrderOverview: OrderOverviewScreen
+  },
+  {
+    defaultNavigationOptions: {
+      headerTitleStyle: { fontWeight: "bold" }
+    }
+  }
+);
 
 RestaurantStack.navigationOptions = {
   tabBarLabel: "Restaurants",
@@ -33,9 +44,17 @@ RestaurantStack.navigationOptions = {
   )
 };
 
-const AccountStack = createStackNavigator({
-  Account: AccountScreen
-});
+const AccountStack = createStackNavigator(
+  {
+    Account: AccountScreen,
+    MyOrders: MyOrdersScreen
+  },
+  {
+    defaultNavigationOptions: {
+      headerTitleStyle: { fontWeight: "bold" }
+    }
+  }
+);
 
 AccountStack.navigationOptions = {
   tabBarLabel: "Account",

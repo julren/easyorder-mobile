@@ -85,7 +85,10 @@ export default class AccountScreen extends React.Component {
 
             <Separator bordered />
 
-            <ListItem button>
+            <ListItem
+              button
+              onPress={() => this.props.navigation.navigate("MyOrders")}
+            >
               <Text>Meine Bestellungen</Text>
             </ListItem>
             <ListItem button>

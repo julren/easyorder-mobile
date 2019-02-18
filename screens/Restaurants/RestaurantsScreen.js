@@ -25,8 +25,10 @@ import { withCartContext } from "../cart/CartContext";
  * Screen that shows List of nearby restaurants
  */
 class RestaurantsScreen extends React.Component {
-  static navigationOptions = {
-    title: "Restaurants"
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Restaurants"
+    };
   };
 
   constructor(props) {
@@ -34,6 +36,7 @@ class RestaurantsScreen extends React.Component {
     this.state = {
       restaurants: []
     };
+    this.props.navigation.setParams({ title: "Restaurants" });
   }
 
   componentDidMount() {
@@ -62,7 +65,7 @@ class RestaurantsScreen extends React.Component {
       <Container>
         {/* Helper from react-navigation. When Screen will focus (be active) clear cart of cartContext */}
         <NavigationEvents
-          onWillFocus={payload => cartContext.clearCartAndRestaurant()}
+          onWillFocus={payload => cartContext.clearCartContext()}
         />
 
         {/* Kartenansicht der Restaurants */}
