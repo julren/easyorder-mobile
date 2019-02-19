@@ -41,18 +41,17 @@ export default class LogInScreen extends Component {
             initialValues={{ email: "", password: "" }}
             onSubmit={(values, actions) => {
               const { email, password } = values;
-              console.log("destr", email, password);
-              console.log(values);
+              console.log("trying to login with creds: ", email, password);
               firebase
                 .auth()
                 .signInWithEmailAndPassword(email, password)
                 .then(resp => {
-                  console.log("ok", resp);
+                  console.log("Login sucessfull");
                   Keyboard.dismiss();
                   actions.setSubmitting(false);
                 })
                 .catch(error => {
-                  console.log("fehler", error);
+                  console.log("Login failed", error);
                   actions.setSubmitting(false);
 
                   // Handle Errors here.

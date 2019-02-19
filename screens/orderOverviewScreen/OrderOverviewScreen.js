@@ -12,13 +12,15 @@ import {
   Right,
   Thumbnail,
   Body,
-  View
+  View,
+  Button
 } from "native-base";
 import firebase, { firebaseOrders } from "../../config/firebase";
 
 class OrderOverviewScreen extends Component {
   static navigationOptions = {
-    title: "Bestellübersicht"
+    title: "Bestellübersicht",
+    headerLeft: null
   };
 
   constructor(props) {
@@ -60,7 +62,7 @@ class OrderOverviewScreen extends Component {
       return <Text>Bestellübersicht ist leer</Text>;
     } else {
       return (
-        <Container style={{ backgroundColor: "#F0EFF5" }}>
+        <Container>
           <Content>
             <List>
               <ListItem itemHeader first>
@@ -134,6 +136,10 @@ class OrderOverviewScreen extends Component {
                 </Right>
               </ListItem>
             </List>
+
+            <Button block>
+              <Text>Restaurant bewerten</Text>
+            </Button>
           </Content>
         </Container>
       );

@@ -35,20 +35,17 @@ class RestaurantCard extends React.Component {
             source={{
               uri: restaurant.media.coverPhoto
             }}
-            style={{ height: 150, width: null, flex: 1 }}
+            style={styles.coverPhoto}
           />
         </CardItem>
 
-        <CardItem style={{ paddingTop: 15, paddingBottom: 15 }}>
+        <CardItem style={{ paddingBottom: 0 }}>
           <Body>
-            <H3 style={{ fontWeight: "bold" }}>{name}</H3>
-            <Text style={{ fontSize: 12 }}>
-              {distance}km - {cuisine} - {displayNameForPriceClass(priceClass)}
-            </Text>
+            <H3>{name}</H3>
           </Body>
           <Right>
             <StarRating
-              starSize={15}
+              starSize={14}
               maxStarts={5}
               halfStarEnabled={true}
               rating={rating}
@@ -57,6 +54,16 @@ class RestaurantCard extends React.Component {
             />
           </Right>
         </CardItem>
+
+        <CardItem>
+          <Body>
+            <Text note>Geöffnet bis 19:00 Uhr</Text>
+            <Text note>
+              {distance}km entfernt | {cuisine} |
+              {displayNameForPriceClass(priceClass)}
+            </Text>
+          </Body>
+        </CardItem>
       </Card>
     );
   }
@@ -64,10 +71,11 @@ class RestaurantCard extends React.Component {
 
 export default RestaurantCard;
 const styles = StyleSheet.create({
-  container: {
+  coverPhoto: { height: 150, width: null, flex: 1 },
+  cardHeader: {
     flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#fff"
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 });
 

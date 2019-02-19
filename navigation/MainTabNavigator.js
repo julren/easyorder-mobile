@@ -29,7 +29,8 @@ const RestaurantStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      headerTitleStyle: { fontWeight: "bold" }
+      headerTitleStyle: { fontWeight: "bold" },
+      headerTintColor: "#5BC0EB"
     }
   }
 );
@@ -66,7 +67,9 @@ AccountStack.navigationOptions = {
   )
 };
 
-export default createBottomTabNavigator({
+const MainTabNavigator = createBottomTabNavigator({
   RestaurantStack,
   AccountStack
 });
+
+export default MainTabNavigator;

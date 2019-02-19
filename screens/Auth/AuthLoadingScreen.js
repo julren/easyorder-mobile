@@ -14,11 +14,12 @@ export default class AuthLoadingScreen extends Component {
     firebase.auth().onAuthStateChanged(user => {
       if (user != null) {
         userString = JSON.stringify(user);
-        console.log("User angemeldet: ", user.email);
+        console.log("User signed in: ", user.email);
         AsyncStorage.setItem("user", userString);
         //
         this.props.navigation.navigate("App");
       } else {
+        console.log("User is not signed in, redirecting to auth");
         this.props.navigation.navigate("Auth");
       }
     });

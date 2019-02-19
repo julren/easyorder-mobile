@@ -42,7 +42,6 @@ export default class AccountScreen extends React.Component {
   deleteUserFromStorage = async () => {
     try {
       await AsyncStorage.removeItem("user");
-      console.log("user delted");
       this.props.navigation.navigate("AuthLoading");
     } catch (error) {
       console.log(error);
