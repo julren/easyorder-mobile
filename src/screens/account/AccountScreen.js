@@ -13,7 +13,7 @@ import {
   Body,
   Separator
 } from "native-base";
-import firebase from "app/config/firebase";
+import firebase from "../../config/firebase";
 import BarcodeScanner from "../../components/BarcodeScanner";
 
 export default class AccountScreen extends React.Component {

@@ -5,6 +5,7 @@ const CartContext = React.createContext({});
 const CartConsumer = CartContext.Consumer;
 
 /**
+ * TODO: Refactor. Calc-Methoden nicht nach außen zeigen, sondern nur intern berechnen
  * Context provider for app wide cart Info.
  * Holds Info about currently selected restaurant, added cart items
  * and allows to update/remove them
@@ -12,12 +13,14 @@ const CartConsumer = CartContext.Consumer;
 class CartProvider extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      restaurant: { id: 0 },
-      cart: [],
-      table: "",
-      paymentMethod: ""
-    };
+    // this.state = {
+    //   restaurant: { id: 0 },
+    //   cart: [],
+    //   table: "",
+    //   paymentMethod: ""
+    // };
+
+    this.state = placeholderData;
   }
 
   setRestaurant = restaurant => {
@@ -204,3 +207,104 @@ const withCartContext = Component => {
 };
 
 export { CartProvider, CartConsumer, withCartContext };
+
+const placeholderData = {
+  cart: [
+    {
+      item: {
+        id: "rBe9Zr3UgxyPZaklXjNK",
+        authorID: "WTpxRrjqspaedb8EnBTMRO1KVDM2",
+        categoryID: "2fsrzrm1G9kKGBJ7trzD",
+        description: "leckerschmecker",
+        name: "Bruscetta",
+        photo:
+          "https://firebasestorage.googleapis.com/v0/b/***REMOVED***/o/public%2Fimages%2FmenuItem-rBe9Zr3UgxyPZaklXjNK.jpg?alt=media&token=385ba19a-fd59-4d7b-9f8e-d29ddb158c4b",
+        price: 6.9
+      },
+      quantity: 1
+    },
+    {
+      item: {
+        id: "X9aoZGGWaQJkHFFyJ8fS",
+        authorID: "WTpxRrjqspaedb8EnBTMRO1KVDM2",
+        categoryID: "2fsrzrm1G9kKGBJ7trzD",
+        description: "Aubergine, Paprika, Champignons",
+        name: "Antipasti Mista",
+        photo:
+          "https://firebasestorage.googleapis.com/v0/b/***REMOVED***/o/public%2Fimages%2FmenuItem-X9aoZGGWaQJkHFFyJ8fS.jpg?alt=media&token=986e0a04-7171-4e8e-8b57-4193a44ec901",
+        price: 5.9
+      },
+      quantity: 2
+    }
+  ],
+  restaurant: {
+    id: "9kkHKCKHzTUl4sC7uDoD",
+    adress: {
+      city: "Landshut",
+      lat: "48.5328052",
+      lon: "12.149773",
+      postcode: "84036",
+      street: "Altstadt 34"
+    },
+    author: "WTpxRrjqspaedb8EnBTMRO1KVDM2",
+    businessHours: [
+      {
+        closingHour: "23:00",
+        day: "monday",
+        openingHour: "09:00"
+      },
+      {
+        closingHour: "22:00",
+        day: "thuesday",
+        openingHour: "11:30"
+      }
+    ],
+    contactInfo: {
+      email: "info@ladolcevita.de",
+      phone: "087052732187913"
+    },
+    cuisine: "Italienisch",
+    description: "Italienisches Ambiente mit Steinofen",
+    media: {
+      coverPhoto:
+        "https://firebasestorage.googleapis.com/v0/b/***REMOVED***/o/public%2Fimages%2FcoverPhoto-WTpxRrjqspaedb8EnBTMRO1KVDM2.jpg?alt=media&token=66eb5e45-21ce-4782-ad6d-fc5a2a188935",
+      logo:
+        "https://firebasestorage.googleapis.com/v0/b/***REMOVED***/o/public%2Fimages%2Flogo-WTpxRrjqspaedb8EnBTMRO1KVDM2.png?alt=media&token=50c1b9d5-c1f0-4b0b-bb1e-ed25c202a5e9"
+    },
+    name: "La Dolce Vita",
+    priceClass: "2",
+    rating: {
+      overall: 4.2,
+      numberOfRatings: 18,
+      distribution: [
+        {
+          starRating: 5,
+          numberOfRatings: 20,
+          percentage: 0.6
+        },
+        {
+          starRating: 4,
+          numberOfRatings: 4,
+          percentage: 0.2
+        },
+        {
+          starRating: 3,
+          numberOfRatings: 1,
+          percentage: 0.1
+        },
+        {
+          starRating: 2,
+          numberOfRatings: 1,
+          percentage: 0.1
+        },
+        {
+          starRating: 1,
+          numberOfRatings: 0,
+          percentage: 0
+        }
+      ]
+    }
+  },
+  table: "",
+  paymentMethod: ""
+};

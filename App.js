@@ -1,8 +1,8 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
-import AppNavigator from "./navigation/AppNavigator";
-import { CartProvider } from "./screens/cart/CartContext";
+import AppNavigator from "./src/navigation/AppNavigator";
+import { CartProvider } from "./src/screens/cart/CartContext";
 import getTheme from "./native-base-theme/components";
 import { StyleProvider } from "native-base";
 import commonColor from "./native-base-theme/variables/commonColor";
@@ -13,7 +13,9 @@ export default class App extends React.Component {
   };
 
   render() {
-    const navigationPersistenceKey = __DEV__ ? "ReactNavigationStateDEV" : null;
+    const navigationPersistenceKey = __DEV__
+      ? "ReactNavigationStateDEV8"
+      : null;
 
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (

@@ -45,7 +45,7 @@ export default class AuthLoadingScreen extends Component {
             justifyContent: "center"
           }}
         >
-          <Spinner color="#2185d0" />
+          <Spinner />
         </View>
       </Container>
     );

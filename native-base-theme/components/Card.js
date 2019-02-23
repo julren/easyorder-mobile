@@ -29,7 +29,7 @@ export default (variables /*: * */ = variable) => {
     shadowColor: "#000",
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.1,
-    shadowRadius: 0.7,
+    shadowRadius: 0.5,
     elevation: 3
   };
 

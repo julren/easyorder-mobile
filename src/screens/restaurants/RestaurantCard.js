@@ -39,7 +39,7 @@ class RestaurantCard extends React.Component {
           />
         </CardItem>
 
-        <CardItem style={{ paddingBottom: 0 }}>
+        <CardItem>
           <Body>
             <H3>{name}</H3>
           </Body>

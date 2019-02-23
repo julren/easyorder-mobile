@@ -32,6 +32,7 @@ import { firebaseMenuCategories } from "../../config/firebase";
 import MenuItemList from "./MenuItemList";
 import { CartConsumer, withCartContext } from "../cart/CartContext";
 import MiniCartOverlay from "../cart/MiniCartOverlay";
+import SectionHeader from "../../components/SectionHeader";
 
 class MenuScreen extends React.Component {
   static navigationOptions = {

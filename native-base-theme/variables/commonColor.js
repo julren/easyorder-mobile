@@ -118,7 +118,7 @@ export default {
   brandLight: "#f4f4f4",
 
   //Container
-  containerBgColor: "#fff",
+  containerBgColor: "#fafbfc",
 
   //Date Picker
   datePickerTextColor: "#000",
@@ -129,13 +129,13 @@ export default {
   fontFamily: platform === "ios" ? "System" : "Roboto",
   fontSizeBase: 15,
   get fontSizeH1() {
-    return this.fontSizeBase * 1.8;
-  },
-  get fontSizeH2() {
     return this.fontSizeBase * 1.6;
   },
-  get fontSizeH3() {
+  get fontSizeH2() {
     return this.fontSizeBase * 1.4;
+  },
+  get fontSizeH3() {
+    return this.fontSizeBase * 1.2;
   },
 
   // Footer
@@ -146,20 +146,20 @@ export default {
   // FooterTab
   tabBarTextColor: platform === "ios" ? "#737373" : "#bfc6ea",
   tabBarTextSize: platform === "ios" ? 14 : 11,
-  activeTab: platform === "ios" ? "#007aff" : "#fff",
-  sTabBarActiveTextColor: "#007aff",
+  activeTab: platform === "ios" ? "#5BC0EB" : "#fff",
+  sTabBarActiveTextColor: "#5BC0EB",
   tabBarActiveTextColor: platform === "ios" ? "#2874F0" : "#fff",
   tabActiveBgColor: platform === "ios" ? "#cde1f9" : "#3F51B5",
 
   // Header
-  toolbarBtnColor: platform === "ios" ? "#007aff" : "#fff",
+  toolbarBtnColor: platform === "ios" ? "#5BC0EB" : "#fff",
   toolbarDefaultBg: platform === "ios" ? "#F8F8F8" : "#3F51B5",
   toolbarHeight: platform === "ios" ? 64 : 56,
   toolbarSearchIconSize: platform === "ios" ? 20 : 23,
   toolbarInputColor: platform === "ios" ? "#CECDD2" : "#fff",
   searchBarHeight: platform === "ios" ? 30 : 40,
   searchBarInputHeight: platform === "ios" ? 30 : 50,
-  toolbarBtnTextColor: platform === "ios" ? "#007aff" : "#fff",
+  toolbarBtnTextColor: platform === "ios" ? "#5BC0EB" : "#fff",
   iosStatusbar: "dark-content",
   toolbarDefaultBorder: platform === "ios" ? "#a7a6ab" : "#3F51B5",
   get statusBarColor() {
@@ -199,14 +199,14 @@ export default {
   lineHeight: platform === "ios" ? 20 : 24,
 
   // List
-  listBg: "transparent",
+  listBg: "#fff",
   listBorderColor: "#c9c9c9",
-  listDividerBg: "#f4f4f4",
+  listDividerBg: "#f8fcff",
   listBtnUnderlayColor: "#DDD",
   listItemPadding: platform === "ios" ? 10 : 12,
   listNoteColor: "#808080",
   listNoteSize: 13,
-  listItemSelected: platform === "ios" ? "#007aff" : "#3F51B5",
+  listItemSelected: platform === "ios" ? "#5BC0EB" : "#3F51B5",
 
   // Progress Bar
   defaultProgressColor: "#E4202D",
@@ -222,29 +222,29 @@ export default {
 
   // Segment
   segmentBackgroundColor: platform === "ios" ? "#F8F8F8" : "#3F51B5",
-  segmentActiveBackgroundColor: platform === "ios" ? "#007aff" : "#fff",
-  segmentTextColor: platform === "ios" ? "#007aff" : "#fff",
+  segmentActiveBackgroundColor: platform === "ios" ? "#5BC0EB" : "#fff",
+  segmentTextColor: platform === "ios" ? "#5BC0EB" : "#fff",
   segmentActiveTextColor: platform === "ios" ? "#fff" : "#3F51B5",
-  segmentBorderColor: platform === "ios" ? "#007aff" : "#fff",
+  segmentBorderColor: platform === "ios" ? "#5BC0EB" : "#fff",
   segmentBorderColorMain: platform === "ios" ? "#a7a6ab" : "#3F51B5",
 
   // Spinner
-  defaultSpinnerColor: "#45D56E",
+  defaultSpinnerColor: "#5BC0EB",
   inverseSpinnerColor: "#1A191B",
 
   // Tab
   tabDefaultBg: platform === "ios" ? "#F8F8F8" : "#3F51B5",
   topTabBarTextColor: platform === "ios" ? "#6b6b6b" : "#b3c7f9",
-  topTabBarActiveTextColor: platform === "ios" ? "#007aff" : "#fff",
+  topTabBarActiveTextColor: platform === "ios" ? "#5BC0EB" : "#fff",
   topTabBarBorderColor: platform === "ios" ? "#a7a6ab" : "#fff",
-  topTabBarActiveBorderColor: platform === "ios" ? "#007aff" : "#fff",
+  topTabBarActiveBorderColor: platform === "ios" ? "#5BC0EB" : "#fff",
 
   // Tabs
   tabBgColor: "#F8F8F8",
   tabFontSize: 15,
 
   // Text
-  textColor: "#000",
+  textColor: "#161616",
   inverseTextColor: "#fff",
   noteFontSize: 14,
   get defaultTextColor() {

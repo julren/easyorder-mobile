@@ -13,22 +13,22 @@ import {
   Right,
   Body,
   View,
-  Icon
+  Icon,
+  Spinner
 } from "native-base";
 import { firebaseRestaurants } from "../../config/firebase";
 import RestaurantCard from "./RestaurantCard";
 import { MapView } from "expo";
 import RestaurantsMap from "./RestaurantsMap";
 import { withCartContext } from "../cart/CartContext";
+import SectionHeader from "../../components/SectionHeader";
 
 /**
  * Screen that shows List of nearby restaurants
  */
 class RestaurantsScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Restaurants"
-    };
+  static navigationOptions = {
+    title: "Restaurants"
   };
 
   constructor(props) {
@@ -61,6 +61,8 @@ class RestaurantsScreen extends React.Component {
     // Consumes Cart Context to be able to clear cart when the user goes back to list from restaurant view
     const cartContext = this.props.cartContext;
 
+    if (restaurants.length == 0) return <Spinner />;
+
     return (
       <Container>
         {/* Helper from react-navigation. When Screen will focus (be active) clear cart of cartContext */}
@@ -75,6 +77,8 @@ class RestaurantsScreen extends React.Component {
                <RestaurantsMap restaurants={restaurants} />
             </CardItem>
           </Card> */}
+
+          <SectionHeader title="Restaurants" icon="silverware" />
 
           {/* Liste der Restaurantdarstellung rendern */}
           {restaurants.map((restaurant, index) => (

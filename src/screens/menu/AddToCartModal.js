@@ -43,7 +43,7 @@ class AddToCartModal extends Component {
           style={{
             backgroundColor: "#ffff",
             paddingTop: 10,
-            paddingBottom: 10
+            paddingBottom: 20
           }}
         >
           <ListItem thumbnail>

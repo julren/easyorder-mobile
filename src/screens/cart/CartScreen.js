@@ -82,13 +82,14 @@ class CartScreen extends Component {
       removeCartItem,
       calcMwst
     } = this.props.cartContext;
+
     return (
       <Container>
-        <Content padded>
+        <Content>
           {cart.length > 0 ? (
             <React.Fragment>
               <List>
-                <Separator bordered>
+                <Separator>
                   <Text>Deine Bestellung</Text>
                 </Separator>
                 {cart.map((element, index) => (
@@ -116,27 +117,6 @@ class CartScreen extends Component {
                         ).toFixed(2)}
                         €
                       </Text>
-                      <Button
-                        icon
-                        bordered
-                        danger
-                        style={{
-                          marginLeft: 5,
-                          paddingTop: 0,
-                          paddingBottom: 0
-                        }}
-                        onPress={() => removeCartItem(element)}
-                      >
-                        <Icon
-                          name="trash"
-                          style={{
-                            marginLeft: 7,
-                            marginRight: 7,
-                            marginTop: 0,
-                            marginBottom: 0
-                          }}
-                        />
-                      </Button>
                     </Right>
                   </ListItem>
                 ))}
@@ -160,7 +140,7 @@ class CartScreen extends Component {
                   </Right>
                 </ListItem>
 
-                <Separator bordered>
+                <Separator>
                   <Text>Bezahlmethode</Text>
                 </Separator>
 
@@ -179,7 +159,7 @@ class CartScreen extends Component {
                     />
                   </Right>
                 </ListItem>
-                <Separator bordered />
+                <Separator />
               </List>
 
               <Content padder>

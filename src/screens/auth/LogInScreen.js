@@ -49,6 +49,7 @@ export default class LogInScreen extends Component {
                   console.log("Login sucessfull");
                   Keyboard.dismiss();
                   actions.setSubmitting(false);
+                  this.props.navigation.navigate("AuthLoadingScreen");
                 })
                 .catch(error => {
                   console.log("Login failed", error);
@@ -118,6 +119,13 @@ export default class LogInScreen extends Component {
             style={{ alignSelf: "center", marginTop: 20 }}
           >
             <Text>Noch kein Konto? Jetzt registrieren!</Text>
+          </Button>
+          <Button
+            onPress={() => firebase.auth().signOut()}
+            transparent
+            style={{ alignSelf: "center", marginTop: 20 }}
+          >
+            <Text>logout</Text>
           </Button>
         </View>
       </Container>

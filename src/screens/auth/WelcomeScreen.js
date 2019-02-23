@@ -23,7 +23,7 @@ import { Formik, Field } from "formik";
 import firebase from "../../config/firebase";
 import { BrandLogo } from "../../components/BrandLogo";
 
-const welcomeBGImg = require("../../assets/images/welcome-bg.png");
+const welcomeBGImg = require("../../../assets/images/welcome-bg.png");
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
