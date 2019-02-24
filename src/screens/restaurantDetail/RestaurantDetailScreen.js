@@ -80,12 +80,12 @@ class RestaurantDetailScreen extends Component {
         <Tabs tabBarPosition="overlayTop">
           <Tab heading="Infos">
             <Content>
-              <ReviewsTab restaurant={restaurant} />
+              <RestaurantInfoTab restaurant={restaurant} {...this.props} />
             </Content>
           </Tab>
           <Tab heading="Bewertungen">
             <Content>
-              <RestaurantInfoTab restaurant={restaurant} {...this.props} />
+              <ReviewsTab restaurant={restaurant} />
             </Content>
           </Tab>
         </Tabs>

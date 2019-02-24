@@ -28,6 +28,7 @@ import {
 } from "native-base";
 import OrderDetailScreen from "../screens/orderDetail/OrderDetailScreen";
 import { BrandLogo } from "../components/BrandLogo";
+import QrCodeScannerScreen from "../screens/qrCodeScanner/QrCodeScannerScreen";
 
 const RestaurantStack = createStackNavigator(
   {
@@ -42,7 +43,8 @@ const RestaurantStack = createStackNavigator(
     MenuItemDetail: MenuItemDetailScreen,
     Cart: CartScreen,
     Checkout: CheckoutScreen,
-    OrderOverview: OrderOverviewScreen
+    OrderOverview: OrderOverviewScreen,
+    QrCodeScanner: QrCodeScannerScreen
   },
   {
     defaultNavigationOptions: {

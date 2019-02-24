@@ -31,8 +31,9 @@ class CartProvider extends Component {
 
   // TODO: Firebase Table abgleich und bezeichnung speichern
   setTable = tableID => {
+    console.log("setTable", tableID);
     if (tableID) {
-      this.setState({ table, table });
+      this.setState({ table: tableID });
     }
   };
 
@@ -166,7 +167,7 @@ class CartProvider extends Component {
 
       setRestaurant: this.setRestaurant,
       setPaymentMethod: this.setPaymentMethod,
-      setTable: this.setState,
+      setTable: this.setTable,
 
       calcGrandTotal: this.calcGrandTotal,
       calcMwst: this.calcMwst,

@@ -67,14 +67,13 @@ class MenuListItem extends Component {
         <List>
           {this.state.menuItems.map((item, index) => (
             <ListItem
+              noIndent
               thumbnail
               key={index}
               onPress={() => {
                 this.openModal(item);
               }}
             >
-              <Left />
-
               <Thumbnail
                 square
                 source={{

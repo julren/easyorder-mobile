@@ -1,8 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
+import { Button, Text } from "native-base";
 
 export default class BarcodeScanner extends React.Component {
+  static navigationOptions = {
+    header: null
+  };
+
   state = {
     hasCameraPermission: null
   };
@@ -14,6 +19,7 @@ export default class BarcodeScanner extends React.Component {
 
   render() {
     const { hasCameraPermission } = this.state;
+    const { onCancel, onScanned } = this.props;
 
     if (hasCameraPermission === null) {
       return <Text>Requesting for camera permission</Text>;
@@ -23,15 +29,15 @@ export default class BarcodeScanner extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <BarCodeScanner
-          onBarCodeScanned={this.handleBarCodeScanned}
-          style={StyleSheet.absoluteFill}
-        />
+        <Button onPress={() => onCancel()}>
+          <Text>Abbrechen</Text>
+        </Button>
+        <BarCodeScanner onBarCodeScanned={onScanned} style={{ flex: 0.8 }} />
       </View>
     );
   }
 
-  handleBarCodeScanned = ({ type, data }) => {
+  handleBarCodeScanned = ({ data }) => {
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 }

@@ -20,6 +20,9 @@ import {
 } from "native-base";
 import { CartConsumer, withCartContext } from "./CartContext";
 import SelectPaymentModal from "./SelectPaymentModal";
+import BarcodeScanner from "../../components/BarcodeScanner";
+import ScanTableCodeButton from "./ScanTableCodeButton";
+import CartOverviewList from "./CartOverviewList";
 
 class CartScreen extends Component {
   static navigationOptions = {
@@ -29,7 +32,8 @@ class CartScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      paymentModalVisible: false
+      paymentModalVisible: false,
+      barcodeScannerActive: false
     };
   }
 
@@ -72,84 +76,64 @@ class CartScreen extends Component {
   };
 
   render() {
-    const {
-      cart,
-      table,
-      paymentMethod,
-      substractCart,
-      calcNumCartItems,
-      calcGrandTotal,
-      removeCartItem,
-      calcMwst
-    } = this.props.cartContext;
+    const { cart, table, paymentMethod } = this.props.cartContext;
 
+    // If cart is empty
+    if (cart.length <= 0)
+      return (
+        <Container>
+          <Text>Warenkorb ist leer</Text>
+        </Container>
+      );
+
+    // If cart is filled
     return (
       <Container>
         <Content>
-          {cart.length > 0 ? (
-            <React.Fragment>
-              <List>
-                <Separator>
-                  <Text>Deine Bestellung</Text>
+          <List>
+            <Separator>
+              <Text>Deine Bestellung</Text>
+            </Separator>
+
+            <CartOverviewList />
+
+            <Separator />
+
+            {!table ? (
+              <ScanTableCodeButton
+                onPress={() => this.props.navigation.navigate("QrCodeScanner")}
+              />
+            ) : (
+              <React.Fragment>
+                <Separator bordered>
+                  <Text>Tischnummer</Text>
                 </Separator>
-                {cart.map((element, index) => (
-                  <ListItem thumbnail key={index}>
-                    <Left>
-                      <Thumbnail square source={{ uri: element.item.photo }} />
-                    </Left>
-                    <Body>
-                      <Text>
-                        {element.quantity}x {element.item.name}
-                      </Text>
-                      <Text note numberOfLines={1}>
-                        {element.item.description}
-                      </Text>
-                    </Body>
-                    <Right
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center"
-                      }}
-                    >
-                      <Text>
-                        {parseFloat(
-                          element.quantity * element.item.price
-                        ).toFixed(2)}
-                        €
-                      </Text>
-                    </Right>
-                  </ListItem>
-                ))}
 
-                <ListItem>
-                  <Left>
-                    <Text>Inkl. Mwst</Text>
-                  </Left>
+                <ListItem
+                  button
+                  noIndent
+                  onPress={() =>
+                    this.props.navigation.navigate("QrCodeScanner")
+                  }
+                >
+                  <Body>
+                    <Text>Tischnummer:</Text>
+                  </Body>
                   <Right>
-                    <Text>{calcMwst()}€</Text>
-                  </Right>
-                </ListItem>
-                <ListItem>
-                  <Left>
-                    <Text style={{ fontWeight: "bold" }}>Summe</Text>
-                  </Left>
-                  <Right>
-                    <Text style={{ fontWeight: "bold" }}>
-                      {calcGrandTotal()}€
-                    </Text>
+                    <Text>{table}</Text>
                   </Right>
                 </ListItem>
 
-                <Separator>
+                <Separator bordered>
                   <Text>Bezahlmethode</Text>
                 </Separator>
 
-                <ListItem onPress={() => this.openPaymentModal()}>
+                <ListItem noIndent onPress={() => this.openPaymentModal()}>
                   <Body>
                     {paymentMethod ? (
                       <Text>Bezahlmethode</Text>
                     ) : (
-                      <Text>Bezahlmethode auswählen...</Text>
+                      <Text>Bitte Bezahlmethode auswählen...</Text>
                     )}
                   </Body>
                   <Right>
@@ -160,29 +144,18 @@ class CartScreen extends Component {
                   </Right>
                 </ListItem>
                 <Separator />
-              </List>
 
-              <Content padder>
                 <Button
-                  style={{ marginTop: 10 }}
+                  style={{ marginTop: 10, marginHorizontal: 16 }}
                   disabled={paymentMethod ? false : true}
                   block
                   onPress={() => this.placeOrderAndNavigate()}
                 >
-                  <Text style={{ marginLeft: 0 }}> Jetzt kaufen</Text>
+                  <Text> Jetzt kaufen</Text>
                 </Button>
-              </Content>
-            </React.Fragment>
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center"
-              }}
-            >
-              <Text>Warenkorb ist leer</Text>
-            </View>
-          )}
+              </React.Fragment>
+            )}
+          </List>
 
           <Modal
             animationType="fade"

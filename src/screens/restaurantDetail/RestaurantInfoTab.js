@@ -50,10 +50,19 @@ class RestaurantInfoTab extends Component {
           const { day, openingHour, closingHour } = item;
 
           return (
-            <ListItem key={index}>
-              <Text>{displayNameForWeekday(day)}: </Text>
-              <Text>{openingHour} - </Text>
-              <Text>{closingHour}</Text>
+            <ListItem noIndent key={index}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                  justifyContent: "space-between"
+                }}
+              >
+                <Text>{displayNameForWeekday(day)}: </Text>
+                <Text>
+                  {openingHour} - {closingHour}
+                </Text>
+              </View>
             </ListItem>
           );
         })}
@@ -81,7 +90,7 @@ class RestaurantInfoTab extends Component {
             />
           </MapView>
         </View>
-        <ListItem>
+        <ListItem noIndent>
           <View>
             <Text>{street}</Text>
             <Text>
@@ -92,10 +101,10 @@ class RestaurantInfoTab extends Component {
         <Separator>
           <Text>Kontakt</Text>
         </Separator>
-        <ListItem>
+        <ListItem noIndent>
           <Text>{email}</Text>
         </ListItem>
-        <ListItem>
+        <ListItem noIndent>
           <Text>{phone}</Text>
         </ListItem>
         <Separator />

@@ -18,9 +18,9 @@ class MiniCartOverlay extends Component {
         {({ calcGrandTotal, calcNumCartItems }) => (
           <TouchableOpacity
             style={{
-              backgroundColor: "#5BC0EB",
+              backgroundColor: "rgba(0, 0, 0, 0)",
               height: 80,
-              padding: 25
+              padding: 10
             }}
             onPress={onPress}
           >
@@ -29,7 +29,10 @@ class MiniCartOverlay extends Component {
                 alignItems: "center",
                 backgroundColor: "#5BC0EB",
                 flexDirection: "row",
-                flex: 1
+                flex: 1,
+                padding: 10,
+                borderRadius: 10,
+                backgroundColor: "#5BC0EB"
               }}
             >
               <View style={{ marginRight: 10 }}>

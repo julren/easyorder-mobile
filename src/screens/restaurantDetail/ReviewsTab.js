@@ -135,6 +135,7 @@ class ReviewsTab extends Component {
             <Text note>({restaurant.rating.numberOfRatings})</Text>
           </View>
         </View>
+        <Separator />
 
         <Separator bordered>
           <Text>Neuste Bewertungen</Text>

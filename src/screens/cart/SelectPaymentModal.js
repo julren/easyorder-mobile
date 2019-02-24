@@ -57,7 +57,7 @@ class SelectPaymentModal extends Component {
           style={{
             backgroundColor: "#ffff",
             paddingTop: 16,
-            paddingBottom: 16
+            paddingBottom: 32
           }}
         >
           <View>
@@ -68,10 +68,10 @@ class SelectPaymentModal extends Component {
                 alignItems: "center",
                 paddingLeft: 16,
                 paddingRight: 16,
-                paddingBottom: 16
+                paddingBottom: 32
               }}
             >
-              <Text style={{ fontWeight: "bold" }}>Bezahlmethode wählen</Text>
+              <H3 style={{ fontWeight: "bold" }}>Bezahlmethode wählen</H3>
               <Right>
                 <Button
                   transparent
