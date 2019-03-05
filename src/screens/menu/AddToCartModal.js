@@ -1,19 +1,9 @@
 import React, { Component } from "react";
-import { TouchableOpacity } from "react-native";
-import {
-  View,
-  Text,
-  Button,
-  Body,
-  Icon,
-  Left,
-  Right,
-  Thumbnail,
-  ListItem,
-  Content,
-  H2
-} from "native-base";
+import { TouchableOpacity, View } from "react-native";
+import { ThemeConsumer, Button, Text, Icon } from "react-native-elements";
+
 import { withCartContext } from "../cart/CartContext";
+import MenuItemListItem from "./MenuItemListItem";
 
 class AddToCartModal extends Component {
   state = {
@@ -21,8 +11,7 @@ class AddToCartModal extends Component {
   };
 
   render() {
-    const { menuItem, onClose } = this.props;
-    const { name, price, description, photo, photoThumb } = menuItem;
+    const { onClose } = this.props;
     const { addCartItem } = this.props.cartContext;
     return (
       <View
@@ -46,26 +35,7 @@ class AddToCartModal extends Component {
             paddingBottom: 20
           }}
         >
-          <ListItem thumbnail>
-            <Left />
-
-            <Thumbnail
-              square
-              source={{
-                uri: photo
-              }}
-            />
-            <Body>
-              <Text>{name}</Text>
-              <Text note numberOfLines={1}>
-                {description}
-              </Text>
-            </Body>
-
-            <Right>
-              <Text>{parseFloat(price).toFixed(2)}€</Text>
-            </Right>
-          </ListItem>
+          <MenuItemListItem menuItem={this.props.menuItem} />
 
           <View
             style={{
@@ -76,52 +46,39 @@ class AddToCartModal extends Component {
               paddingBottom: 20
             }}
           >
-            <Button
-              large
-              icon
-              transparent
+            <Icon
+              type="simple-line-icon"
+              name="minus"
+              size={40}
+              iconStyle={{ marginLeft: 15, marginRight: 15 }}
               onPress={() => {
                 this.state.quantity > 1
                   ? this.setState({ quantity: this.state.quantity - 1 })
                   : null;
               }}
-            >
-              <Icon
-                type="SimpleLineIcons"
-                name="minus"
-                style={{ marginLeft: 10, marginRight: 10, fontSize: 35 }}
-              />
-            </Button>
-            <H2>{this.state.quantity}</H2>
+            />
+            <Text style={{ fontSize: 30 }}>{this.state.quantity}</Text>
 
-            <Button
-              large
-              big
-              icon
-              transparent
+            <Icon
+              type="simple-line-icon"
+              name="plus"
+              size={45}
+              iconStyle={{ marginLeft: 15, marginRight: 15 }}
               onPress={() =>
                 this.setState({ quantity: this.state.quantity + 1 })
               }
-            >
-              <Icon
-                type="SimpleLineIcons"
-                name="plus"
-                style={{ marginLeft: 10, marginRight: 10, fontSize: 35 }}
-              />
-            </Button>
+            />
           </View>
 
-          <View padder>
-            <Button
-              block
-              onPress={() => {
-                addCartItem(menuItem, this.state.quantity);
-                onClose();
-              }}
-            >
-              <Text>Hinzufügen</Text>
-            </Button>
-          </View>
+          <Button
+            containerStyle={{ padding: 8 }}
+            buttonStyle={{ padding: 16 }}
+            title="Hinzufügen"
+            onPress={() => {
+              addCartItem(this.props.menuItem, this.state.quantity);
+              onClose();
+            }}
+          />
         </View>
       </View>
     );

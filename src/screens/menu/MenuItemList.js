@@ -1,29 +1,11 @@
 import React, { Component } from "react";
-import { Modal } from "react-native";
+import { Modal, FlatList } from "react-native";
 import PropTypes from "prop-types";
-import {
-  Container,
-  Content,
-  Text,
-  Button,
-  Card,
-  CardItem,
-  Left,
-  Right,
-  Body,
-  Header,
-  Icon,
-  Tab,
-  Tabs,
-  ScrollableTab,
-  Thumbnail,
-  List,
-  View,
-  ListItem
-} from "native-base";
 import { firebaseMenuItems } from "../../config/firebase";
-import { CartConsumer } from "../cart/CartContext";
 import AddToCartModal from "./AddToCartModal";
+
+import { ListItem, Text, Image } from "react-native-elements";
+import MenuItemListItem from "./MenuItemListItem";
 
 class MenuListItem extends Component {
   constructor(props) {
@@ -64,35 +46,18 @@ class MenuListItem extends Component {
   render() {
     return (
       <React.Fragment>
-        <List>
-          {this.state.menuItems.map((item, index) => (
-            <ListItem
-              noIndent
-              thumbnail
-              key={index}
+        <FlatList
+          data={this.state.menuItems}
+          keyExtractor={(item, index) => item.id}
+          renderItem={({ item }) => (
+            <MenuItemListItem
               onPress={() => {
                 this.openModal(item);
               }}
-            >
-              <Thumbnail
-                square
-                source={{
-                  uri: item.photo
-                }}
-              />
-              <Body>
-                <Text>{item.name}</Text>
-                <Text note numberOfLines={1}>
-                  {item.description}
-                </Text>
-              </Body>
-
-              <Right>
-                <Text>{parseFloat(item.price).toFixed(2)}€</Text>
-              </Right>
-            </ListItem>
-          ))}
-        </List>
+              menuItem={item}
+            />
+          )}
+        />
 
         <Modal
           animationType="fade"
@@ -105,6 +70,49 @@ class MenuListItem extends Component {
           />
         </Modal>
       </React.Fragment>
+
+      // <React.Fragment>
+      //   <List>
+      //     {this.state.menuItems.map((item, index) => (
+      //       <ListItem
+      //         noIndent
+      //         thumbnail
+      //         key={index}
+      //         onPress={() => {
+      //           this.openModal(item);
+      //         }}
+      //       >
+      //         <Thumbnail
+      //           square
+      //           source={{
+      //             uri: item.photo
+      //           }}
+      //         />
+      //         <Body>
+      //           <Text>{item.name}</Text>
+      //           <Text note numberOfLines={1}>
+      //             {item.description}
+      //           </Text>
+      //         </Body>
+
+      //         <Right>
+      //           <Text>{parseFloat(item.price).toFixed(2)}€</Text>
+      //         </Right>
+      //       </ListItem>
+      //     ))}
+      //   </List>
+
+      //     <Modal
+      //       animationType="fade"
+      //       transparent={true}
+      //       visible={this.state.modalVisible}
+      //     >
+      //       <AddToCartModal
+      //         menuItem={this.state.selectedMenuItem}
+      //         onClose={this.closeModal}
+      //       />
+      //     </Modal>
+      //   </React.Fragment>
     );
   }
 }

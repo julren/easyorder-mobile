@@ -3,7 +3,8 @@ import { TouchableOpacity } from "react-native";
 import { View, Text, Icon, Right, Left, Container } from "native-base";
 import PropTypes from "prop-types";
 import { withNavigation } from "react-navigation";
-import { CartConsumer } from "./CartContext";
+import { CartConsumer, withCartContext } from "./CartContext";
+import { ThemeConsumer } from "react-native-elements";
 
 class MiniCartOverlay extends Component {
   constructor(props) {
@@ -12,27 +13,30 @@ class MiniCartOverlay extends Component {
 
   render() {
     const { cart, onPress } = this.props;
+    const { calcGrandTotal, calcNumCartItems } = this.props.cartContext;
 
     return (
-      <CartConsumer>
-        {({ calcGrandTotal, calcNumCartItems }) => (
+      <ThemeConsumer>
+        {({ theme }) => (
           <TouchableOpacity
             style={{
               backgroundColor: "rgba(0, 0, 0, 0)",
               height: 80,
-              padding: 10
+              padding: 8,
+              marginBottom: 16
             }}
             onPress={onPress}
           >
             <View
               style={{
                 alignItems: "center",
-                backgroundColor: "#5BC0EB",
+                backgroundColor: theme.colors.primary,
                 flexDirection: "row",
                 flex: 1,
-                padding: 10,
-                borderRadius: 10,
-                backgroundColor: "#5BC0EB"
+                padding: 8,
+                borderRadius: 16,
+
+                backgroundColor: theme.colors.primary
               }}
             >
               <View style={{ marginRight: 10 }}>
@@ -54,12 +58,12 @@ class MiniCartOverlay extends Component {
             </View>
           </TouchableOpacity>
         )}
-      </CartConsumer>
+      </ThemeConsumer>
     );
   }
 }
 
-export default MiniCartOverlay;
+export default withCartContext(MiniCartOverlay);
 
 MiniCartOverlay.propTypes = {
   cart: PropTypes.array.isRequired

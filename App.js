@@ -3,9 +3,9 @@ import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "./src/navigation/AppNavigator";
 import { CartProvider } from "./src/screens/cart/CartContext";
-import getTheme from "./native-base-theme/components";
-import { StyleProvider } from "native-base";
-import commonColor from "./native-base-theme/variables/commonColor";
+
+import { ThemeProvider } from "react-native-elements";
+import customTheme from "./src/config/customTheme";
 
 export default class App extends React.Component {
   state = {
@@ -14,7 +14,7 @@ export default class App extends React.Component {
 
   render() {
     const navigationPersistenceKey = __DEV__
-      ? "ReactNavigationStateDEV90"
+      ? "ReactNavigationStateDEV92"
       : null;
 
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -28,12 +28,13 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-          <StyleProvider style={getTheme(commonColor)}>
+          {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
+
+          <ThemeProvider theme={customTheme}>
             <CartProvider>
               <AppNavigator persistenceKey={navigationPersistenceKey} />
             </CartProvider>
-          </StyleProvider>
+          </ThemeProvider>
         </View>
       );
     }
@@ -52,9 +53,14 @@ export default class App extends React.Component {
         "OpenSans": require("./assets/fonts/OpenSans-Regular.ttf"),
         "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         "Pacifico": require("./assets/fonts/Pacifico-Regular.ttf"),
+        "ProximaNova": require("./assets/fonts/Proxima-Nova-Regular.ttf"),
+        "ProximaNova_light": require("./assets/fonts/Proxima-Nova-Light.ttf"),
+        "ProximaNova_bold": require("./assets/fonts/Proxima-Nova-Bold.ttf"),
+        "SourceSansPro": require("./assets/fonts/SourceSansPro-Regular.otf"),
         "Roboto": require("native-base/Fonts/Roboto.ttf"),
         "Roboto_medium": require("native-base/Fonts/Roboto_medium.ttf"),
         "Ionicons": require("@expo/vector-icons/fonts/Ionicons.ttf"),
+
       })
     ]);
   };
@@ -72,7 +78,6 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#F0EFF5"
+    flex: 1
   }
 });

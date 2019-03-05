@@ -1,31 +1,41 @@
 import React, { Component } from "react";
-import { Image, Platform, ScrollView, StyleSheet } from "react-native";
 import {
-  Container,
-  Content,
-  Text,
-  Button,
-  Card,
-  CardItem,
-  Left,
-  Right,
-  Body,
-  Icon,
-  H3,
-  List,
-  ListItem,
-  Separator,
-  Textarea,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
   View,
-  Tabs,
-  Tab
-} from "native-base";
+  FlatList
+} from "react-native";
+// import {
+//   Container,
+//   Content,
+//   Text,
+//   Button,
+//   Card,
+//   CardItem,
+//   Left,
+//   Right,
+//   Body,
+//   Icon,
+//   H3,
+//   List,
+//   ListItem,
+//   Separator,
+//   Textarea,
+//   View,
+//   Tabs,
+//   Tab
+// } from "native-base";
 import { MapView } from "expo";
+
+import { ListItem, Text } from "react-native-elements";
 
 import {
   displayNameForWeekday,
   displayNameForPriceClass
 } from "../../utils/dataPipes";
+import Separator from "../../components/Separator";
 
 class RestaurantInfoTab extends Component {
   constructor(props) {
@@ -42,33 +52,28 @@ class RestaurantInfoTab extends Component {
     const lon = parseFloat(restaurant.adress.lon);
 
     return (
-      <List>
-        <Separator bordered>
-          <Text>Öffnungszeiten</Text>
-        </Separator>
-        {businessHours.map((item, index) => {
-          const { day, openingHour, closingHour } = item;
+      <ScrollView>
+        <Separator heading="Öffnungszeiten" />
 
-          return (
-            <ListItem noIndent key={index}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flex: 1,
-                  justifyContent: "space-between"
-                }}
-              >
-                <Text>{displayNameForWeekday(day)}: </Text>
+        <FlatList
+          data={businessHours}
+          keyExtractor={item => item.day}
+          scrollEnabled={false}
+          renderItem={({ item }) => (
+            <ListItem
+              bottomDivider
+              title={<Text>{displayNameForWeekday(item.day)}</Text>}
+              rightElement={
                 <Text>
-                  {openingHour} - {closingHour}
+                  {item.openingHour} - {item.closingHour}
                 </Text>
-              </View>
-            </ListItem>
-          );
-        })}
-        <Separator>
-          <Text>Adresse</Text>
-        </Separator>
+              }
+            />
+          )}
+        />
+
+        <Separator heading="Adresse" />
+
         <View style={styles.mapContainer}>
           <MapView
             style={styles.map}
@@ -90,25 +95,80 @@ class RestaurantInfoTab extends Component {
             />
           </MapView>
         </View>
-        <ListItem noIndent>
-          <View>
-            <Text>{street}</Text>
-            <Text>
-              {postcode} {city}
-            </Text>
-          </View>
-        </ListItem>
-        <Separator>
-          <Text>Kontakt</Text>
-        </Separator>
-        <ListItem noIndent>
-          <Text>{email}</Text>
-        </ListItem>
-        <ListItem noIndent>
-          <Text>{phone}</Text>
-        </ListItem>
-        <Separator />
-      </List>
+        <ListItem title={street} subtitle={`${postcode} ${city}`} />
+
+        <Separator heading="Kontakt" />
+        <ListItem title={email} leftIcon={{ name: "mail" }} />
+        <ListItem title={phone} leftIcon={{ name: "phone" }} />
+      </ScrollView>
+
+      // <List>
+      //   <Separator bordered>
+      //     <Text>Öffnungszeiten</Text>
+      //   </Separator>
+      //   {businessHours.map((item, index) => {
+      //     const { day, openingHour, closingHour } = item;
+
+      //     return (
+      //       <ListItem noIndent key={index}>
+      //         <View
+      //           style={{
+      //             flexDirection: "row",
+      //             flex: 1,
+      //             justifyContent: "space-between"
+      //           }}
+      //         >
+      //           <Text>{displayNameForWeekday(day)}: </Text>
+      //           <Text>
+      //             {openingHour} - {closingHour}
+      //           </Text>
+      //         </View>
+      //       </ListItem>
+      //     );
+      //   })}
+      //   <Separator>
+      //     <Text>Adresse</Text>
+      //   </Separator>
+      //   <View style={styles.mapContainer}>
+      //     <MapView
+      //       style={styles.map}
+      //       scrollEnabled={false}
+      //       zoomEnabled={false}
+      //       initialRegion={{
+      //         latitude: lat,
+      //         longitude: lon,
+      //         latitudeDelta: 0.01,
+      //         longitudeDelta: 0.005
+      //       }}
+      //     >
+      //       <MapView.Marker
+      //         coordinate={{
+      //           latitude: lat,
+      //           longitude: lon
+      //         }}
+      //         title={name}
+      //       />
+      //     </MapView>
+      //   </View>
+      //   <ListItem noIndent>
+      //     <View>
+      //       <Text>{street}</Text>
+      //       <Text>
+      //         {postcode} {city}
+      //       </Text>
+      //     </View>
+      //   </ListItem>
+      //   <Separator>
+      //     <Text>Kontakt</Text>
+      //   </Separator>
+      //   <ListItem noIndent>
+      //     <Text>{email}</Text>
+      //   </ListItem>
+      //   <ListItem noIndent>
+      //     <Text>{phone}</Text>
+      //   </ListItem>
+      //   <Separator />
+      // </List>
     );
   }
 }
