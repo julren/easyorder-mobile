@@ -1,4 +1,4 @@
-type Review = {
+interface Review {
   userID: string;
   restaurantID: string;
   firstname: string;
@@ -6,4 +6,4 @@ type Review = {
   rating: number;
   text: string;
   reviewDate: any;
-};
+}

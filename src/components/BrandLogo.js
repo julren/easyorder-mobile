@@ -1,18 +1,27 @@
 import React from "react";
 import { Text } from "react-native";
 import { Font } from "expo";
+import { ThemeConsumer } from "react-native-elements";
 
 export class BrandLogo extends React.Component {
   render() {
     return (
-      <Text
-        style={[
-          this.props.style,
-          { fontFamily: "Pacifico", fontSize: 56, color: "#2185d0" }
-        ]}
-      >
-        EasyOrder
-      </Text>
+      <ThemeConsumer>
+        {({ theme }) => (
+          <Text
+            style={[
+              {
+                fontFamily: "Pacifico",
+                fontSize: 56,
+                color: theme.colors.primary
+              },
+              this.props.style
+            ]}
+          >
+            EasyOrder
+          </Text>
+        )}
+      </ThemeConsumer>
     );
   }
 }

@@ -1,4 +1,4 @@
-type MenuItem = {
+interface MenuItem {
   authorID: string;
   categoryID: string;
   description: string;
@@ -6,4 +6,4 @@ type MenuItem = {
   name: string;
   photo: string;
   price: number;
-};
+}

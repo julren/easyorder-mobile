@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { withCartContext } from "./CartContext";
+import { withCartContext, CartContext } from "./CartContext";
 import { FlatList, View } from "react-native";
 import { Icon, ListItem, Text } from "react-native-elements";
 
@@ -8,21 +8,18 @@ class CartOverviewList extends Component<IProps> {
   render() {
     const {
       cart,
+      grandTotal,
       table,
       paymentMethod,
-      substractCart,
-      calcNumCartItems,
-      calcGrandTotal,
-      removeCartItem,
-      calcMwst
+      removeCartItem
     } = this.props.cartContext;
-    const { viewOnly = false } = this.props;
+    const { viewOnly = false, order } = this.props;
 
     return (
       <React.Fragment>
         {cart.map((item, index) => (
           <ListItem
-            key={item.id}
+            key={item.item.id}
             bottomDivider
             title={`${item.quantity}x ${item.item.name}`}
             subtitle={item.item.description ? item.item.description : null}
@@ -36,8 +33,8 @@ class CartOverviewList extends Component<IProps> {
             rightElement={
               viewOnly ? null : (
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text>{parseFloat(item.item.price).toFixed(2)}€</Text>
-                  <Icon name="close" onPress={() => console.log("pressed")} />
+                  <Text>{item.item.price.toFixed(2)}€</Text>
+                  <Icon name="close" onPress={() => removeCartItem(item)} />
                 </View>
               )
             }
@@ -45,15 +42,9 @@ class CartOverviewList extends Component<IProps> {
         ))}
 
         <ListItem
-          title="Inkl. Mwst"
-          rightElement={<Text>{parseFloat(calcMwst()).toFixed(2)}€</Text>}
-        />
-        <ListItem
-          title={<Text style={{ fontWeight: "bold" }}>Summe</Text>}
+          title={<Text style={{ fontWeight: "bold" }}>Summe (inkl. Mwst)</Text>}
           rightElement={
-            <Text style={{ fontWeight: "bold" }}>
-              {parseFloat(calcGrandTotal()).toFixed(2)}€
-            </Text>
+            <Text style={{ fontWeight: "bold" }}>{grandTotal.toFixed(2)}€</Text>
           }
         />
       </React.Fragment>
@@ -64,6 +55,7 @@ class CartOverviewList extends Component<IProps> {
 export default withCartContext(CartOverviewList);
 
 interface IProps {
-  cartContext: any;
+  cartContext: CartContext;
   viewOnly?: boolean;
+  order?: any;
 }

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { ListItem, Text } from "react-native-elements";
 
+interface IMenuItemListItem {
+  menuItem: MenuItem;
+}
+
 class MenuItemListItem extends Component<IMenuItemListItem> {
   render() {
     const { menuItem } = this.props;
@@ -14,18 +18,15 @@ class MenuItemListItem extends Component<IMenuItemListItem> {
         leftAvatar={{
           rounded: false,
           source: {
-            uri: menuItem.photo
+            uri: menuItem.photo,
+            cache: "force-cache"
           },
           size: "medium"
         }}
-        rightElement={<Text>{parseFloat(menuItem.price).toFixed(2)}€</Text>}
+        rightElement={<Text>{menuItem.price.toFixed(2)}€</Text>}
       />
     );
   }
 }
 
 export default MenuItemListItem;
-
-interface IMenuItemListItem {
-  menuItem: any;
-}

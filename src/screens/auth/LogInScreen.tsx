@@ -1,19 +1,21 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Keyboard, Alert } from "react-native";
 import {
-  Text,
-  Content,
-  Button,
-  Form,
-  Item,
-  Input,
-  Container
-} from "native-base";
+  View,
+  StyleSheet,
+  Keyboard,
+  Alert,
+  ImageBackground,
+  KeyboardAvoidingView
+} from "react-native";
+
 import { Formik, Field } from "formik";
+
+import { Input, Button, Text, Image, Icon } from "react-native-elements";
 
 import firebase from "../../config/firebase";
 import { BrandLogo } from "../../components/BrandLogo";
 import { NavigationScreenProp } from "react-navigation";
+import Container from "../../components/Container";
 
 export default class LogInScreen extends Component<IProps> {
   static navigationOptions = {
@@ -29,136 +31,130 @@ export default class LogInScreen extends Component<IProps> {
   }
 
   navigateToSignUp = () => {
-    this.props.navigation.navigate("SignUp");
+    this.props.navigation.replace("SignUp");
+  };
+
+  onSubmit = (values, actions) => {
+    const { email, password } = values;
+    console.log("trying to login with creds: ", email, password);
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(resp => {
+        console.log("Login sucessfull");
+        Keyboard.dismiss();
+        actions.setSubmitting(false);
+        this.props.navigation.navigate("AuthLoading");
+      })
+      .catch(error => {
+        console.log("Login failed", error);
+        actions.setSubmitting(false);
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+
+        actions.setErrors(errorCode);
+        actions.setStatus({
+          msg: "Something went wrong" + errorMessage
+        });
+
+        Alert.alert(JSON.stringify(errorMessage, null, 2));
+        console.log(error.message);
+      });
   };
 
   render() {
     return (
-      <Container>
-        <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
-          <BrandLogo style={{ alignSelf: "center" }} />
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#008FCA",
+            justifyContent: "center"
+          }}
+        >
+          <BrandLogo
+            style={{
+              alignSelf: "center",
+              color: "#fff"
+            }}
+          />
+        </View>
 
+        <Container padded="more" style={styles.formContainer}>
           <Formik
             initialValues={{ email: "", password: "" }}
-            onSubmit={(values, actions) => {
-              const { email, password } = values;
-              console.log("trying to login with creds: ", email, password);
-              firebase
-                .auth()
-                .signInWithEmailAndPassword(email, password)
-                .then(resp => {
-                  console.log("Login sucessfull");
-                  Keyboard.dismiss();
-                  actions.setSubmitting(false);
-                  this.props.navigation.navigate("AuthLoading");
-                })
-                .catch(error => {
-                  console.log("Login failed", error);
-                  actions.setSubmitting(false);
-                  // Handle Errors here.
-                  var errorCode = error.code;
-                  var errorMessage = error.message;
-
-                  actions.setErrors(errorCode);
-                  actions.setStatus({
-                    msg: "Something went wrong" + errorMessage
-                  });
-
-                  Alert.alert(JSON.stringify(errorMessage, null, 2));
-                  console.log(error.message);
-                });
-            }}
+            onSubmit={this.onSubmit}
           >
-            {({
-              handleChange,
-              handleSubmit,
-              handleBlur,
-              values,
-              setFieldValue
-            }) => (
+            {({ handleChange, handleSubmit, handleBlur, values }) => (
               <View>
-                <Form>
-                  <Item>
-                    <Field name="email">
-                      {({ field }) => (
-                        <Input
-                          textContentType="username"
-                          placeholder="email"
-                          value={values.email}
-                          onChangeText={handleChange("email")}
-                          onBlur={handleBlur("email")}
-                        />
-                      )}
-                    </Field>
-                  </Item>
+                <Field name="email">
+                  {({ field }) => (
+                    <Input
+                      label="Email"
+                      placeholder="Email"
+                      textContentType="username"
+                      rightIcon={<Icon name="person" />}
+                      inputContainerStyle={styles.inputContainer}
+                      value={values.email}
+                      onChangeText={handleChange("email")}
+                      onBlur={handleBlur("email")}
+                    />
+                  )}
+                </Field>
 
-                  <Item>
-                    <Field name="password">
-                      {({ field }) => (
-                        <Input
-                          secureTextEntry={true}
-                          textContentType="password"
-                          placeholder="password"
-                          value={values.password}
-                          onChangeText={handleChange("password")}
-                          onBlur={handleBlur("password")}
-                        />
-                      )}
-                    </Field>
-                  </Item>
-                </Form>
-                <Button
-                  block
-                  onPress={(e: any) => handleSubmit(e)}
-                  style={{ marginTop: 20 }}
-                >
-                  <Text>Login</Text>
-                </Button>
+                <Field name="password">
+                  {({ field }) => (
+                    <Input
+                      secureTextEntry={true}
+                      textContentType="password"
+                      label="Passwort"
+                      placeholder="Passwort"
+                      rightIcon={<Icon name="vpn-key" />}
+                      inputContainerStyle={styles.inputContainer}
+                      value={values.password}
+                      onChangeText={handleChange("password")}
+                      onBlur={handleBlur("password")}
+                    />
+                  )}
+                </Field>
+
+                <Button title="Login" onPress={(e: any) => handleSubmit(e)} />
               </View>
             )}
           </Formik>
           <Button
+            type="clear"
+            title="Noch kein Konto? Jetzt registrieren!"
             onPress={this.navigateToSignUp}
-            transparent
-            style={{ alignSelf: "center", marginTop: 20 }}
-          >
-            <Text>Noch kein Konto? Jetzt registrieren!</Text>
-          </Button>
-          <Button
-            onPress={() =>
-              firebase
-                .auth()
-                .signOut()
-                .then(() => console.log("logoutsuccess"))
-            }
-            transparent
-            style={{ alignSelf: "center", marginTop: 20 }}
-          >
-            <Text>logout</Text>
-          </Button>
-        </View>
-      </Container>
+            style={{ marginTop: 16 }}
+            titleStyle={{ fontSize: 16 }}
+          />
+          {/* <Button
+              title="logout"
+              type="clear"
+              onPress={() =>
+                firebase
+                  .auth()
+                  .signOut()
+                  .then(() => console.log("logoutsuccess"))
+              }
+              style={{ alignSelf: "center", marginTop: 20 }}
+            /> */}
+        </Container>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 15,
-    backgroundColor: "#fff",
-    alignContent: "center",
-    height: "100%",
-    justifyContent: "center"
-  },
-  contentContainer: {
-    flex: 1,
-    // justifyContent: "center",
+  formContainer: {
+    flex: 2,
+    justifyContent: "center",
     alignContent: "center"
   },
-  border: {
-    borderColor: "green",
-    borderWidth: 1
+  inputContainer: {
+    marginBottom: 15
   }
 });
 

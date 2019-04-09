@@ -1,4 +1,4 @@
-type Order = {
+interface Order {
   customerID: string;
   grandTotal: string;
   items: {
@@ -16,4 +16,4 @@ type Order = {
     restaurantID: string;
   };
   table: string;
-};
+}

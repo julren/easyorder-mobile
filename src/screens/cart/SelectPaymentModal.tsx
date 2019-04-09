@@ -1,8 +1,17 @@
 import React, { Component } from "react";
 import { TouchableOpacity, View } from "react-native";
 
-import { withCartContext } from "./CartContext";
+import { withCartContext, CartContextProps } from "./CartContext";
 import { Text, Button, ListItem } from "react-native-elements";
+import Container from "../../components/Container";
+
+interface IState {
+  selectedPaymentMethod: string;
+}
+
+interface IProps extends CartContextProps {
+  onClose: () => void;
+}
 
 class SelectPaymentModal extends Component<IProps, IState> {
   constructor(props) {
@@ -20,7 +29,8 @@ class SelectPaymentModal extends Component<IProps, IState> {
 
   paymentMethods = [
     { name: "cash", icon: "money", displayName: "Bar" },
-    { name: "paypal", icon: "paypal", displayName: "PayPal" }
+    { name: "paypal", icon: "paypal", displayName: "PayPal" },
+    { name: "creditcard", icon: "credit-card", displayName: "Kreditkarte" }
   ];
 
   render() {
@@ -41,11 +51,9 @@ class SelectPaymentModal extends Component<IProps, IState> {
           }}
           onPress={onClose}
         />
-        <View
+        <Container
           style={{
-            backgroundColor: "#ffff",
-            paddingTop: 16,
-            paddingBottom: 60
+            backgroundColor: "#ffff"
           }}
         >
           <View>
@@ -54,12 +62,11 @@ class SelectPaymentModal extends Component<IProps, IState> {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                paddingLeft: 16,
-                paddingRight: 16,
-                paddingBottom: 16
+                marginLeft: 16,
+                marginBottom: 8
               }}
             >
-              <Text h3 style={{ fontWeight: "bold" }}>
+              <Text h2 style={{ fontWeight: "bold" }}>
                 Bezahlmethode wählen
               </Text>
               <Button title="Fertig" type="clear" onPress={onClose} />
@@ -79,19 +86,10 @@ class SelectPaymentModal extends Component<IProps, IState> {
               />
             ))}
           </View>
-        </View>
+        </Container>
       </View>
     );
   }
 }
 
 export default withCartContext(SelectPaymentModal);
-
-interface IState {
-  selectedPaymentMethod: string;
-}
-
-interface IProps {
-  cartContext: any;
-  onClose: () => void;
-}

@@ -1,68 +1,98 @@
 import React, { Component } from "react";
-import firebase, { firebaseOrders } from "../../config/firebase";
-import { NavigationScreenProp } from "react-navigation";
+import firebase, {
+  firebaseOrders,
+  firebaseTables
+} from "../../config/firebase";
+import {
+  NavigationScreenProp,
+  NavigationScreenOptions,
+  NavigationScreenProps,
+  NavigationInjectedProps
+} from "react-navigation";
+import { any } from "prop-types";
 
 const CartContext = React.createContext({});
 const CartConsumer = CartContext.Consumer;
 
+export interface CartContext extends Cart {
+  setRestaurant: (restaurant: Restaurant) => void;
+  setPaymentMethod: (paymentMethod: string) => void;
+  setTable: (tableID: string) => void;
+
+  addCartItem: (item: MenuItem, quantity: number) => void;
+  removeCartItem: (cartItem: { item: MenuItem; quantity: number }) => void;
+  updateCartItemQuantity: (item: MenuItem, quantity: number) => void;
+  clearCartContext: () => void;
+
+  placeOrder: () => Promise<any>;
+}
+
+export interface CartContextProps {
+  cartContext: CartContext;
+}
+
 /**
- * TODO: Refactor. Calc-Methoden nicht nach außen zeigen, sondern nur intern berechnen
- * Context provider for app wide cart Info.
  * Holds Info about currently selected restaurant, added cart items
  * and allows to update/remove them
  */
-class CartProvider extends Component<IProps, Cart> {
+class CartProvider extends Component<any, Cart> {
   constructor(props) {
     super(props);
-    this.state = placeholderData;
+    this.state = { cart: [] } as Cart;
   }
 
-  setRestaurant = restaurant => {
+  setRestaurant = (restaurant: Restaurant) => {
     this.setState({ restaurant, cart: [] });
   };
 
-  // TODO: Firebase Table abgleich und bezeichnung speichern
   setTable = tableID => {
     console.log("setTable", tableID);
     if (tableID) {
-      this.setState({ table: tableID });
+      firebaseTables
+        .doc(tableID)
+        .get()
+        .then(doc => {
+          this.setState({
+            table: {
+              tableID: doc.id,
+              name: doc.data().name
+            }
+          });
+        });
     }
   };
 
-  addCartItem = (item, quantity) => {
+  addCartItem = (item: MenuItem, quantity: number) => {
     let cart = this.state.cart;
-    cart.push({ item, quantity });
 
-    this.setState({
-      cart
-    });
+    const itemIndexInCart = cart.findIndex(
+      element => element.item.id === item.id
+    );
 
-    // const itemIndexInCart = cart.findIndex(
-    //   element => element.item.id === item.id
-    // );
+    if (itemIndexInCart >= 0) {
+      cart[itemIndexInCart].quantity += quantity;
+    } else {
+      cart.push({ item: item, quantity: quantity });
+    }
 
-    // if (itemIndexInCart >= 0) {
-    //   cart[itemIndexInCart].quantity ;
-    // } else {
-    //   cart.push({ item: item, quantity: 1 });
-    // }
-    // this.setState({
-    //   cart: cart
-    // });
+    this.updateCart(cart);
   };
 
   removeCartItem = cartItem => {
     let cart = this.state.cart;
-    const itemIndexInCart = cart.findIndex(element => element === cartItem);
+    const itemIndexInCart = cart.findIndex(
+      element => element.item.id === cartItem.item.id
+    );
 
-    if (itemIndexInCart) {
+    if (itemIndexInCart >= 0) {
       cart.splice(itemIndexInCart, 1);
-      this.setState({
-        cart: cart
-      });
+      this.updateCart(cart);
     }
   };
 
+  /**
+   *  @param paymentMethod:
+   */
   setPaymentMethod = paymentMethod => {
     this.setState({
       paymentMethod: paymentMethod
@@ -70,12 +100,14 @@ class CartProvider extends Component<IProps, Cart> {
   };
 
   clearCartContext = () => {
-    this.setState({
+    const clearedCart = {
       restaurant: undefined,
       cart: [],
-      table: "",
+      table: {},
       paymentMethod: ""
-    });
+    } as Cart;
+
+    this.setState({ ...clearedCart });
   };
 
   updateCartItemQuantity = (item, quantity) => {
@@ -86,55 +118,37 @@ class CartProvider extends Component<IProps, Cart> {
 
     if (itemIndexInCart) {
       cart[itemIndexInCart].quantity = quantity;
-      this.setState({
-        cart
-      });
+      this.updateCart(cart);
     }
   };
 
-  calcGrandTotal = (): number => {
-    let grandTotal = 0;
-
-    this.state.cart.forEach(element => {
-      grandTotal += element.quantity * element.item.price;
-    });
-    return grandTotal;
-  };
-
-  calcMwst = (): number => {
-    return this.calcGrandTotal() * 0.19;
-  };
-
-  calcNumCartItems = () => {
-    let numCartItems = 0;
-
-    this.state.cart.forEach(element => {
-      numCartItems += element.quantity;
-    });
-
-    return numCartItems;
-  };
-
   /**
-   *
+   * Update cart and assosiated values in state
    */
+  updateCart = newCart => {
+    this.setState({
+      cart: newCart,
+      grandTotal: calcGrandTotal(newCart),
+      mwst: calcMwst(newCart),
+      numCartItems: calcNumCartItems(newCart)
+    });
+  };
+
   placeOrder = async () => {
-    const { restaurant, cart, paymentMethod, table } = this.state;
+    const { restaurant } = this.state;
 
     const order = {
+      ...this.state,
       restaurant: {
         restaurantID: restaurant.id,
         name: restaurant.name,
         logo: restaurant.media.logo,
         coverPhoto: restaurant.media.coverPhoto
       },
-      table: table,
-      items: cart,
-      grandTotal: this.calcGrandTotal(),
-      mwst: this.calcMwst(),
-      paymentMethod: paymentMethod,
+
       orderDate: firebase.firestore.Timestamp.now(),
-      customerID: firebase.auth().currentUser.uid
+      customerID: firebase.auth().currentUser.uid,
+      status: "open"
     };
 
     return new Promise((resolve, reject) => {
@@ -150,30 +164,24 @@ class CartProvider extends Component<IProps, Cart> {
     });
   };
 
+  contextValue: CartContext = {
+    ...this.state,
+
+    setRestaurant: this.setRestaurant,
+    setPaymentMethod: this.setPaymentMethod,
+    setTable: this.setTable,
+
+    addCartItem: this.addCartItem,
+    removeCartItem: this.removeCartItem,
+    updateCartItemQuantity: this.updateCartItemQuantity,
+    clearCartContext: this.clearCartContext,
+
+    placeOrder: this.placeOrder
+  };
+
   render() {
-    const contextValue = {
-      cart: this.state.cart,
-      restaurant: this.state.restaurant,
-      table: this.state.table,
-      paymentMethod: this.state.paymentMethod,
-
-      setRestaurant: this.setRestaurant,
-      setPaymentMethod: this.setPaymentMethod,
-      setTable: this.setTable,
-
-      calcGrandTotal: this.calcGrandTotal,
-      calcMwst: this.calcMwst,
-      calcNumCartItems: this.calcNumCartItems,
-      addCartItem: this.addCartItem,
-      removeCartItem: this.removeCartItem,
-      updateCartItemQuantity: this.updateCartItemQuantity,
-      clearCartContext: this.clearCartContext,
-
-      placeOrder: this.placeOrder
-    };
-
     return (
-      <CartContext.Provider value={contextValue}>
+      <CartContext.Provider value={this.contextValue}>
         {this.props.children}
       </CartContext.Provider>
     );
@@ -183,30 +191,29 @@ class CartProvider extends Component<IProps, Cart> {
  * HoC that provides CartContext to other Component
  * @param Component: Child Component to wrap in Cart Context
  */
-const withCartContext = Component => {
+
+const withCartContext = <BaseProps extends CartContextProps>(
+  Component: React.ComponentType<BaseProps>
+) => {
   class CartConsumerWrapper extends React.Component {
-    static navigationOptions: any;
+    
     render() {
+      
       return (
         <CartConsumer>
-          {cartContext => (
-            <Component {...this.props} cartContext={cartContext} />
+          {(cartContext: CartContext) => (
+            <Component {...this.props as any} cartContext={cartContext} />
           )}
         </CartConsumer>
       );
     }
   }
-  CartConsumerWrapper.navigationOptions = Component.navigationOptions;
   return CartConsumerWrapper;
 };
 
 export { CartProvider, CartConsumer, withCartContext };
 
-interface IProps {
-  navigation: NavigationScreenProp<any, any>;
-}
-
-const placeholderData: Cart = {
+const placeholderData = {
   cart: [
     {
       item: {
@@ -303,8 +310,39 @@ const placeholderData: Cart = {
       ]
     }
   },
-  table: "",
+  table: {
+    id: "",
+    name: ""
+  },
   paymentMethod: "",
   mwst: 0,
-  grandTotel: 0
+  grandTotal: 0,
+  status: ""
+};
+
+/**
+ * HELPER FUNCTIONS
+ */
+
+const calcGrandTotal = cart => {
+  let grandTotal = 0;
+
+  cart.forEach(element => {
+    grandTotal += element.quantity * element.item.price;
+  });
+  return grandTotal;
+};
+
+const calcMwst = cart => {
+  return ((calcGrandTotal(cart) * 0, 19) * 100) / 100;
+};
+
+const calcNumCartItems = cart => {
+  let numCartItems = 0;
+
+  cart.forEach(element => {
+    numCartItems += element.quantity;
+  });
+
+  return numCartItems;
 };

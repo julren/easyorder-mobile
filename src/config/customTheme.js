@@ -1,6 +1,6 @@
 const colors = {
-  primary: "#03A9F4",
-  secondary: "#8F0CE8",
+  primary: "#008ACD",
+  secondary: "#00B851",
 
   grey0: "#E9E9EF",
   grey1: "#43484d",
@@ -17,7 +17,13 @@ export { colors };
 export default {
   colors: colors,
   Button: {
-    padding: 16
+    color: colors.primary,
+    buttonStyle: { padding: 12 }
+  },
+  Card: {
+    containerStyle: {
+      marginHorizontal: 0
+    }
   },
   ListItem: {
     bottomDivider: true,
@@ -25,10 +31,14 @@ export default {
     subtitleStyle: { color: colors.grey3, fontSize: 14 }
   },
   Text: {
-    h1Style: { fontSize: 24 },
-    h2Style: { fontSize: 21 },
-    h3Style: { fontSize: 18 },
-    h4Style: { fontSize: 16 }
+    h1Style: { fontSize: 24, fontWeight: "bold" },
+    h2Style: { fontSize: 21, fontWeight: "bold" },
+    h3Style: { fontSize: 18, fontWeight: "bold" },
+    h4Style: { fontSize: 16, fontWeight: "bold" }
+  },
+  Input: {
+    containerStyle: { paddingVertical: 5 },
+    leftIconContainerStyle: { marginLeft: 0, marginRight: 10 }
   },
   Icon: {
     color: colors.primary

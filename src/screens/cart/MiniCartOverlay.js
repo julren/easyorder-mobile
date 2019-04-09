@@ -12,8 +12,8 @@ class MiniCartOverlay extends Component {
   }
 
   render() {
-    const { cart, onPress } = this.props;
-    const { calcGrandTotal, calcNumCartItems } = this.props.cartContext;
+    const { onPress } = this.props;
+    const { grandTotal, numCartItems } = this.props.cartContext;
 
     return (
       <ThemeConsumer>
@@ -33,8 +33,7 @@ class MiniCartOverlay extends Component {
                 backgroundColor: theme.colors.primary,
                 flexDirection: "row",
                 flex: 1,
-                padding: 8,
-                borderRadius: 16,
+                padding: 16,
 
                 backgroundColor: theme.colors.primary
               }}
@@ -48,11 +47,9 @@ class MiniCartOverlay extends Component {
               </View>
 
               <View style={{ flexGrow: 1 }}>
+                <Text style={{ color: "white" }}>{numCartItems} Artikel</Text>
                 <Text style={{ color: "white" }}>
-                  {calcNumCartItems()} Artikel
-                </Text>
-                <Text style={{ color: "white" }}>
-                  Gesammtsumme: {parseFloat(calcGrandTotal()).toFixed(2)}€
+                  Gesammtsumme: {grandTotal}€
                 </Text>
               </View>
             </View>
@@ -64,7 +61,3 @@ class MiniCartOverlay extends Component {
 }
 
 export default withCartContext(MiniCartOverlay);
-
-MiniCartOverlay.propTypes = {
-  cart: PropTypes.array.isRequired
-};

@@ -6,7 +6,12 @@ import {
   KeyboardAvoidingView,
   AsyncStorage
 } from "react-native";
-import firebase, { firebaseReviews } from "../../config/firebase";
+import firebase, { firebaseReviews } from "../config/firebase";
+
+interface IProps {
+  restaurantID: string;
+  onClose: () => void;
+}
 
 class RateRestaurantModal extends Component<IProps> {
   state = {
@@ -21,7 +26,7 @@ class RateRestaurantModal extends Component<IProps> {
   onSubmit = () => {
     const review: Review = {
       userID: firebase.auth().currentUser.uid,
-      restaurantID: this.props.restaurant.restaurantID,
+      restaurantID: this.props.restaurantID,
       rating: this.state.rating,
       text: this.state.text,
       firstname: "",
@@ -40,7 +45,7 @@ class RateRestaurantModal extends Component<IProps> {
   };
 
   render() {
-    const { restaurant, onClose } = this.props;
+    const { restaurantID, onClose } = this.props;
     return (
       <KeyboardAvoidingView
         behavior="padding"
@@ -65,7 +70,7 @@ class RateRestaurantModal extends Component<IProps> {
           }}
         >
           <H2>Bewertung abgeben</H2>
-          <Text note>Wie fandest du {restaurant.name}?</Text>
+          <Text note>Wie fandest du das Restaurant?</Text>
 
           <View style={{ padding: 10, alignItems: "flex-start" }}>
             <StarRating
@@ -101,8 +106,3 @@ class RateRestaurantModal extends Component<IProps> {
 }
 
 export default RateRestaurantModal;
-
-interface IProps {
-  restaurant: any;
-  onClose: () => void;
-}

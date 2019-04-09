@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Modal } from "react-native";
+import { Modal, View } from "react-native";
 import RateRestaurantModal from "./RateRestaurantModal";
-import firebase, { firebaseReviews } from "../../config/firebase";
-import { Button, Text, View } from "native-base";
+import firebase, { firebaseReviews } from "../config/firebase";
+import { Button, Text } from "react-native-elements";
 import StarRating from "react-native-star-rating";
 
 interface IProps {
-  restaurant: any;
+  restaurantID: string;
 }
 
 class LeaveReviewButton extends Component<IProps> {
@@ -43,7 +43,7 @@ class LeaveReviewButton extends Component<IProps> {
   };
 
   componentDidMount() {
-    this.getReviewForRestaurantByUser(this.props.restaurant.restaurantID);
+    this.getReviewForRestaurantByUser(this.props.restaurantID);
   }
 
   render() {
@@ -76,16 +76,19 @@ class LeaveReviewButton extends Component<IProps> {
 
     return (
       <React.Fragment>
-        <Button block onPress={this.openModal} style={{ margin: 16 }}>
-          <Text>Restaurant bewerten</Text>
-        </Button>
+        <Button
+          title="Restaurant bewerten"
+          onPress={this.openModal}
+          containerStyle={{ margin: 16 }}
+        />
+
         <Modal
           animationType="fade"
           transparent={true}
           visible={this.state.modalVisible}
         >
           <RateRestaurantModal
-            restaurant={this.props.restaurant}
+            restaurantID={this.props.restaurantID}
             onClose={this.closeModal}
           />
         </Modal>

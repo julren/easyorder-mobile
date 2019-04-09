@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, StatusBar, AsyncStorage } from "react-native";
-import { Text, Container, Header, Body, Title, Spinner } from "native-base";
+import { View, StatusBar, AsyncStorage, ActivityIndicator } from "react-native";
 
 import firebase from "../../config/firebase";
 import { NavigationScreenProp } from "react-navigation";
@@ -34,18 +33,15 @@ export default class AuthLoadingScreen extends Component<IProps> {
 
   render() {
     return (
-      <Container>
-        <View
-          style={{
-            flex: 1,
-            alignContent: "center",
-            height: "100%",
-            justifyContent: "center"
-          }}
-        >
-          <Spinner />
-        </View>
-      </Container>
+      <View
+        style={{
+          flex: 1,
+          alignContent: "center",
+          justifyContent: "center"
+        }}
+      >
+        <ActivityIndicator />
+      </View>
     );
   }
 }

@@ -1,14 +1,41 @@
 import React, { Component } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { ThemeConsumer, Button, Text, Icon } from "react-native-elements";
+import {
+  ThemeConsumer,
+  Button,
+  Text,
+  Icon,
+  ThemeProps,
+  Theme
+} from "react-native-elements";
 
-import { withCartContext } from "../cart/CartContext";
+import {
+  withCartContext,
+  CartContext,
+  CartContextProps
+} from "../cart/CartContext";
 import MenuItemListItem from "./MenuItemListItem";
 
-class AddToCartModal extends Component {
+interface IProps extends ThemeProps<Theme>, CartContextProps {
+  onClose: () => void;
+  menuItem: MenuItem;
+}
+
+class AddToCartModal extends Component<IProps> {
   state = {
     quantity: 1
   };
+
+  componentDidMount() {
+    // const itemIndexInCart = this.props.cartContext.cart.findIndex(
+    //   element => element.item.id === this.props.menuItem.id
+    // );
+    // if (itemIndexInCart > 0) {
+    //   this.setState({
+    //     quantity: this.props.cartContext.cart[itemIndexInCart].quantity
+    //   });
+    // }
+  }
 
   render() {
     const { onClose } = this.props;
@@ -35,6 +62,13 @@ class AddToCartModal extends Component {
             paddingBottom: 20
           }}
         >
+          <Text
+            h2
+            style={{ fontWeight: "bold", marginLeft: 16, marginVertical: 8 }}
+          >
+            Zum Warenkorb hinzufügen
+          </Text>
+
           <MenuItemListItem menuItem={this.props.menuItem} />
 
           <View

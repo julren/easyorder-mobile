@@ -1,11 +1,16 @@
-type Cart = {
+interface Cart {
   cart: {
     item: MenuItem;
     quantity: number;
   }[];
   restaurant: Restaurant;
-  table: string;
+  table: {
+    tableID: string;
+    name: string;
+  };
   paymentMethod: string;
   mwst: number;
-  grandTotel: number;
-};
+  grandTotal: number;
+  status: string;
+  numCartItems: number;
+}

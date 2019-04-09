@@ -1,36 +1,36 @@
 import React, { Component } from "react";
-import { Image, ImageBackground, Modal } from "react-native";
 import {
-  Content,
-  Container,
-  Text,
-  H2,
-  List,
-  Separator,
-  ListItem,
-  Left,
-  Right,
-  Thumbnail,
-  Body,
-  View,
-  Button,
-  Icon,
-  H1,
-  H3,
-  Spinner
-} from "native-base";
+  Image,
+  ImageBackground,
+  Modal,
+  ActivityIndicator,
+  ScrollView,
+  View
+} from "react-native";
+
 import firebase, {
   firebaseOrders,
   firebaseReviews
 } from "../../config/firebase";
 import { NavigationScreenProp } from "react-navigation";
-import RateRestaurantModal from "./RateRestaurantModal";
-import LeaveReviewButton from "./LeaveReviewButton";
+import RateRestaurantModal from "../../components/RateRestaurantModal";
+import LeaveReviewButton from "../../components/LeaveReviewButton";
+import { Icon, Text, ListItem, Divider, Button } from "react-native-elements";
+import Separator from "../../components/Separator";
 
 class OrderOverviewScreen extends Component<Props, State> {
-  static navigationOptions = {
-    title: "Bestellübersicht",
-    headerLeft: null
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Bestellübersicht",
+      headerLeft: null,
+      gesturesEnabled: false,
+      headerRight: (
+        <Button
+          title="Fertig"
+          onPress={() => navigation.replace("Restaurants")}
+        />
+      )
+    };
   };
 
   constructor(props) {
@@ -70,43 +70,28 @@ class OrderOverviewScreen extends Component<Props, State> {
     const { order } = this.state;
 
     if (!order) {
-      return <Spinner />;
+      return <ActivityIndicator />;
     } else {
       return (
-        <Container>
-          <Content>
-            <List>
-              <ImageBackground
-                source={{ uri: order.restaurant.coverPhoto }}
-                style={{
-                  height: 200,
-                  imageStyle: { opacity: 20 }
-                }}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    backgroundColor: "rgba(60, 109, 130, 0.7)",
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}
-                >
-                  <Icon
-                    name="silverware"
-                    type="MaterialCommunityIcons"
-                    style={{ color: "#fff", fontSize: 50 }}
-                  />
-                  <Text style={{ color: "#fff" }}>Deine Bestellung bei</Text>
-                  <H1 style={{ color: "#fff", fontWeight: "bold" }}>
-                    {order.restaurant.name}
-                  </H1>
+        <ScrollView>
+          <ListItem
+            title={<Text h1>Bestellübersicht</Text>}
+            subtitle={<Text>Deine Bestellung bei {order.restaurant.name}</Text>}
+          />
+
+          <ListItem
+            title={
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ marginRight: 10 }}>
+                  <Text>Bestellnummer:</Text>
+                  <Text>Bestelldatum:</Text>
+                  <Text>Zahlungsart:</Text>
+                  <Text>Tischnummer:</Text>
                 </View>
-              </ImageBackground>
-              <ListItem>
+
                 <View>
-                  <Text note>Bestellnummer: {order.orderID}</Text>
-                  <Text note>
-                    Bestelldatum:{` `}
+                  <Text>{order.orderID}</Text>
+                  <Text>
                     {order.orderDate.toDate().toLocaleString([], {
                       day: "2-digit",
                       month: "2-digit",
@@ -115,10 +100,74 @@ class OrderOverviewScreen extends Component<Props, State> {
                       minute: "2-digit"
                     })}
                   </Text>
-                  <Text note>Zahlungsart: {order.paymentMethod}</Text>
-                  <Text note>Tischnummer: {order.table}</Text>
+                  <Text>{order.paymentMethod}</Text>
+                  <Text>{order.table}</Text>
                 </View>
-              </ListItem>
+              </View>
+            }
+          />
+
+          <Separator heading="Artikel" />
+
+          {order.items.map((item, index) => (
+            <ListItem
+              key={item.item.id}
+              bottomDivider
+              title={`${item.quantity}x ${item.item.name}`}
+              subtitle={item.item.description ? item.item.description : null}
+              leftAvatar={{
+                rounded: false,
+                source: {
+                  uri: item.item.photo
+                },
+                size: "medium"
+              }}
+              rightElement={
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text>{parseFloat(item.item.price).toFixed(2)}€</Text>
+                </View>
+              }
+            />
+          ))}
+
+          <ListItem
+            title={
+              <Text style={{ fontWeight: "bold" }}>Summe (inkl. Mwst)</Text>
+            }
+            rightElement={
+              <Text style={{ fontWeight: "bold" }}>
+                {parseFloat(order.grandTotal).toFixed(2)}€
+              </Text>
+            }
+          />
+
+          {/* 
+
+            {order.items.map((element, index) => (
+                <ListItem thumbnail key={index}>
+                  <Left>
+                    <Thumbnail square source={{ uri: element.item.photo }} />
+                  </Left>
+                  <Body>
+                    <Text>
+                      {element.quantity}x {element.item.name}
+                    </Text>
+                    <Text note numberOfLines={1}>
+                      {element.item.description}
+                    </Text>
+                  </Body>
+                  <Right
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Text>
+                      {(element.quantity * element.item.price).toFixed(2)}€
+                    </Text>
+                  </Right>
+                </ListItem>
+              ))}
 
               <Separator bordered>
                 <Text>Deine Bestellung</Text>
@@ -167,10 +216,8 @@ class OrderOverviewScreen extends Component<Props, State> {
                   </Text>
                 </Right>
               </ListItem>
-            </List>
-          </Content>
-          <LeaveReviewButton restaurant={order.restaurant} />
-        </Container>
+            </List> */}
+        </ScrollView>
       );
     }
   }

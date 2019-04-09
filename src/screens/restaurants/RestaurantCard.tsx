@@ -1,9 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 // import { Card, CardItem, Text, Body, Right, H3 } from "native-base";
-import StarRating from "react-native-star-rating";
 import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
 import { displayNameForPriceClass } from "../../utils/dataPipes";
-import { withTheme } from "react-native-elements";
 
 import Restaurant from "./Restaurant";
 
@@ -13,13 +11,18 @@ import {
   Button,
   Icon,
   Text,
-  Rating
+  Rating,
+  ThemeConsumer
 } from "react-native-elements";
 
-class RestaurantCard extends React.Component<IProps, IState> {
+interface IProps {
+  restaurant: Restaurant;
+  onRestaurantSelect: (e) => void;
+}
+
+class RestaurantCard extends Component<IProps> {
   render() {
     // TODO: distance, rating
-    const { theme } = this.props;
 
     const distance = 1.2;
     const rating = 4;
@@ -28,90 +31,50 @@ class RestaurantCard extends React.Component<IProps, IState> {
     const coverPhoto = restaurant.media.coverPhoto;
 
     return (
-      <TouchableOpacity onPress={onRestaurantSelect}>
-        <Card image={{ uri: coverPhoto }}>
-          <Text h3>{name}</Text>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Rating imageSize={12} readonly startingValue={rating} />
-            <Text style={{ color: theme.colors.grey3 }}> ({rating})</Text>
-          </View>
+      <ThemeConsumer>
+        {({ theme }) => (
+          <TouchableOpacity onPress={onRestaurantSelect}>
+            <Card image={{ uri: coverPhoto }} imageStyle={styles.coverPhoto}>
+              <View style={{ paddingTop: 5, paddingBottom: 5 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                  }}
+                >
+                  <Text h2>{name}</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={{ color: theme.colors.grey3 }}>
+                      {rating}.0{" "}
+                    </Text>
+                    <Icon name="star" color="#F8C533" size={14} />
+                  </View>
+                </View>
 
-          <Text
-            style={{ color: theme.colors.grey3 }}
-          >{`${distance} km entfernt | ${cuisine} | ${displayNameForPriceClass(
-            priceClass
-          )}`}</Text>
-
-          {/* <ListItem
-            containerStyle={{ paddingHorizontal: 0, paddingVertical: 8 }}
-            titleStyle={{ fontWeight: "bold" }}
-            title={name}
-            subtitle={`${distance} km entfernt | ${cuisine} | ${displayNameForPriceClass(
-              priceClass
-            )}`}
-            rightElement={
-              <Rating
-                imageSize={14}
-                readonly
-                startingValue={rating}
-                style={{ alignSelf: "flex-start" }}
-              />
-            }
-            bottomDivider={false}
-          /> */}
-        </Card>
-      </TouchableOpacity>
-
-      // <Card>
-      //   <CardItem cardBody button onPress={onRestaurantSelect}>
-      //     <Image source={{ uri: coverPhoto }} style={styles.coverPhoto} />
-      //   </CardItem>
-
-      //   <CardItem>
-      //     <Body>
-      //       <H3>{name}</H3>
-      //     </Body>
-      //     <Right>
-      //       <StarRating
-      //         starSize={14}
-      //         maxStarts={5}
-      //         halfStarEnabled={true}
-      //         rating={rating}
-      //         fullStarColor="#FFD700"
-      //         emptyStarColor="#d3d3d3"
-      //       />
-      //     </Right>
-      //   </CardItem>
-
-      //   <CardItem>
-      //     <Body>
-      //       <Text note>Geöffnet bis 19:00 Uhr</Text>
-      //       <Text note>
-      //         {distance}km entfernt | {cuisine} |
-      //         {displayNameForPriceClass(priceClass)}
-      //       </Text>
-      //     </Body>
-      //   </CardItem>
-      // </Card>
+                <View>
+                  <Text
+                    style={{ color: theme.colors.grey3 }}
+                  >{`${distance} km entfernt · ${cuisine} · ${displayNameForPriceClass(
+                    priceClass
+                  )}`}</Text>
+                </View>
+              </View>
+            </Card>
+          </TouchableOpacity>
+        )}
+      </ThemeConsumer>
     );
   }
 }
 
-export default withTheme(RestaurantCard);
+export default RestaurantCard;
+
 const styles = StyleSheet.create({
   cardHeader: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between"
   },
-  coverPhoto: { height: 150, width: null, flex: 1 }
+  coverPhoto: { height: 175 }
 });
-
-interface IProps {
-  theme: any;
-  restaurant: Restaurant;
-  onRestaurantSelect: (e) => void;
-}
-interface IState {
-  restaurants: any[];
-}

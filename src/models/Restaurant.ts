@@ -1,4 +1,4 @@
-type Restaurant = {
+interface Restaurant {
   id: string;
   adress: {
     city: string;
@@ -34,4 +34,4 @@ type Restaurant = {
       percentage: number;
     }[];
   };
-};
+}

@@ -1,22 +1,15 @@
 import React, { Component } from "react";
 import { Platform, ScrollView } from "react-native";
-import {
-  createStackNavigator,
-  createBottomTabNavigator,
-  createDrawerNavigator,
-  DrawerItems
-} from "react-navigation";
+import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 
-import TabBarIcon from "../components/TabBarIcon";
 import AccountScreen from "../screens/account/AccountScreen";
 import RestaurantsScreen from "../screens/restaurants/RestaurantsScreen";
 import RestaurantsDetailScreen from "../screens/restaurantDetail/RestaurantDetailScreen";
 import MenuScreen from "../screens/menu/MenuScreen";
 import CartScreen from "../screens/cart/CartScreen";
 import MenuItemDetailScreen from "../screens/menuItemDetail/MenuItemDetailScreen";
-import CheckoutScreen from "../screens/checkout/CheckoutScreen";
 import OrderOverviewScreen from "../screens/orderOverview/OrderOverviewScreen";
-import MyOrdersScreen from "../screens/account/MyOrdersScreen";
+import MyOrdersScreen from "../screens/myOrders/MyOrdersScreen";
 import {
   Icon,
   Text,
@@ -44,7 +37,6 @@ const RestaurantStack = createStackNavigator(
     Menu: MenuScreen,
     MenuItemDetail: MenuItemDetailScreen,
     Cart: CartScreen,
-    Checkout: CheckoutScreen,
     OrderOverview: OrderOverviewScreen,
     QrCodeScanner: QrCodeScannerScreen
   },
@@ -87,9 +79,19 @@ const MyOrdersStack = createStackNavigator(
     OrderDetail: OrderOverviewScreen
   },
   {
+    cardStyle: { backgroundColor: colors.grey5 },
     defaultNavigationOptions: {
-      headerTitleStyle: { fontWeight: "bold" },
-      headerTintColor: colors.primary
+      headerStyle: {
+        // elevation: 0, // remove shadow on Android
+        // shadowOpacity: 0, // remove shadow on iOS
+        // borderBottomWidth: 0
+        backgroundColor: colors.primary
+      },
+
+      headerTitleStyle: {
+        fontFamily: "ProximaNova_bold"
+      },
+      headerTintColor: "#fff"
     },
     navigationOptions: {
       drawerLabel: "Bestellungen",
@@ -115,9 +117,19 @@ const AccountStack = createStackNavigator(
     MyOrders: MyOrdersScreen
   },
   {
+    cardStyle: { backgroundColor: colors.grey5 },
     defaultNavigationOptions: {
-      headerTitleStyle: { fontWeight: "bold" },
-      headerTintColor: colors.primary
+      headerStyle: {
+        // elevation: 0, // remove shadow on Android
+        // shadowOpacity: 0, // remove shadow on iOS
+        // borderBottomWidth: 0
+        backgroundColor: colors.primary
+      },
+
+      headerTitleStyle: {
+        fontFamily: "ProximaNova_bold"
+      },
+      headerTintColor: "#fff"
     },
     navigationOptions: {
       drawerLabel: "Account",

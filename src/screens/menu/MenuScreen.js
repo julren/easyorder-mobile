@@ -37,7 +37,7 @@ class MenuScreen extends React.Component {
     cartContext.setRestaurant(restaurant);
 
     firebaseMenuCategories
-      .where("authorID", "==", restaurant.author)
+      .where("authorID", "==", restaurant.authorID)
       .get()
       .then(querySnapshot => {
         let categories = [];

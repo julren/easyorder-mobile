@@ -1,25 +1,30 @@
 import React from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  FlatList
-} from "react-native";
+import { FlatList } from "react-native";
 
-import { NavigationEvents } from "react-navigation";
+import {
+  NavigationEvents,
+  NavigationScreenProp,
+  NavigationScreenProps
+} from "react-navigation";
 import Restaurant from "./Restaurant";
 
 import { firebaseRestaurants } from "../../config/firebase";
 import RestaurantCard from "./RestaurantCard";
-import { MapView } from "expo";
 import RestaurantsMap from "./RestaurantsMap";
-import { withCartContext } from "../cart/CartContext";
-import SectionHeader from "../../components/SectionHeader";
+import {
+  withCartContext,
+  CartContextProps,
+  CartContext
+} from "../cart/CartContext";
 
 import { Text } from "react-native-elements";
+import Container from "../../components/Container";
+import PageLoadingIndicator from "../../components/PageLoadingIndicator";
+
+interface Props extends NavigationScreenProps, CartContextProps {}
+interface State {
+  restaurants: Restaurant[];
+}
 
 /**
  * Screen that shows List of nearby restaurants
@@ -57,12 +62,12 @@ class RestaurantsScreen extends React.Component<Props, State> {
     const { restaurants } = this.state;
 
     // Consumes Cart Context to be able to clear cart when the user goes back to list from restaurant view
-    const cartContext = this.props.cartContext;
+    const { cartContext } = this.props;
 
-    if (restaurants.length == 0) return <ActivityIndicator size="large" />;
+    if (restaurants.length == 0) return <PageLoadingIndicator />;
 
     return (
-      <React.Fragment>
+      <Container padded>
         {/* Helper from react-navigation. When Screen will focus (be active) clear cart of cartContext */}
         <NavigationEvents
           onWillFocus={payload => cartContext.clearCartContext()}
@@ -78,6 +83,8 @@ class RestaurantsScreen extends React.Component<Props, State> {
 
         {/* Liste der Restaurantdarstellung rendern */}
 
+        <Text h1>Restaurants in der Nähe</Text>
+
         <FlatList
           keyExtractor={item => item.id}
           data={this.state.restaurants}
@@ -92,17 +99,9 @@ class RestaurantsScreen extends React.Component<Props, State> {
             />
           )}
         />
-      </React.Fragment>
+      </Container>
     );
   }
 }
 
 export default withCartContext(RestaurantsScreen);
-
-interface Props {
-  navigation: any;
-  cartContext: any;
-}
-interface State {
-  restaurants: Restaurant[];
-}

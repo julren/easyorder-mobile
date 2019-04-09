@@ -19,16 +19,23 @@ import {
   H2
 } from "native-base";
 import StarRating from "react-native-star-rating";
+import { firebaseReviews } from "../../config/firebase";
+import LeaveReviewButton from "../../components/LeaveReviewButton";
 
-class ReviewsTab extends Component<Props, State> {
+interface IProps {
+  restaurant: Restaurant;
+}
+interface IState {
+  reviews: Review[];
+}
+
+class ReviewsTab extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      rating: 0,
-      text: "",
       reviews: [
         {
-          reviewID: "435g34623e23",
+          id: "435g34623e23",
           rating: 4,
           text:
             "Cooles Restaurant, aber hat auch SChwächen. Getränke kamen spät. Aber dafür war das Essen sehr sehr lecker. Wir werden auf jeden Fall wiederkommen!",
@@ -37,7 +44,7 @@ class ReviewsTab extends Component<Props, State> {
           date: "2019-04-10"
         },
         {
-          reviewID: "fr7832r7f9h",
+          id: "fr7832r7f9h",
           rating: 5,
           text: "ecker essen 😄",
           firstname: "Peter",
@@ -48,11 +55,28 @@ class ReviewsTab extends Component<Props, State> {
     };
   }
 
-  onStarRatingPress(rating: number) {
-    this.setState({
-      rating: rating
+  componentDidMount() {
+    this.getReviews().then(reviews => {
+      this.setState({ reviews });
     });
   }
+
+  getReviews = async () => {
+    firebaseReviews
+      .where("restaurantID", "==", this.props.restaurant.id)
+      .get()
+      .then(querySnapshot => {
+        let reviews = [];
+        if (querySnapshot.empty) {
+          console.log("No reviews for restaurantID ", this.props.restaurant.id);
+        } else {
+          querySnapshot.forEach(doc => {
+            reviews.push({ id: doc.id, ...doc.data() });
+          });
+        }
+        return reviews;
+      });
+  };
 
   render() {
     const { restaurant } = this.props;
@@ -144,7 +168,7 @@ class ReviewsTab extends Component<Props, State> {
         <FlatList
           data={this.state.reviews}
           keyExtractor={(item: any) => item.reviewID}
-          renderItem={({ item}: any) => (
+          renderItem={({ item }: any) => (
             <ListItem>
               <Body>
                 <View
@@ -171,18 +195,11 @@ class ReviewsTab extends Component<Props, State> {
             </ListItem>
           )}
         />
+
+        <LeaveReviewButton restaurantID={restaurant.id} />
       </View>
     );
   }
 }
 
 export default ReviewsTab;
-
-interface Props {
-  restaurant: any;
-}
-interface State {
-  rating: number;
-  text: string;
-  reviews: object[];
-}

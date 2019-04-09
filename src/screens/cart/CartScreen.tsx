@@ -1,14 +1,22 @@
 import React, { Component } from "react";
 import { Modal, ScrollView, View, StyleSheet } from "react-native";
 
-import { CartConsumer, withCartContext } from "./CartContext";
+import { CartConsumer, withCartContext, CartContextProps } from "./CartContext";
 import SelectPaymentModal from "./SelectPaymentModal";
 import BarcodeScanner from "../../components/BarcodeScanner";
 import ScanTableCodeButton from "./ScanTableCodeButton";
 import CartOverviewList from "./CartOverviewList";
 import Separator from "../../components/Separator";
-import { NavigationScreenProp } from "react-navigation";
+import { NavigationScreenProp, NavigationScreenProps } from "react-navigation";
 import { Text, ListItem, Button } from "react-native-elements";
+import { firebaseOrders, firebaseTables } from "../../config/firebase";
+
+interface IProps extends NavigationScreenProps<any, any>, CartContextProps {}
+
+interface IState {
+  paymentModalVisible: boolean;
+  barcodeScannerActive: boolean;
+}
 
 class CartScreen extends Component<IProps, IState> {
   static navigationOptions = {
@@ -39,10 +47,10 @@ class CartScreen extends Component<IProps, IState> {
     switch (paymentMethod) {
       case "paypal":
         return "paypal";
-        break;
       case "cash":
         return "money";
-        break;
+      case "creditcard":
+        return "credit-card";
       default:
         return "question-circle-o";
     }
@@ -52,7 +60,7 @@ class CartScreen extends Component<IProps, IState> {
     this.props.cartContext
       .placeOrder()
       .then(orderID => {
-        this.props.navigation.navigate("OrderOverview", {
+        this.props.navigation.replace("OrderOverview", {
           orderID: orderID
         });
       })
@@ -67,21 +75,24 @@ class CartScreen extends Component<IProps, IState> {
     // If cart is empty
     if (cart.length <= 0)
       return (
-        <View>
-          <Text>Warenkorb ist leer</Text>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text style={{ fontSize: 75 }}>👻</Text>
+          <Text h2>Dein Warenkorb ist leer.</Text>
         </View>
       );
 
     // If cart is filled
     return (
-      <React.Fragment>
+      <ScrollView>
         <Separator heading="Deine Bestellung" />
 
         <CartOverviewList />
 
         <Separator border={false} />
 
-        {!table ? (
+        {!table.tableID ? (
           <ScanTableCodeButton
             onPress={() => this.props.navigation.navigate("QrCodeScanner")}
           />
@@ -91,7 +102,7 @@ class CartScreen extends Component<IProps, IState> {
 
             <ListItem
               title="Tischnummer:"
-              rightElement={<Text>{table}</Text>}
+              rightElement={<Text>{table.name}</Text>}
               onPress={() => this.props.navigation.navigate("QrCodeScanner")}
             />
 
@@ -128,20 +139,12 @@ class CartScreen extends Component<IProps, IState> {
           transparent={true}
           visible={this.state.paymentModalVisible}
         >
+          //@ts-ignore
           <SelectPaymentModal onClose={this.closePaymentModal} />
         </Modal>
-      </React.Fragment>
+      </ScrollView>
     );
   }
 }
 
 export default withCartContext(CartScreen);
-
-interface IProps {
-  cartContext: any;
-  navigation: NavigationScreenProp<any, any>;
-}
-interface IState {
-  paymentModalVisible: boolean;
-  barcodeScannerActive: boolean;
-}
