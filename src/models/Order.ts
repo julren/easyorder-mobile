@@ -1,4 +1,6 @@
-interface Order {
+import { MenuItem } from "./MenuItem";
+export interface Order {
+  id: string;
   customerID: string;
   grandTotal: string;
   items: {

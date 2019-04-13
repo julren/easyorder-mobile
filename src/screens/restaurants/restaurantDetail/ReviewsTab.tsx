@@ -19,8 +19,10 @@ import {
   H2
 } from "native-base";
 import StarRating from "react-native-star-rating";
-import { firebaseReviews } from "../../config/firebase";
-import LeaveReviewButton from "../../components/LeaveReviewButton";
+import { firebaseReviews } from "../../../config/firebase";
+import LeaveReviewButton from "../../../components/LeaveReviewButton";
+import { Review } from "../../../models/Review";
+import { Restaurant } from "../../../models/Restaurant";
 
 interface IProps {
   restaurant: Restaurant;
@@ -36,20 +38,24 @@ class ReviewsTab extends Component<IProps, IState> {
       reviews: [
         {
           id: "435g34623e23",
+          restaurantID: "",
+          userID: "",
           rating: 4,
           text:
             "Cooles Restaurant, aber hat auch SChwächen. Getränke kamen spät. Aber dafür war das Essen sehr sehr lecker. Wir werden auf jeden Fall wiederkommen!",
           firstname: "Hans",
           lastname: "Meier",
-          date: "2019-04-10"
+          reviewDate: "2019-04-10"
         },
         {
           id: "fr7832r7f9h",
+          restaurantID: "",
+          userID: "",
           rating: 5,
           text: "ecker essen 😄",
           firstname: "Peter",
           lastname: "Beel",
-          date: "2019-02-01"
+          reviewDate: "2019-02-01"
         }
       ]
     };
@@ -57,12 +63,12 @@ class ReviewsTab extends Component<IProps, IState> {
 
   componentDidMount() {
     this.getReviews().then(reviews => {
-      this.setState({ reviews });
+      this.setState({ reviews: reviews });
     });
   }
 
   getReviews = async () => {
-    firebaseReviews
+    return await firebaseReviews
       .where("restaurantID", "==", this.props.restaurant.id)
       .get()
       .then(querySnapshot => {

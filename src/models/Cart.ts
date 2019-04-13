@@ -1,4 +1,7 @@
-interface Cart {
+import { MenuItem } from "./MenuItem";
+import { Restaurant } from "./Restaurant";
+
+export interface Cart {
   cart: {
     item: MenuItem;
     quantity: number;

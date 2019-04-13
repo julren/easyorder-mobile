@@ -28,7 +28,10 @@ export default {
   ListItem: {
     bottomDivider: true,
     titleStyle: { fontSize: 14 },
-    subtitleStyle: { color: colors.grey3, fontSize: 14 }
+    subtitleStyle: { color: colors.grey3, fontSize: 14 },
+    Icon: {
+      color: "red"
+    }
   },
   Text: {
     h1Style: { fontSize: 24, fontWeight: "bold" },

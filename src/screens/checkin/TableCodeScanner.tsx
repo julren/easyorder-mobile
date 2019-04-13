@@ -3,21 +3,52 @@ import { StyleSheet, View, Dimensions } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
 import { Button, Text, Icon } from "native-base";
 import { withCartContext } from "../cart/CartContext";
+import { firebaseTables } from "../../config/firebase";
+import { FirebaseApp } from "@firebase/app-types";
 
-class QrCodeScannerScreen extends Component {
-  static navigationOptions = {
-    header: null
-  };
+export interface TableCodeScannerProps {
+  onCancel: () => void;
+  onScanned: (data) => void;
+}
 
-  state = {
-    hasCameraPermission: null,
-    scannedCode: null
-  };
+export interface TableCodeScannerState {
+  hasCameraPermission: any;
+  scannedCode: string;
+}
+
+class TableCodeScanner extends Component<
+  TableCodeScannerProps,
+  TableCodeScannerState
+> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasCameraPermission: undefined,
+      scannedCode: ""
+    };
+  }
 
   async componentDidMount() {
+    this.getCameraPermission();
+  }
+
+  getCameraPermission = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
-  }
+  };
+
+  getTableDoc = async tableID => {
+    return await firebaseTables
+      .doc(tableID)
+      .get()
+      .then(doc => {
+        return doc;
+      })
+      .catch(error => {
+        console.log(error);
+        return undefined;
+      });
+  };
 
   render() {
     const { hasCameraPermission } = this.state;
@@ -35,18 +66,22 @@ class QrCodeScannerScreen extends Component {
         style={[StyleSheet.absoluteFill, styles.container]}
       >
         <Text style={styles.description}>Tischcode scannen</Text>
+
         <Icon style={styles.qr} name="ios-qr-scanner" />
 
         <Text
           style={{ color: "red" }}
           onPress={() =>
-            this.handleBarCodeScanned({ data: "testvalue", type: "test" })
+            this.handleBarCodeScanned({
+              data: "0Fq5H8qxTFnmVl68mpsn",
+              type: "test"
+            })
           }
         >
           Testwerte
         </Text>
 
-        <Text onPress={() => this.props.navigation.pop()} style={styles.cancel}>
+        <Text onPress={onCancel} style={styles.cancel}>
           Abbrechen
         </Text>
       </BarCodeScanner>
@@ -56,16 +91,22 @@ class QrCodeScannerScreen extends Component {
   // Barcode scanner scanns continuesly.
   // Thats why a "already scanned" properity is set in state
   // so that the the data handling isnt repeated multiple times
-  handleBarCodeScanned = ({ data, type }) => {
-    if (!this.state.scannedCode) {
-      this.setState({ scannedCode: data });
-      this.props.cartContext.setTable(data);
-      this.props.navigation.navigate("Cart");
+  handleBarCodeScanned = async ({ data, type }) => {
+    this.setState({ scannedCode: data });
+    debugger;
+    if (this.state.scannedCode !== data) {
+      console.log("checking");
+      const tableDoc = await this.getTableDoc(data);
+      const table = { id: tableDoc.id, ...tableDoc.data() };
+      if (tableDoc.exists) {
+        this.setState({ scannedCode: "" });
+        return this.props.onScanned(table);
+      }
     }
   };
 }
 
-export default withCartContext(QrCodeScannerScreen);
+export default TableCodeScanner;
 
 const { width } = Dimensions.get("window");
 const qrSize = width * 0.7;

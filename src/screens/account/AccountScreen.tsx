@@ -1,23 +1,19 @@
 import React, { Component } from "react";
-import { AsyncStorage, StyleSheet, ImageBackground } from "react-native";
 import {
-  Container,
-  Content,
-  Text,
-  Button,
-  List,
-  ListItem,
-  Icon,
-  Left,
-  Body,
-  Separator,
+  AsyncStorage,
+  StyleSheet,
+  ImageBackground,
   View,
-  H1
-} from "native-base";
+  ScrollView
+} from "react-native";
+
 import firebase from "../../config/firebase";
 import BarcodeScanner from "../../components/BarcodeScanner";
 import { NavigationScreenProp } from "react-navigation";
 import LogoutButton from "../../components/LogoutButton";
+import Container from "../../components/Container";
+import { Icon, Text, ListItem } from "react-native-elements";
+import Separator from "../../components/Separator";
 
 const restaurantBg = require("../../../assets/images/restaurantbackground.jpg");
 
@@ -50,52 +46,69 @@ export default class AccountScreen extends Component<Props, State> {
 
   render() {
     return (
-      <Container>
-        <Content>
-          <ImageBackground
-            source={restaurantBg}
+      <ScrollView>
+        <ImageBackground
+          source={restaurantBg}
+          style={{
+            height: 200,
+            imageStyle: { opacity: 20 }
+          }}
+        >
+          <View
             style={{
-              height: 200,
-              imageStyle: { opacity: 20 }
+              flex: 1,
+              backgroundColor: "rgba(60, 109, 130, 0.7)",
+              justifyContent: "center",
+              alignItems: "center"
             }}
           >
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "rgba(60, 109, 130, 0.7)",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <Icon
-                name="emoticon-happy"
-                type="MaterialCommunityIcons"
-                style={{ color: "#fff", fontSize: 50 }}
-              />
-              <H1 style={{ color: "#fff", fontWeight: "bold" }}>
-                {this.state.user.email}
-              </H1>
-            </View>
-          </ImageBackground>
+            <Icon
+              name="emoticon-happy"
+              type="material-community"
+              iconStyle={{ color: "#fff", fontSize: 50 }}
+            />
+            <Text h1 h1Style={{ color: "#fff", fontWeight: "bold" }}>
+              {this.state.user.email}
+            </Text>
+          </View>
+        </ImageBackground>
+        <Separator heading="Konto" />
+        <ListItem
+          leftIcon={{ name: "star" }}
+          title="Meine Bewertungen"
+          rightIcon={{ name: "arrow-forward" }}
+          onPress={() => this.props.navigation.navigate("MyReviews")}
+        />
+        <ListItem
+          leftIcon={{ name: "settings" }}
+          title="Einstellungen"
+          rightIcon={{ name: "arrow-forward" }}
+          onPress={() => this.props.navigation.navigate("AccountSettings")}
+        />
+        <Separator heading="Infos & Hilfe" />
 
-          <List>
-            <Separator bordered />
+        <ListItem
+          leftIcon={{ name: "help" }}
+          title="Kontakt aufnehmen"
+          rightIcon={{ name: "arrow-forward" }}
+          onPress={() => this.props.navigation.navigate("Contact")}
+        />
+        <ListItem
+          leftIcon={{ name: "info" }}
+          title="Impressum"
+          rightIcon={{ name: "arrow-forward" }}
+          onPress={() => this.props.navigation.navigate("Imprint")}
+        />
+        <ListItem
+          leftIcon={{ name: "security" }}
+          title="Datenschutz"
+          rightIcon={{ name: "arrow-forward" }}
+          onPress={() => this.props.navigation.navigate("Privacy")}
+        />
+        <Separator border={false} />
 
-            <ListItem
-              button
-              onPress={() => this.props.navigation.navigate("MyOrders")}
-            >
-              <Text>Meine Zahlungsdaten</Text>
-            </ListItem>
-            <ListItem button>
-              <Text>Meine Bewertungen</Text>
-            </ListItem>
-          </List>
-          <Separator bordered />
-
-          <LogoutButton />
-        </Content>
-      </Container>
+        <LogoutButton />
+      </ScrollView>
     );
   }
 }

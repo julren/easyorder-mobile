@@ -34,8 +34,8 @@ import { ListItem, Text } from "react-native-elements";
 import {
   displayNameForWeekday,
   displayNameForPriceClass
-} from "../../utils/dataPipes";
-import Separator from "../../components/Separator";
+} from "../../../utils/dataPipes";
+import Separator from "../../../components/Separator";
 
 class RestaurantInfoTab extends Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class RestaurantInfoTab extends Component {
     const lon = parseFloat(restaurant.adress.lon);
 
     return (
-      <ScrollView>
+      <View>
         <Separator heading="Öffnungszeiten" />
 
         <FlatList
@@ -100,7 +100,7 @@ class RestaurantInfoTab extends Component {
         <Separator heading="Kontakt" />
         <ListItem title={email} leftIcon={{ name: "mail" }} />
         <ListItem title={phone} leftIcon={{ name: "phone" }} />
-      </ScrollView>
+      </View>
 
       // <List>
       //   <Separator bordered>

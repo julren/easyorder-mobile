@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Container from "../../components/Container";
 import { Text, Icon } from "react-native-elements";
 import { ImageBackground, View } from "react-native";
+import { Order } from "../../models/Order";
 
 interface IProps {
   order: Order;

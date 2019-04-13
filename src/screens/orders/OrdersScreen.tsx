@@ -5,15 +5,15 @@ import firebase, { firebaseOrders } from "../../config/firebase";
 import { Text, ListItem } from "react-native-elements";
 import { NavigationParams } from "react-navigation";
 
-interface IProps {
+interface OrdersScreenProps {
   navigation: NavigationParams;
 }
-interface IState {
-  orders: [];
+interface OrdersScreenState {
+  orders: any[];
   loading: boolean;
 }
 
-class MyOrdersScreen extends Component<IProps, IState> {
+class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
   static navigationOptions = {
     title: "Bestellungen"
   };
@@ -90,4 +90,4 @@ class MyOrdersScreen extends Component<IProps, IState> {
   }
 }
 
-export default MyOrdersScreen;
+export default OrdersScreen;

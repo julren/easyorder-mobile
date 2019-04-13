@@ -10,6 +10,9 @@ import {
   NavigationInjectedProps
 } from "react-navigation";
 import { any } from "prop-types";
+import { Cart } from "../../models/Cart";
+import { MenuItem } from "../../models/MenuItem";
+import { Restaurant } from "../../models/Restaurant";
 
 const CartContext = React.createContext({});
 const CartConsumer = CartContext.Consumer;
@@ -193,12 +196,11 @@ class CartProvider extends Component<any, Cart> {
  */
 
 const withCartContext = <BaseProps extends CartContextProps>(
-  Component: React.ComponentType<BaseProps>
+  Component: React.ComponentType<BaseProps & NavigationScreenProps>
 ) => {
   class CartConsumerWrapper extends React.Component {
-    
+    static navigationOptions: any;
     render() {
-      
       return (
         <CartConsumer>
           {(cartContext: CartContext) => (
@@ -208,6 +210,8 @@ const withCartContext = <BaseProps extends CartContextProps>(
       );
     }
   }
+  //@ts-ignore
+  CartConsumerWrapper.navigationOptions = Component.navigationOptions;
   return CartConsumerWrapper;
 };
 

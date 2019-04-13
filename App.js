@@ -7,6 +7,11 @@ import { CartProvider } from "./src/screens/cart/CartContext";
 import { ThemeProvider } from "react-native-elements";
 import customTheme from "./src/config/customTheme";
 
+/* Support Expo */
+import { setExpoStatusBarHeight } from "react-navigation-collapsible";
+import { Constants } from "expo";
+setExpoStatusBarHeight(Constants.statusBarHeight);
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false
@@ -14,7 +19,7 @@ export default class App extends React.Component {
 
   render() {
     const navigationPersistenceKey = __DEV__
-      ? "ReactNavigationStateDEV97"
+      ? "ReactNavigationStateDEV108"
       : null;
 
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
