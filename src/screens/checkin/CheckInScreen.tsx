@@ -37,7 +37,7 @@ class CheckInScreen extends React.Component<
     const restaurant = await this.getRestaurant(table.restaurantID);
     console.log("found restaurant", restaurant);
     this.props.cartContext.setTable(table);
-    this.props.navigation.navigate("RestaurantDetail", {
+    this.props.navigation.navigate("Menu", {
       restaurant: restaurant
     });
   };

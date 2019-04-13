@@ -97,8 +97,26 @@ class RestaurantDetailScreen extends Component<Props> {
         renderStickyHeader={() => (
           <Header
             backgroundColor="#2471A3"
-            centerComponent={{ text: "MY TITLE", style: { color: "#fff" } }}
-            rightComponent={{ icon: "home", color: "#fff" }}
+            centerComponent={{
+              text: restaurant.name,
+              style: { color: "#fff" }
+            }}
+            rightComponent={
+              <Button
+                type="clear"
+                buttonStyle={{}}
+                icon={{
+                  name: "restaurant-menu",
+                  color: "#fff"
+                }}
+                containerStyle={{}}
+                onPress={() =>
+                  this.props.navigation.navigate("Menu", {
+                    restaurant: restaurant
+                  })
+                }
+              />
+            }
           />
         )}
       >

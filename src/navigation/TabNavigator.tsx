@@ -124,12 +124,12 @@ const CheckInStack = createStackNavigator(
   }
 );
 
-const MainDrawerNavigator = createBottomTabNavigator(
+const TabNavigator = createBottomTabNavigator(
   {
     RestaurantStack,
     OrdersStack,
-    AccountStack,
-    CheckInStack
+    CheckInStack,
+    AccountStack
   },
   {
     tabBarOptions: {
@@ -138,7 +138,7 @@ const MainDrawerNavigator = createBottomTabNavigator(
   }
 );
 
-export default MainDrawerNavigator;
+export default TabNavigator;
 
 // const HamburgerMenu = (props: any) => {
 //   return (

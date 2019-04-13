@@ -12,6 +12,10 @@ export interface Props {
 export interface State {}
 
 class RestaurantsMapScreen extends Component<Props, State> {
+  static navigationOptions = {
+    title: "Restaurants in der Nähe"
+  };
+
   constructor(props: Props) {
     super(props);
     this.state = {};
@@ -25,7 +29,7 @@ class RestaurantsMapScreen extends Component<Props, State> {
     const location = this.props.navigation.getParam("location", {});
 
     console.log(restaurants, location);
-
+    // @ts-ignore-start
     return (
       <MapView
         provider={"google"}
@@ -48,7 +52,6 @@ class RestaurantsMapScreen extends Component<Props, State> {
             }}
             title={restaurant.name}
           >
-            // @ts-ignore
             <MapView.Callout
               onPress={() =>
                 this.props.navigation.navigate("RestaurantDetail", {
@@ -66,9 +69,7 @@ class RestaurantsMapScreen extends Component<Props, State> {
                 subtitle={restaurant.description}
                 bottomDivider={false}
               />
-              // @ts-ignore
             </MapView.Callout>
-            // @ts-ignore
           </MapView.Marker>
         ))}
       </MapView>
