@@ -66,7 +66,7 @@ class MyReviewsScreen extends Component<Props, State> {
         refreshing={this.state.loading}
         renderItem={({ item }) => (
           <ListItem
-            title={item.}
+            title={item.restaurantID}
             subtitle={item.reviewDate.toDate().toLocaleString([], {
               day: "2-digit",
               month: "2-digit",
