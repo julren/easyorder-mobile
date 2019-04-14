@@ -1,12 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { ListItem, Text } from "react-native-elements";
+import { MenuItem } from "../../models/MenuItem";
 
 interface IMenuItemListItem {
   menuItem: MenuItem;
 }
 
-class MenuItemListItem extends Component<IMenuItemListItem> {
+class MenuItemListItem extends PureComponent<IMenuItemListItem> {
   render() {
+    console.log("rerendered MenuItemListItem");
     const { menuItem } = this.props;
 
     return (

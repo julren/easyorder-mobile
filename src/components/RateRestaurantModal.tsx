@@ -1,14 +1,19 @@
 import React, { Component } from "react";
-import { View, H2, Text, Button, Textarea, Separator } from "native-base";
 import StarRating from "react-native-star-rating";
 import {
   TouchableOpacity,
   KeyboardAvoidingView,
-  AsyncStorage
+  AsyncStorage,
+  View
 } from "react-native";
 import firebase, { firebaseReviews } from "../config/firebase";
+import { Text, Button, Icon } from "react-native-elements";
+import { Textarea } from "native-base";
+import TextNote from "../components/TextNote";
+import { Review } from "../models/Review";
 
 interface IProps {
+  review: Review | undefined;
   restaurantID: string;
   onClose: () => void;
 }
@@ -18,6 +23,15 @@ class RateRestaurantModal extends Component<IProps> {
     rating: 0,
     text: ""
   };
+
+  componentDidMount() {
+    if (this.props.review) {
+      this.setState({
+        rating: this.props.review.rating,
+        text: this.props.review.text
+      });
+    }
+  }
 
   onStarRatingPress = (rating: number) => {
     this.setState({ rating: rating });
@@ -34,6 +48,10 @@ class RateRestaurantModal extends Component<IProps> {
       reviewDate: firebase.firestore.Timestamp.now()
     };
 
+    this.props.review ? this.updateReview(review) : this.createReview(review);
+  };
+
+  createReview = review => {
     firebaseReviews
       .add(review)
       .then(() => {
@@ -44,35 +62,45 @@ class RateRestaurantModal extends Component<IProps> {
       });
   };
 
+  updateReview = review => {
+    firebaseReviews
+      .doc(this.props.review.id)
+      .update(review)
+      .then(() => {
+        this.props.onClose();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
-    const { restaurantID, onClose } = this.props;
+    const { rating } = this.state;
+    const { restaurantID, onClose, review } = this.props;
     return (
       <KeyboardAvoidingView
         behavior="padding"
-        style={{
-          flex: 1,
-          padding: 16,
-          justifyContent: "center",
-          alignContent: "center",
-          backgroundColor: "rgba(52, 52, 52, 0.8)"
-        }}
+        contentContainerStyle={{ padding: 16 }}
       >
-        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-          <Button transparent onPress={onClose}>
-            <Text>X</Text>
-          </Button>
-        </View>
+        <View style={{ alignItems: "center" }}>
+          <Icon name="thumb-up" iconStyle={{ fontSize: 50 }} />
 
-        <View
-          style={{
-            backgroundColor: "#ffff",
-            padding: 16
-          }}
-        >
-          <H2>Bewertung abgeben</H2>
-          <Text note>Wie fandest du das Restaurant?</Text>
+          <Text h1>
+            {review ? "Bewertung aktualisieren" : "Bewertung abgeben"}
+          </Text>
+          <TextNote>
+            {review
+              ? ` Deine Bewertung vom ${review.reviewDate
+                  .toDate()
+                  .toLocaleString([], {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                  })}`
+              : "Wie gefällt dir das Restaurant?"}
+          </TextNote>
 
-          <View style={{ padding: 10, alignItems: "flex-start" }}>
+          <View style={{ paddingVertical: 15, alignItems: "flex-start" }}>
             <StarRating
               starSize={40}
               maxStarts={5}
@@ -83,23 +111,22 @@ class RateRestaurantModal extends Component<IProps> {
               selectedStar={rating => this.onStarRatingPress(rating)}
             />
           </View>
-          <Textarea
-            style={{ flexGrow: 1, marginBottom: 16 }}
-            value={this.state.text}
-            onChangeText={text => this.setState({ text: text })}
-            rowSpan={5}
-            bordered
-            placeholder="Deine Meinung..."
-          />
-
-          <Button
-            block
-            disabled={this.state.rating ? false : true}
-            onPress={this.onSubmit}
-          >
-            <Text>Senden</Text>
-          </Button>
         </View>
+
+        <Textarea
+          style={{ flexGrow: 1, marginBottom: 16 }}
+          value={this.state.text}
+          onChangeText={text => this.setState({ text: text })}
+          rowSpan={5}
+          bordered
+          placeholder="Deine Meinung..."
+        />
+
+        <Button
+          title={review ? "Bewertung aktualisieren" : "Senden"}
+          disabled={rating ? false : true}
+          onPress={this.onSubmit}
+        />
       </KeyboardAvoidingView>
     );
   }

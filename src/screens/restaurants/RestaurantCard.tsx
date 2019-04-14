@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 // import { Card, CardItem, Text, Body, Right, H3 } from "native-base";
 import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
-import { displayNameForPriceClass } from "../../utils/dataPipes";
-
-import Restaurant from "./Restaurant";
 
 import {
   Card,
@@ -14,6 +11,8 @@ import {
   Rating,
   ThemeConsumer
 } from "react-native-elements";
+import { Restaurant } from "../../models/Restaurant";
+import { displayNameForPriceCategory } from "../../config/displayNamesForValues";
 
 interface IProps {
   restaurant: Restaurant;
@@ -55,9 +54,9 @@ class RestaurantCard extends Component<IProps> {
                 <View>
                   <Text
                     style={{ color: theme.colors.grey3 }}
-                  >{`${distance} km entfernt · ${cuisine} · ${displayNameForPriceClass(
-                    priceClass
-                  )}`}</Text>
+                  >{`${distance} km entfernt · ${cuisine} · ${
+                    displayNameForPriceCategory[priceClass]
+                  }`}</Text>
                 </View>
               </View>
             </Card>

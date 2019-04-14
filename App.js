@@ -2,7 +2,7 @@ import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "./src/navigation/AppNavigator";
-import { CartProvider } from "./src/screens/cart/CartContext";
+import { CartProvider } from "./src/contexts/CartContext";
 
 import { ThemeProvider } from "react-native-elements";
 import customTheme from "./src/config/customTheme";

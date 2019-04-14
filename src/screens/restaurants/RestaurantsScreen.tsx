@@ -9,12 +9,11 @@ import {
 
 import { firebaseRestaurants } from "../../config/firebase";
 import RestaurantCard from "./RestaurantCard";
-import RestaurantsMap from "./RestaurantsMap";
 import {
   withCartContext,
   CartContextProps,
   CartContext
-} from "../cart/CartContext";
+} from "../../contexts/CartContext";
 
 import { Text, Button, Header, Icon } from "react-native-elements";
 import Container from "../../components/Container";
@@ -35,16 +34,21 @@ interface State {
  */
 class RestaurantsScreen extends React.Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
+    const location = navigation.getParam("location", undefined);
+    const restaurants = navigation.getParam("restaurants", undefined);
+
     return {
-      title: "Restaurants",
+      title: location
+        ? `${location.address.road}, ${location.address.town}`
+        : "Restaurants in der Nähe",
       headerRight: (
         <Button
           icon={{ name: "map", color: "#fff" }}
           type="clear"
           onPress={() =>
             navigation.navigate("RestaurantsMap", {
-              restaurants: navigation.getParam("restaurants", {}),
-              location: navigation.getParam("location", {})
+              restaurants: restaurants,
+              location: location
             })
           }
         />
@@ -115,7 +119,7 @@ class RestaurantsScreen extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <Container padded>
+        <Container>
           {/* Helper from react-navigation. When Screen will focus (be active) clear cart of cartContext */}
           <NavigationEvents
             onWillFocus={payload => cartContext.clearCartContext()}
@@ -131,16 +135,13 @@ class RestaurantsScreen extends React.Component<Props, State> {
 
           {/* Liste der Restaurantdarstellung rendern */}
 
-          <Text h1>Restaurants in der Nähe</Text>
-
-          {this.state.location ? (
-            <Text>
-              {this.state.location.address.road},
-              {this.state.location.address.town}
-            </Text>
-          ) : null}
-
           <FlatList
+            ListHeaderComponent={
+              <Container padded>
+                <Text h1>Restaurants in der Nähe</Text>
+              </Container>
+            }
+            contentContainerStyle={{ padding: 8 }}
             keyExtractor={item => item.id}
             data={this.state.restaurants}
             renderItem={({ item }) => (

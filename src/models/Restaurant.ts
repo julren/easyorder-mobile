@@ -1,5 +1,5 @@
 export interface Restaurant {
-  id: string;
+  id?: string;
   adress: {
     city: string;
     lat: string;
@@ -25,13 +25,15 @@ export interface Restaurant {
   };
   name: string;
   priceClass: number;
-  rating: {
-    overall: number;
-    numberOfRatings: number;
-    distribution: {
-      starRating: number;
-      numberOfRatings: number;
-      percentage: number;
-    }[];
+
+  avgRating?: number;
+  ratingDistribution?: {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
   };
+  totalRatingPoints?: number;
+  totalNumRatings?: number;
 }

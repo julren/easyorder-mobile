@@ -3,7 +3,7 @@ import TableCodeScanner from "./TableCodeScanner";
 import { NavigationScreenProps } from "react-navigation";
 import { firebaseRestaurants } from "../../config/firebase";
 import { Restaurant } from "../../models/Restaurant";
-import { withCartContext, CartContextProps } from "../cart/CartContext";
+import { withCartContext, CartContextProps } from "../../contexts/CartContext";
 
 export interface CheckInScreenProps
   extends NavigationScreenProps,
@@ -33,7 +33,6 @@ class CheckInScreen extends React.Component<
   };
 
   onScanned = async table => {
-    debugger;
     const restaurant = await this.getRestaurant(table.restaurantID);
     console.log("found restaurant", restaurant);
     this.props.cartContext.setTable(table);

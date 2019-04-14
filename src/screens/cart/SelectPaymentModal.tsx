@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TouchableOpacity, View } from "react-native";
 
-import { withCartContext, CartContextProps } from "./CartContext";
+import { withCartContext, CartContextProps } from "../../contexts/CartContext";
 import { Text, Button, ListItem } from "react-native-elements";
 import Container from "../../components/Container";
 

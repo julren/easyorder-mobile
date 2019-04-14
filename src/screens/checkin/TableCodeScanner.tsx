@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
 import { Button, Text, Icon } from "native-base";
-import { withCartContext } from "../cart/CartContext";
+import { withCartContext } from "../../contexts/CartContext";
 import { firebaseTables } from "../../config/firebase";
 import { FirebaseApp } from "@firebase/app-types";
 
@@ -93,7 +93,6 @@ class TableCodeScanner extends Component<
   // so that the the data handling isnt repeated multiple times
   handleBarCodeScanned = async ({ data, type }) => {
     this.setState({ scannedCode: data });
-    debugger;
     if (this.state.scannedCode !== data) {
       console.log("checking");
       const tableDoc = await this.getTableDoc(data);

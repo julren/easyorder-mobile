@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import firebase, {
-  firebaseOrders,
-  firebaseTables
-} from "../../config/firebase";
+import firebase, { firebaseOrders, firebaseTables } from "../config/firebase";
 import {
   NavigationScreenProp,
   NavigationScreenOptions,
@@ -10,11 +7,20 @@ import {
   NavigationInjectedProps
 } from "react-navigation";
 import { any } from "prop-types";
-import { Cart } from "../../models/Cart";
-import { MenuItem } from "../../models/MenuItem";
-import { Restaurant } from "../../models/Restaurant";
-
-const CartContext = React.createContext({});
+import { Cart } from "../models/Cart";
+import { MenuItem } from "../models/MenuItem";
+import { Restaurant } from "../models/Restaurant";
+const initialValues = {
+  cart: [],
+  restaurant: undefined,
+  table: undefined,
+  paymentMethod: "",
+  mwst: 0,
+  grandTotal: 0,
+  status: "",
+  numCartItems: 0
+};
+const CartContext = React.createContext<Partial<CartContext>>({});
 const CartConsumer = CartContext.Consumer;
 
 export interface CartContext extends Cart {
@@ -41,28 +47,24 @@ export interface CartContextProps {
 class CartProvider extends Component<any, Cart> {
   constructor(props) {
     super(props);
-    this.state = { cart: [] } as Cart;
+    this.state = {
+      cart: [],
+      restaurant: undefined,
+      table: undefined,
+      paymentMethod: "",
+      mwst: 0,
+      grandTotal: 0,
+      status: "",
+      numCartItems: 0
+    };
   }
 
   setRestaurant = (restaurant: Restaurant) => {
     this.setState({ restaurant, cart: [] });
   };
 
-  setTable = tableID => {
-    console.log("setTable", tableID);
-    if (tableID) {
-      firebaseTables
-        .doc(tableID)
-        .get()
-        .then(doc => {
-          this.setState({
-            table: {
-              tableID: doc.id,
-              name: doc.data().name
-            }
-          });
-        });
-    }
+  setTable = table => {
+    this.setState({ table: table });
   };
 
   addCartItem = (item: MenuItem, quantity: number) => {
@@ -167,44 +169,49 @@ class CartProvider extends Component<any, Cart> {
     });
   };
 
-  contextValue: CartContext = {
-    ...this.state,
-
-    setRestaurant: this.setRestaurant,
-    setPaymentMethod: this.setPaymentMethod,
-    setTable: this.setTable,
-
-    addCartItem: this.addCartItem,
-    removeCartItem: this.removeCartItem,
-    updateCartItemQuantity: this.updateCartItemQuantity,
-    clearCartContext: this.clearCartContext,
-
-    placeOrder: this.placeOrder
-  };
-
   render() {
+    //TODO: evtl ? pattern ändern, bei jedem state change wird der provider neu gerendert und damit die ganze app
     return (
-      <CartContext.Provider value={this.contextValue}>
+      <CartContext.Provider
+        value={{
+          ...this.state,
+          cart: this.state.cart,
+          setRestaurant: this.setRestaurant,
+          setPaymentMethod: this.setPaymentMethod,
+          setTable: this.setTable,
+
+          addCartItem: this.addCartItem,
+          removeCartItem: this.removeCartItem,
+          updateCartItemQuantity: this.updateCartItemQuantity,
+          clearCartContext: this.clearCartContext,
+
+          placeOrder: this.placeOrder
+        }}
+      >
         {this.props.children}
       </CartContext.Provider>
     );
   }
 }
+
 /**
  * HoC that provides CartContext to other Component
  * @param Component: Child Component to wrap in Cart Context
  */
 
 const withCartContext = <BaseProps extends CartContextProps>(
-  Component: React.ComponentType<BaseProps & NavigationScreenProps>
+  Component: React.ComponentType<BaseProps>
 ) => {
-  class CartConsumerWrapper extends React.Component {
+  class CartConsumerWrapper extends React.Component<
+    BaseProps & CartContextProps
+  > {
     static navigationOptions: any;
     render() {
+      const { ...props } = this.props;
       return (
         <CartConsumer>
           {(cartContext: CartContext) => (
-            <Component {...this.props as any} cartContext={cartContext} />
+            <Component {...props as BaseProps} cartContext={cartContext} />
           )}
         </CartConsumer>
       );

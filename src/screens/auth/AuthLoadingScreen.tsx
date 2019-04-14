@@ -7,18 +7,9 @@ import { NavigationScreenProp } from "react-navigation";
 export default class AuthLoadingScreen extends Component<IProps> {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      console.log("auth change in authloadingscreen");
+      console.log("auth change in authloadingscreen", user);
 
-      if (user != null) {
-        const userString = JSON.stringify(user);
-        console.log("User signed in: ", user.email);
-        AsyncStorage.setItem("user", userString);
-        //
-        this.props.navigation.navigate("App");
-      } else {
-        console.log("User is not signed in, redirecting to auth");
-        this.props.navigation.navigate("Auth");
-      }
+      this.props.navigation.navigate(user ? "App" : "Auth");
     });
   }
 

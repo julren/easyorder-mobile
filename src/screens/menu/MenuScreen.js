@@ -12,7 +12,7 @@ import { NavigationEvents } from "react-navigation";
 import { Tab, Tabs, ScrollableTab } from "native-base";
 import { firebaseMenuCategories } from "../../config/firebase";
 import MenuItemList from "./MenuItemList";
-import { CartConsumer, withCartContext } from "../cart/CartContext";
+import { CartConsumer, withCartContext } from "../../contexts/CartContext";
 import MiniCartOverlay from "../cart/MiniCartOverlay";
 import { ThemeConsumer } from "react-native-elements";
 
@@ -24,8 +24,7 @@ class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      categories: [],
-      cart: []
+      categories: []
     };
   }
 
@@ -37,7 +36,7 @@ class MenuScreen extends React.Component {
     cartContext.setRestaurant(restaurant);
 
     firebaseMenuCategories
-      .where("authorID", "==", restaurant.authorID)
+      .where("authorID", "==", restaurant.id)
       .get()
       .then(querySnapshot => {
         let categories = [];
@@ -52,7 +51,6 @@ class MenuScreen extends React.Component {
 
   render() {
     const { cart } = this.props.cartContext;
-
     return (
       <ThemeConsumer>
         {({ theme }) => (

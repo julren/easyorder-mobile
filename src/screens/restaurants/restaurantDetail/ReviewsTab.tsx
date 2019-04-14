@@ -1,40 +1,26 @@
 import React, { Component } from "react";
-import { FlatList } from "react-native";
-import {
-  Button,
-  List,
-  ListItem,
-  Content,
-  Textarea,
-  Text,
-  H3,
-  Separator,
-  Card,
-  Body,
-  CardItem,
-  H1,
-  Right,
-  View,
-  Icon,
-  H2
-} from "native-base";
+import { FlatList, View, ActivityIndicator } from "react-native";
 import StarRating from "react-native-star-rating";
 import { firebaseReviews } from "../../../config/firebase";
 import LeaveReviewButton from "../../../components/LeaveReviewButton";
 import { Review } from "../../../models/Review";
 import { Restaurant } from "../../../models/Restaurant";
+import { Text, ListItem, Card } from "react-native-elements";
+import Separator from "../../../components/Separator";
 
 interface IProps {
   restaurant: Restaurant;
 }
 interface IState {
   reviews: Review[];
+  loading: boolean;
 }
 
 class ReviewsTab extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       reviews: [
         {
           id: "435g34623e23",
@@ -62,8 +48,9 @@ class ReviewsTab extends Component<IProps, IState> {
   }
 
   componentDidMount() {
+    console.log(this.props.restaurant);
     this.getReviews().then(reviews => {
-      this.setState({ reviews: reviews });
+      this.setState({ reviews: reviews, loading: false });
     });
   }
 
@@ -86,17 +73,20 @@ class ReviewsTab extends Component<IProps, IState> {
 
   render() {
     const { restaurant } = this.props;
-    restaurant.rating = {
-      overall: 4.2,
-      numberOfRatings: 18,
-      distribution: [
-        { starRating: 5, numberOfRatings: 20, percentage: 0.6 },
-        { starRating: 4, numberOfRatings: 4, percentage: 0.2 },
-        { starRating: 3, numberOfRatings: 1, percentage: 0.1 },
-        { starRating: 2, numberOfRatings: 1, percentage: 0.1 },
-        { starRating: 1, numberOfRatings: 0, percentage: 0 }
-      ]
-    };
+    const { reviews, loading } = this.state;
+    // restaurant.rating = {
+    //   overall: 4.2,
+    //   numberOfRatings: 18,
+    //   distribution: [
+    //     { starRating: 5, numberOfRatings: 20, percentage: 0.6 },
+    //     { starRating: 4, numberOfRatings: 4, percentage: 0.2 },
+    //     { starRating: 3, numberOfRatings: 1, percentage: 0.1 },
+    //     { starRating: 2, numberOfRatings: 1, percentage: 0.1 },
+    //     { starRating: 1, numberOfRatings: 0, percentage: 0 }
+    //   ]
+    // };
+
+    if (loading) return <ActivityIndicator />;
 
     return (
       <View
@@ -113,15 +103,15 @@ class ReviewsTab extends Component<IProps, IState> {
           }}
         >
           <View style={{ flex: 1 }}>
-            {restaurant.rating.distribution.map(rating => (
+            {Object.keys(restaurant.ratingDistribution).map((key, index) => (
               <View
-                key={rating.starRating}
+                key={index}
                 style={{
                   flexDirection: "row",
                   marginBottom: 4
                 }}
               >
-                <Text note>{rating.starRating}</Text>
+                <Text>{key}</Text>
 
                 <View
                   style={{
@@ -134,7 +124,9 @@ class ReviewsTab extends Component<IProps, IState> {
                 >
                   <View
                     style={{
-                      flex: rating.percentage,
+                      flex:
+                        restaurant.ratingDistribution[key] /
+                        restaurant.totalRatingPoints,
                       borderRadius: 10,
                       backgroundColor: "#FFD700"
                     }}
@@ -153,52 +145,46 @@ class ReviewsTab extends Component<IProps, IState> {
               padding: 10
             }}
           >
-            <Text style={{ fontSize: 30 }}>{restaurant.rating.overall}</Text>
+            <Text style={{ fontSize: 30 }}>{restaurant.avgRating}</Text>
 
             <StarRating
               starSize={20}
               maxStarts={5}
-              rating={4.2}
+              rating={restaurant.avgRating}
               fullStarColor="#FFD700"
               emptyStarColor="#d3d3d3"
             />
-            <Text note>({restaurant.rating.numberOfRatings})</Text>
+            <Text>({restaurant.totalNumRatings})</Text>
           </View>
         </View>
         <Separator />
 
-        <Separator bordered>
-          <Text>Neuste Bewertungen</Text>
-        </Separator>
+        <Separator border={true} heading="Bewertungen" />
 
         <FlatList
           data={this.state.reviews}
-          keyExtractor={(item: any) => item.reviewID}
-          renderItem={({ item }: any) => (
-            <ListItem>
-              <Body>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    paddingTop: 5,
-                    paddingBottom: 5
-                  }}
-                >
-                  <Text note>
-                    {item.firstname} {item.lastname} am {item.date}
-                  </Text>
-                  <StarRating
-                    starSize={15}
-                    maxStarts={5}
-                    rating={item.rating}
-                    fullStarColor="#FFD700"
-                    emptyStarColor="#d3d3d3"
-                  />
-                </View>
-                <Text style={{ marginLeft: 0 }}>{item.text}</Text>
-              </Body>
-            </ListItem>
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <ListItem
+              leftIcon={{ name: "person", iconStyle: { color: "grey" } }}
+              subtitle={item.text}
+              subtitleStyle={{ color: null }}
+              titleStyle={{ color: "grey" }}
+              title={`Review vom ${item.reviewDate.toDate().toLocaleString([], {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+              })}`}
+              rightTitle={
+                <StarRating
+                  starSize={15}
+                  maxStarts={5}
+                  rating={item.rating}
+                  fullStarColor="#FFD700"
+                  emptyStarColor="#d3d3d3"
+                />
+              }
+            />
           )}
         />
 

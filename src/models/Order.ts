@@ -1,6 +1,7 @@
 import { MenuItem } from "./MenuItem";
+import { Table } from "./Table";
 export interface Order {
-  id: string;
+  id?: string;
   customerID: string;
   grandTotal: string;
   items: {
@@ -17,5 +18,5 @@ export interface Order {
     name: string;
     restaurantID: string;
   };
-  table: string;
+  table: Table;
 }

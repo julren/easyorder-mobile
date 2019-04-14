@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { Modal, ScrollView, View, StyleSheet } from "react-native";
 
-import { CartConsumer, withCartContext, CartContextProps } from "./CartContext";
+import {
+  CartConsumer,
+  withCartContext,
+  CartContextProps
+} from "../../contexts/CartContext";
 import SelectPaymentModal from "./SelectPaymentModal";
 import BarcodeScanner from "../../components/BarcodeScanner";
 import ScanTableCodeButton from "./ScanTableCodeButton";
@@ -92,7 +96,7 @@ class CartScreen extends Component<IProps, IState> {
 
         <Separator border={false} />
 
-        {!table.tableID ? (
+        {!table ? (
           <ScanTableCodeButton
             onPress={() => this.props.navigation.navigate("QrCodeScanner")}
           />
@@ -139,7 +143,6 @@ class CartScreen extends Component<IProps, IState> {
           transparent={true}
           visible={this.state.paymentModalVisible}
         >
-          //@ts-ignore
           <SelectPaymentModal onClose={this.closePaymentModal} />
         </Modal>
       </ScrollView>

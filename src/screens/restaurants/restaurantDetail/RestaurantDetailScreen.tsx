@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import { withTheme, Header } from "react-native-elements";
-import { Header as NavHeader } from "react-navigation";
+import { Header as NavHeader, NavigationScreenProp } from "react-navigation";
 import RestaurantInfoTab from "./RestaurantInfoTab";
 import ReviewsTab from "./ReviewsTab";
 import { Button } from "react-native-elements";
@@ -24,24 +24,24 @@ import ParallaxScrollView from "react-native-parallax-scroll-view";
 import { Restaurant } from "../../../models/Restaurant";
 
 const PARALLAX_HEADER_HEIGHT = 200;
-const STICKY_HEADER_HEIGHT = NavHeader.HEIGHT;
-const window = Dimensions.get("window");
+
+export interface Props {
+  navigation: NavigationScreenProp<any>;
+  theme: any;
+  updateTheme: any;
+}
 
 class RestaurantDetailScreen extends Component<Props> {
-  static navigationOptions = {
-    title: null,
-    headerTransparent: true,
-    headerStyle: { backgroundColor: null }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam("restaurant").name
+    };
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      index: 0,
-      routes: [
-        { key: "info", title: "Infos" },
-        { key: "reviews", title: "Bewertungen" }
-      ]
+      index: 0
     };
   }
   render() {
@@ -53,15 +53,12 @@ class RestaurantDetailScreen extends Component<Props> {
     return (
       <ParallaxScrollView
         backgroundColor="#2471A3"
-        stickyHeaderHeight={STICKY_HEADER_HEIGHT}
         parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
-        backgroundSpeed={0}
         renderBackground={() => (
           <Image
             source={{ uri: restaurant.media.coverPhoto }}
             style={{
-              height: PARALLAX_HEADER_HEIGHT,
-              imageStyle: { opacity: 20 }
+              height: PARALLAX_HEADER_HEIGHT
             }}
           />
         )}
@@ -93,31 +90,6 @@ class RestaurantDetailScreen extends Component<Props> {
               }
             />
           </View>
-        )}
-        renderStickyHeader={() => (
-          <Header
-            backgroundColor="#2471A3"
-            centerComponent={{
-              text: restaurant.name,
-              style: { color: "#fff" }
-            }}
-            rightComponent={
-              <Button
-                type="clear"
-                buttonStyle={{}}
-                icon={{
-                  name: "restaurant-menu",
-                  color: "#fff"
-                }}
-                containerStyle={{}}
-                onPress={() =>
-                  this.props.navigation.navigate("Menu", {
-                    restaurant: restaurant
-                  })
-                }
-              />
-            }
-          />
         )}
       >
         <Tabs
@@ -152,9 +124,3 @@ const styles = StyleSheet.create({
     color: "#fff"
   }
 });
-
-export interface Props {
-  navigation: any;
-  theme: any;
-  updateTheme: any;
-}

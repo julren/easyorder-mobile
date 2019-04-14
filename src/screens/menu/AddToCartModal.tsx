@@ -9,12 +9,9 @@ import {
   Theme
 } from "react-native-elements";
 
-import {
-  withCartContext,
-  CartContext,
-  CartContextProps
-} from "../cart/CartContext";
+import { withCartContext, CartContextProps } from "../../contexts/CartContext";
 import MenuItemListItem from "./MenuItemListItem";
+import { MenuItem } from "../../models/MenuItem";
 
 interface IProps extends ThemeProps<Theme>, CartContextProps {
   onClose: () => void;

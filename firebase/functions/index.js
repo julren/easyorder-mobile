@@ -59,7 +59,9 @@ const updateRestaurantRating = (restaurantDoc, review) => {
     updatedDoc.totalRatingPoints += parseInt(review.rating);
     updatedDoc.totalNumRatings++;
     updatedDoc.avgRating =
-      Math.round((totalRatingPoints / totalNumRatings) * 10) / 10;
+      Math.round(
+        (updatedDoc.totalRatingPoints / updatedDoc.totalNumRatings) * 10
+      ) / 10;
 
     updatedDoc.ratingDistribution[review.rating].numRatings++;
 

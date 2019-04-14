@@ -1,5 +1,6 @@
 import { MenuItem } from "./MenuItem";
 import { Restaurant } from "./Restaurant";
+import { Table } from "./Table";
 
 export interface Cart {
   cart: {
@@ -7,10 +8,7 @@ export interface Cart {
     quantity: number;
   }[];
   restaurant: Restaurant;
-  table: {
-    tableID: string;
-    name: string;
-  };
+  table: Table;
   paymentMethod: string;
   mwst: number;
   grandTotal: number;
