@@ -14,11 +14,26 @@ import { firebaseMenuCategories } from "../../config/firebase";
 import MenuItemList from "./MenuItemList";
 import { CartConsumer, withCartContext } from "../../contexts/CartContext";
 import MiniCartOverlay from "../cart/MiniCartOverlay";
-import { ThemeConsumer } from "react-native-elements";
+import { ThemeConsumer, Button } from "react-native-elements";
 
 class MenuScreen extends React.Component {
-  static navigationOptions = {
-    title: "Speisekarte"
+  static navigationOptions = ({ navigation }) => {
+    const restaurant = navigation.getParam("restaurant", undefined);
+
+    return {
+      title: "Speisekarte",
+      headerRight: (
+        <Button
+          icon={{ name: "info", color: "#fff" }}
+          type="clear"
+          onPress={() =>
+            navigation.navigate("RestaurantDetail", {
+              restaurant: restaurant
+            })
+          }
+        />
+      )
+    };
   };
 
   constructor(props) {

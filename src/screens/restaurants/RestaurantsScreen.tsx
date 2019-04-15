@@ -148,7 +148,7 @@ class RestaurantsScreen extends React.Component<Props, State> {
               <RestaurantCard
                 restaurant={item}
                 onRestaurantSelect={() =>
-                  this.props.navigation.navigate("RestaurantDetail", {
+                  this.props.navigation.navigate("Menu", {
                     restaurant: item
                   })
                 }
