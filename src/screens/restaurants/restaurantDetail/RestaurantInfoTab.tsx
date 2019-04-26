@@ -7,26 +7,7 @@ import {
   View,
   FlatList
 } from "react-native";
-// import {
-//   Container,
-//   Content,
-//   Text,
-//   Button,
-//   Card,
-//   CardItem,
-//   Left,
-//   Right,
-//   Body,
-//   Icon,
-//   H3,
-//   List,
-//   ListItem,
-//   Separator,
-//   Textarea,
-//   View,
-//   Tabs,
-//   Tab
-// } from "native-base";
+
 import { MapView } from "expo";
 
 import { ListItem, Text } from "react-native-elements";

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Button, Text } from "native-base";
 import { AsyncStorage } from "react-native";
 import firebase from "../config/firebase";
 import { NavigationScreenProp, withNavigation } from "react-navigation";
+import { Button, Text } from "react-native-elements";
 
 class LogoutButton extends Component<Props> {
   logout = () => {
@@ -31,9 +31,8 @@ class LogoutButton extends Component<Props> {
   render() {
     return (
       <Button
-        block
-        bordered
-        dark
+        type="outline"
+        title="Logout"
         style={{ marginBottom: 8, marginLeft: 8, marginRight: 8 }}
         onPress={() => this.logout()}
       >

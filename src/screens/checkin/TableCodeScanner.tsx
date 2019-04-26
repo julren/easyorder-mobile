@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
-import { Button, Text, Icon } from "native-base";
 import { withCartContext } from "../../contexts/CartContext";
 import { firebaseTables } from "../../config/firebase";
 import { FirebaseApp } from "@firebase/app-types";
+import { Icon, Text } from "react-native-elements";
 
 export interface TableCodeScannerProps {
   onCancel: () => void;
   onScanned: (data) => void;
+  withText: boolean;
 }
 
 export interface TableCodeScannerState {
@@ -65,25 +66,30 @@ class TableCodeScanner extends Component<
         onBarCodeScanned={scanned => this.handleBarCodeScanned(scanned)}
         style={[StyleSheet.absoluteFill, styles.container]}
       >
-        <Text style={styles.description}>Tischcode scannen</Text>
+        {this.props.withText && (
+          <Text style={styles.description}>Tischcode scannen</Text>
+        )}
+        <Icon iconStyle={styles.qr} name="ios-qr-scanner" type="ionicon" />
 
-        <Icon style={styles.qr} name="ios-qr-scanner" />
+        {this.props.withText && (
+          <React.Fragment>
+            <Text
+              style={{ color: "red" }}
+              onPress={() =>
+                this.handleBarCodeScanned({
+                  data: "0Fq5H8qxTFnmVl68mpsn",
+                  type: "test"
+                })
+              }
+            >
+              Testwerte
+            </Text>
 
-        <Text
-          style={{ color: "red" }}
-          onPress={() =>
-            this.handleBarCodeScanned({
-              data: "0Fq5H8qxTFnmVl68mpsn",
-              type: "test"
-            })
-          }
-        >
-          Testwerte
-        </Text>
-
-        <Text onPress={onCancel} style={styles.cancel}>
-          Abbrechen
-        </Text>
+            <Text onPress={onCancel} style={styles.cancel}>
+              Abbrechen
+            </Text>
+          </React.Fragment>
+        )}
       </BarCodeScanner>
     );
   }
@@ -119,8 +125,7 @@ const styles = StyleSheet.create({
   },
   qr: {
     color: "white",
-    fontSize: 380,
-    marginTop: "10%"
+    fontSize: 320
   },
   description: {
     fontSize: width * 0.08,

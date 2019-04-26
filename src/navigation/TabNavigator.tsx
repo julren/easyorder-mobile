@@ -11,11 +11,9 @@ import RestaurantsScreen from "../screens/restaurants/RestaurantsScreen";
 import RestaurantsDetailScreen from "../screens/restaurants/restaurantDetail/RestaurantDetailScreen";
 import MenuScreen from "../screens/menu/MenuScreen";
 import CartScreen from "../screens/cart/CartScreen";
-import OrderOverviewScreen from "../screens/orderOverview/OrderOverviewScreen";
 
 import { BrandLogo } from "../components/BrandLogo";
 import LogoutButton from "../components/LogoutButton";
-import Sidebar from "./Sidebar";
 import { colors } from "../config/customTheme.js";
 import RestaurantsMapScreen from "../screens/restaurants/RestaurantsMapScreen";
 import AccountSettingsScreen from "../screens/account/AccountSettingsScren";
@@ -27,6 +25,8 @@ import { Icon } from "react-native-elements";
 import TabBarIcon from "./TabBarIcon";
 import CheckInScreen from "../screens/checkin/CheckInScreen";
 import OrdersScreen from "../screens/orders/OrdersScreen";
+import OrderDetailScreen from "../screens/orders/OrderDetailScreen";
+import OrderConfirmationScreen from "../screens/orderConfirmation/OrderConfirmationScreen";
 
 const sharedNavigationOptions = {
   headerStyle: {
@@ -49,7 +49,7 @@ const RestaurantStack = createStackNavigator(
     RestaurantDetail: RestaurantsDetailScreen,
     Menu: MenuScreen,
     Cart: CartScreen,
-    OrderOverview: OrderOverviewScreen,
+    OrderDetail: OrderDetailScreen,
     CheckIn: CheckInScreen,
     RestaurantsMap: RestaurantsMapScreen
   },
@@ -70,7 +70,7 @@ const RestaurantStack = createStackNavigator(
 const OrdersStack = createStackNavigator(
   {
     Orders: OrdersScreen,
-    OrderDetail: OrderOverviewScreen
+    OrderDetail: OrderDetailScreen
   },
   {
     cardStyle: { backgroundColor: colors.grey5 },
@@ -116,9 +116,13 @@ const CheckInStack = createStackNavigator(
   {
     navigationOptions: {
       tabBarVisible: false,
-      tabBarLabel: "Code Scannen",
+      tabBarLabel: "CheckIn",
       tabBarIcon: tabBarIconProps => (
-        <TabBarIcon name="scan1" {...tabBarIconProps} type="antdesign" />
+        <TabBarIcon
+          name="qrcode-scan"
+          {...tabBarIconProps}
+          type="material-community"
+        />
       )
     }
   }

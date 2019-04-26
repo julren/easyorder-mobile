@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, View, ActivityIndicator } from "react-native";
+import { FlatList, View, ActivityIndicator, ScrollView } from "react-native";
 import StarRating from "react-native-star-rating";
 import { firebaseReviews } from "../../../config/firebase";
 import LeaveReviewButton from "../../../components/LeaveReviewButton";
@@ -48,11 +48,14 @@ class ReviewsTab extends Component<IProps, IState> {
   }
 
   componentDidMount() {
-    console.log(this.props.restaurant);
+    this.refreshReviews();
+  }
+
+  refreshReviews = () => {
     this.getReviews().then(reviews => {
       this.setState({ reviews: reviews, loading: false });
     });
-  }
+  };
 
   getReviews = async () => {
     return await firebaseReviews
@@ -89,7 +92,7 @@ class ReviewsTab extends Component<IProps, IState> {
     if (loading) return <ActivityIndicator />;
 
     return (
-      <View
+      <ScrollView
         style={{
           marginTop: 5,
           marginBottom: 15
@@ -188,8 +191,11 @@ class ReviewsTab extends Component<IProps, IState> {
           )}
         />
 
-        <LeaveReviewButton restaurantID={restaurant.id} />
-      </View>
+        <LeaveReviewButton
+          restaurantID={restaurant.id}
+          onChange={this.refreshReviews}
+        />
+      </ScrollView>
     );
   }
 }

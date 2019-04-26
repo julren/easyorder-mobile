@@ -17,11 +17,12 @@ import { Button } from "react-native-elements";
 
 import { Text } from "react-native-elements";
 import ScrollableTabView from "react-native-scrollable-tab-view";
-import { Tabs, Tab } from "native-base";
 
 //@ts-ignore
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import { Restaurant } from "../../../models/Restaurant";
+import Tabs from "../../../components/Tabs";
+import Tab from "../../../components/Tab";
 
 const PARALLAX_HEADER_HEIGHT = 200;
 
@@ -52,13 +53,14 @@ class RestaurantDetailScreen extends Component<Props> {
 
     return (
       <ParallaxScrollView
-        backgroundColor="#2471A3"
+        backgroundColor="black"
         parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
         renderBackground={() => (
           <Image
             source={{ uri: restaurant.media.coverPhoto }}
             style={{
-              height: PARALLAX_HEADER_HEIGHT
+              height: PARALLAX_HEADER_HEIGHT,
+              opacity: 0.5
             }}
           />
         )}
@@ -73,9 +75,11 @@ class RestaurantDetailScreen extends Component<Props> {
             <Text h1 style={{ color: "#fff", fontWeight: "bold" }}>
               {restaurant.name}
             </Text>
-            <Text style={{ color: "#fff" }}> {restaurant.description}</Text>
+            <Text h3 style={{ color: "#fff" }}>
+              {restaurant.description}
+            </Text>
 
-            <Button
+            {/* <Button
               buttonStyle={{ padding: 10 }}
               icon={{
                 name: "restaurant-menu",
@@ -88,27 +92,15 @@ class RestaurantDetailScreen extends Component<Props> {
                   restaurant: restaurant
                 })
               }
-            />
+            /> */}
           </View>
         )}
       >
-        <Tabs
-          tabBarPosition="top"
-          tabBarUnderlineStyle={{
-            backgroundColor: this.props.theme.colors.primary
-          }}
-        >
-          <Tab
-            heading="Infos"
-            activeTextStyle={{ color: this.props.theme.colors.primary }}
-          >
+        <Tabs>
+          <Tab tabLabel="Infos">
             <RestaurantInfoTab restaurant={restaurant} {...this.props} />
           </Tab>
-
-          <Tab
-            heading="Bewertungen"
-            activeTextStyle={{ color: this.props.theme.colors.primary }}
-          >
+          <Tab tabLabel="Bewertungen">
             <ReviewsTab restaurant={restaurant} />
           </Tab>
         </Tabs>

@@ -1,20 +1,20 @@
 import React, { Component } from "react";
-import Container from "../../components/Container";
 import { Text, Icon } from "react-native-elements";
 import { ImageBackground, View } from "react-native";
-import { Order } from "../../models/Order";
+import { NavigationScreenProps } from "react-navigation";
+import { OrderOverview, Container } from "../../components";
 
-interface IProps {
-  order: Order;
-}
+interface IProps extends NavigationScreenProps {}
+interface IState {}
 
-class OrderConfirmationScreen extends Component<IProps> {
+class OrderConfirmationScreen extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
   render() {
-    const { order } = this.props;
+    const { order } = this.props.navigation.getParam("order", undefined);
 
     return (
       <Container>
@@ -46,7 +46,7 @@ class OrderConfirmationScreen extends Component<IProps> {
           </View>
         </ImageBackground>
 
-        <Text>Order Confirmation</Text>
+        <OrderOverview order={order} />
       </Container>
     );
   }

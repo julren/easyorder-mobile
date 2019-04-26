@@ -48,6 +48,7 @@ class CheckInScreen extends React.Component<
   render() {
     return (
       <TableCodeScanner
+        withText={true}
         onCancel={() => this.props.navigation.navigate("Restaurants")}
         onScanned={this.onScanned}
       />

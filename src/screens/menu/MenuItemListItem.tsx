@@ -4,16 +4,17 @@ import { MenuItem } from "../../models/MenuItem";
 
 interface IMenuItemListItem {
   menuItem: MenuItem;
+  onPress?: () => void;
 }
 
 class MenuItemListItem extends PureComponent<IMenuItemListItem> {
   render() {
     console.log("rerendered MenuItemListItem");
-    const { menuItem } = this.props;
+    const { menuItem, ...rest } = this.props;
 
     return (
       <ListItem
-        {...this.props}
+        {...rest}
         bottomDivider
         title={menuItem.name}
         subtitle={menuItem.description ? menuItem.description : null}

@@ -7,8 +7,7 @@ import {
   View
 } from "react-native";
 import firebase, { firebaseReviews } from "../config/firebase";
-import { Text, Button, Icon } from "react-native-elements";
-import { Textarea } from "native-base";
+import { Text, Button, Icon, Input } from "react-native-elements";
 import TextNote from "../components/TextNote";
 import { Review } from "../models/Review";
 
@@ -113,12 +112,11 @@ class RateRestaurantModal extends Component<IProps> {
           </View>
         </View>
 
-        <Textarea
+        <Input
           style={{ flexGrow: 1, marginBottom: 16 }}
           value={this.state.text}
           onChangeText={text => this.setState({ text: text })}
-          rowSpan={5}
-          bordered
+          numberOfLines={5}
           placeholder="Deine Meinung..."
         />
 
@@ -126,6 +124,7 @@ class RateRestaurantModal extends Component<IProps> {
           title={review ? "Bewertung aktualisieren" : "Senden"}
           disabled={rating ? false : true}
           onPress={this.onSubmit}
+          style={{ marginTop: 16 }}
         />
       </KeyboardAvoidingView>
     );

@@ -63,9 +63,9 @@ class CartScreen extends Component<IProps, IState> {
   placeOrderAndNavigate = () => {
     this.props.cartContext
       .placeOrder()
-      .then(orderID => {
-        this.props.navigation.replace("OrderOverview", {
-          orderID: orderID
+      .then(order => {
+        this.props.navigation.replace("OrderConfirmation", {
+          order: order
         });
       })
       .catch(error => {

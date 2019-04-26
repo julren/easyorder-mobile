@@ -10,16 +10,7 @@ import { any } from "prop-types";
 import { Cart } from "../models/Cart";
 import { MenuItem } from "../models/MenuItem";
 import { Restaurant } from "../models/Restaurant";
-const initialValues = {
-  cart: [],
-  restaurant: undefined,
-  table: undefined,
-  paymentMethod: "",
-  mwst: 0,
-  grandTotal: 0,
-  status: "",
-  numCartItems: 0
-};
+
 const CartContext = React.createContext<Partial<CartContext>>({});
 const CartConsumer = CartContext.Consumer;
 
@@ -44,18 +35,23 @@ export interface CartContextProps {
  * Holds Info about currently selected restaurant, added cart items
  * and allows to update/remove them
  */
+
+const initialValues = {
+  cart: [],
+  restaurant: undefined,
+  table: undefined,
+  paymentMethod: "",
+  mwst: 0,
+  grandTotal: 0,
+  status: "",
+  numCartItems: 0
+};
+
 class CartProvider extends Component<any, Cart> {
   constructor(props) {
     super(props);
     this.state = {
-      cart: [],
-      restaurant: undefined,
-      table: undefined,
-      paymentMethod: "",
-      mwst: 0,
-      grandTotal: 0,
-      status: "",
-      numCartItems: 0
+      ...initialValues
     };
   }
 
@@ -105,14 +101,7 @@ class CartProvider extends Component<any, Cart> {
   };
 
   clearCartContext = () => {
-    const clearedCart = {
-      restaurant: undefined,
-      cart: [],
-      table: {},
-      paymentMethod: ""
-    } as Cart;
-
-    this.setState({ ...clearedCart });
+    this.setState({ ...initialValues });
   };
 
   updateCartItemQuantity = (item, quantity) => {
@@ -160,7 +149,9 @@ class CartProvider extends Component<any, Cart> {
       firebaseOrders
         .add(order)
         .then(docRef => {
-          resolve(docRef.id);
+          docRef.get().then(doc => {
+            resolve({ id: doc.id, ...doc.data() });
+          });
         })
         .catch(error => {
           console.warn(error);

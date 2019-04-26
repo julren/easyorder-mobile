@@ -3,7 +3,6 @@ import { Text, withTheme, ThemeConsumer } from "react-native-elements";
 
 interface IProps {
   style?: any;
-  children: ReactChild;
 }
 
 class TextNote extends Component<IProps> {

@@ -8,6 +8,7 @@ import { Review } from "../models/Review";
 
 interface IProps {
   restaurantID: string;
+  onChange: () => void;
 }
 
 interface IState {
@@ -23,6 +24,7 @@ class LeaveReviewButton extends Component<IProps, IState> {
     this.setState({ modalVisible: true });
   };
   closeModal = () => {
+    this.props.onChange();
     this.setState({ modalVisible: false });
   };
 
@@ -59,7 +61,6 @@ class LeaveReviewButton extends Component<IProps, IState> {
 
   render() {
     const { loading, review, modalVisible } = this.state;
-
     if (loading) return <ActivityIndicator />;
 
     // if (review) {

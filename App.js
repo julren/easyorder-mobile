@@ -62,8 +62,6 @@ export default class App extends React.Component {
         "ProximaNova_light": require("./assets/fonts/Proxima-Nova-Light.ttf"),
         "ProximaNova_bold": require("./assets/fonts/Proxima-Nova-Bold.ttf"),
         "SourceSansPro": require("./assets/fonts/SourceSansPro-Regular.otf"),
-        "Roboto": require("native-base/Fonts/Roboto.ttf"),
-        "Roboto_medium": require("native-base/Fonts/Roboto_medium.ttf"),
         "Ionicons": require("@expo/vector-icons/fonts/Ionicons.ttf"),
 
       })

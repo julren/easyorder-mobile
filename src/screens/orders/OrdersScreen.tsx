@@ -32,17 +32,20 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
   }
 
   getOrdersOfUser = async () => {
-    console.log("refresh");
     this.setState({ loading: true });
 
     firebaseOrders
-      .where("userID", "==", firebase.auth().currentUser.uid)
+      .where("customerID", "==", "UIC6MGkgiQg0QLWLBUgikC8gSGa2")
       .get()
       .then(querySnapshot => {
         const orders = [];
 
         querySnapshot.forEach(doc => {
-          orders.push({ orderID: doc.id, ...doc.data() });
+          orders.push({
+            ...doc.data(),
+            orderID: doc.id,
+            orderDate: doc.data().orderDate.toDate()
+          });
         });
         this.setState({ orders: orders, loading: false });
       });
@@ -66,7 +69,7 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
             }}
             title={item.restaurant.name}
             rightTitle={`${parseFloat(item.grandTotal).toFixed(2)} €`}
-            subtitle={item.orderDate.toDate().toLocaleString([], {
+            subtitle={item.orderDate.toLocaleString([], {
               day: "2-digit",
               month: "2-digit",
               year: "numeric"
@@ -74,7 +77,7 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
             // subtitle={item.items.map(item => `${item.item.name} | `)}
             onPress={() =>
               this.props.navigation.navigate("OrderDetail", {
-                orderID: item.orderID
+                order: item
               })
             }
           />
