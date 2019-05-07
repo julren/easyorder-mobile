@@ -104,7 +104,7 @@ export default class LogInScreen extends Component<IProps> {
                     autoCorrect={false}
                     placeholder="Email"
                     textContentType="emailAddress"
-                    leftIcon={<Icon name="email" />}
+                    leftIcon={{ name: "email" }}
                     inputContainerStyle={styles.inputContainer}
                     value={values.email}
                     onChangeText={handleChange("email")}
@@ -121,7 +121,7 @@ export default class LogInScreen extends Component<IProps> {
                     secureTextEntry={true}
                     textContentType="password"
                     placeholder="Passwort"
-                    leftIcon={<Icon name="vpn-key" />}
+                    leftIcon={{ name: "vpn-key" }}
                     inputContainerStyle={styles.inputContainer}
                     value={values.password}
                     onChangeText={handleChange("password")}

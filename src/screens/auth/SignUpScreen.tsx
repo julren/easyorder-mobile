@@ -108,7 +108,7 @@ export default class SignUpScreen extends Component<IProps> {
                     autoCorrect={false}
                     textContentType="name"
                     placeholder="Name"
-                    leftIcon={<Icon name="person" />}
+                    leftIcon={{ name: "person" }}
                     inputContainerStyle={styles.inputContainer}
                     value={values.displayName}
                     onChangeText={handleChange("displayName")}
@@ -124,7 +124,7 @@ export default class SignUpScreen extends Component<IProps> {
                     autoCorrect={false}
                     textContentType="emailAddress"
                     placeholder="Email"
-                    leftIcon={<Icon name="email" />}
+                    leftIcon={{ name: "email" }}
                     inputContainerStyle={styles.inputContainer}
                     value={values.email}
                     onChangeText={handleChange("email")}
@@ -141,7 +141,7 @@ export default class SignUpScreen extends Component<IProps> {
                     secureTextEntry={true}
                     textContentType="password"
                     placeholder="Passwort"
-                    leftIcon={<Icon name="vpn-key" />}
+                    leftIcon={{ name: "vpn-key" }}
                     inputContainerStyle={styles.inputContainer}
                     value={values.password}
                     onChangeText={handleChange("password")}

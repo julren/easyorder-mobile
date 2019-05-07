@@ -29,8 +29,11 @@ export default {
     bottomDivider: true,
     titleStyle: { fontSize: 14 },
     subtitleStyle: { color: colors.grey3, fontSize: 14 },
-    Icon: {
-      color: "red"
+    leftIcon: {
+      iconStyle: { color: colors.grey2 }
+    },
+    rightIcon: {
+      iconStyle: { color: colors.grey2 }
     }
   },
   Text: {
@@ -43,7 +46,12 @@ export default {
   },
   Input: {
     containerStyle: { paddingVertical: 5 },
-    leftIconContainerStyle: { marginLeft: 0, marginRight: 10 }
-  },
-  Icon: {}
+    leftIconContainerStyle: {
+      marginLeft: 0,
+      marginRight: 10
+    },
+    leftIcon: {
+      iconStyle: { color: colors.grey2 }
+    }
+  }
 };
