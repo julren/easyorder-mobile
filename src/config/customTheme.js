@@ -28,13 +28,7 @@ export default {
   ListItem: {
     bottomDivider: true,
     titleStyle: { fontSize: 14 },
-    subtitleStyle: { color: colors.grey3, fontSize: 14 },
-    leftIcon: {
-      iconStyle: { color: colors.grey2 }
-    },
-    rightIcon: {
-      iconStyle: { color: colors.grey2 }
-    }
+    subtitleStyle: { color: colors.grey3, fontSize: 14 }
   },
   Text: {
     h1Style: {
@@ -53,5 +47,6 @@ export default {
     leftIcon: {
       iconStyle: { color: colors.grey2 }
     }
-  }
+  },
+  Icon: {}
 };

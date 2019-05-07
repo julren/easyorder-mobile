@@ -28,7 +28,6 @@ class MenuItemListItem extends PureComponent<IProps> {
         {...rest}
         bottomDivider
         containerStyle={{
-          paddingHorizontal: 0,
           ...(numInCart > 0 && {
             borderLeftWidth: 8,
             borderLeftColor: "#008ACD"
