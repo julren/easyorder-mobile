@@ -35,10 +35,7 @@ class CreditCardScreen extends React.Component<Props, State> {
             <Text h1>Kreditkarte bearbeiten</Text>
             <TextNote>Hier kannst du deine Kreditkarte bearbeiten</TextNote>
           </View>
-          <ListItem
-            containerStyle={{ padding: 0 }}
-            title={<CreditCardForm onSubmit={this.onSave} />}
-          />
+          <ListItem title={<CreditCardForm onSubmit={this.onSave} />} />
         </Container>
       </ScrollView>
     );

@@ -7,6 +7,7 @@ import { NavigationParams } from "react-navigation";
 import { Order } from "../../models/Order";
 import TextNote from "../../components/basic/TextNote";
 import Row from "../../components/basic/Row";
+import { Container } from "../../components";
 
 interface OrdersScreenProps {
   navigation: NavigationParams;
@@ -59,6 +60,18 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
     return (
       <FlatList
         data={orders}
+        ListHeaderComponent={
+          <Container padded="more">
+            <Text h1>Meine Bestellungen</Text>
+          </Container>
+        }
+        ListEmptyComponent={
+          !this.state.loading && (
+            <Container padded="more">
+              <Text>Keine Bestellungen bisher</Text>
+            </Container>
+          )
+        }
         keyExtractor={item => item.orderID}
         onRefresh={() => this.getOrdersOfUser()}
         refreshing={this.state.loading}

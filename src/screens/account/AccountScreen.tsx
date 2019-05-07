@@ -74,41 +74,41 @@ export default class AccountScreen extends Component<Props, State> {
         </ImageBackground>
         <Separator heading="Konto" />
         <ListItem
-          leftIcon={{ name: "credit-card" }}
+          leftIcon={{ name: "credit-card", iconStyle: styles.iconColor }}
           title="Kreditkarte"
-          rightIcon={{ name: "arrow-forward" }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
           onPress={() => this.props.navigation.navigate("CreditCard")}
         />
         <ListItem
-          leftIcon={{ name: "star" }}
+          leftIcon={{ name: "star", iconStyle: styles.iconColor }}
           title="Meine Bewertungen"
-          rightIcon={{ name: "arrow-forward" }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
           onPress={() => this.props.navigation.navigate("MyReviews")}
         />
         <ListItem
-          leftIcon={{ name: "settings" }}
+          leftIcon={{ name: "settings", iconStyle: styles.iconColor }}
           title="Einstellungen"
-          rightIcon={{ name: "arrow-forward" }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
           onPress={() => this.props.navigation.navigate("AccountSettings")}
         />
         <Separator heading="Infos & Hilfe" />
 
         <ListItem
-          leftIcon={{ name: "help" }}
+          leftIcon={{ name: "help", iconStyle: styles.iconColor }}
           title="Kontakt aufnehmen"
-          rightIcon={{ name: "arrow-forward" }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
           onPress={() => this.props.navigation.navigate("Contact")}
         />
         <ListItem
-          leftIcon={{ name: "info" }}
+          leftIcon={{ name: "info", iconStyle: styles.iconColor }}
           title="Impressum"
-          rightIcon={{ name: "arrow-forward" }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
           onPress={() => this.props.navigation.navigate("Imprint")}
         />
         <ListItem
-          leftIcon={{ name: "security" }}
+          leftIcon={{ name: "security", iconStyle: styles.iconColor }}
           title="Datenschutz"
-          rightIcon={{ name: "arrow-forward" }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
           onPress={() => this.props.navigation.navigate("Privacy")}
         />
         <Separator />
@@ -120,6 +120,9 @@ export default class AccountScreen extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
+  iconColor: {
+    color: "#43484d"
+  },
   headerContainer: {
     flex: 1,
     justifyContent: "center",
