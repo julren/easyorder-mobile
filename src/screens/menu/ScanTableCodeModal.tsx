@@ -6,6 +6,7 @@ import { NavigationScreenProps } from "react-navigation";
 import withGlobalContext from "../../contexts/withGlobalContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import CheckmarkAnimation from "./CheckmarkAnimation";
+import { TextNote } from "../../components";
 
 interface IProps {
   globalContext: GlobalContext;
@@ -50,75 +51,77 @@ class ScanTableCodeModal extends PureComponent<IProps, IState> {
     const { onDone } = this.props;
     return (
       <View>
-        <Text h1 style={{ marginBottom: 10 }}>
-          Tischcode scannen
-        </Text>
-        <Text style={{ marginBottom: 10 }}>
-          Bitte scannen Sie den QR-Code auf dem Tischaufsteller, um mit Ihrer
-          Bestellung zu beginnen.
-        </Text>
-
-        {scanActive ? (
+        {scanSuccess ? (
           <View>
-            <View style={{ height: 300 }}>
-              <TableCodeScanner
-                withText={false}
-                onScanned={table => {
-                  this.onScanSuccess(table);
-                }}
-                onCancel={() => console.log("cancel")}
-              />
-            </View>
-            <Button
-              style={{ marginTop: 10 }}
-              onPress={this.onCancelScan}
-              icon={{
-                name: "close-circle",
-                type: "material-community",
-                color: "#fff"
+            <CheckmarkAnimation
+              style={{
+                height: 250,
+                width: "100%"
               }}
-              title="Abbrechen"
             />
+            <Text
+              style={{
+                color: "#008ACD",
+                fontWeight: "bold",
+                alignSelf: "center"
+              }}
+            >
+              {table.name}
+            </Text>
           </View>
         ) : (
-          <React.Fragment>
-            {scanSuccess ? (
-              <View>
-                <CheckmarkAnimation
-                  style={{
-                    height: 250,
-                    width: "100%"
-                  }}
-                />
-                <Text
-                  style={{
-                    color: "#008ACD",
-                    fontWeight: "bold",
-                    alignSelf: "center"
-                  }}
-                >
-                  {table.name}
-                </Text>
-              </View>
-            ) : (
-              <View>
-                <Image
-                  source={require("../../../assets/images/scanqr.gif")}
-                  style={{ width: "auto" }}
-                />
+          <View>
+            <Text h1 style={{ marginBottom: 10 }}>
+              Tischcode scannen
+            </Text>
+            <TextNote style={{ marginBottom: 10 }}>
+              Bitte scannen Sie den QR-Code auf dem Tischaufsteller, um mit
+              Ihrer Bestellung zu beginnen.
+            </TextNote>
 
+            {scanActive ? (
+              <View>
+                <View style={{ height: 300 }}>
+                  <TableCodeScanner
+                    withText={false}
+                    onScanned={table => {
+                      this.onScanSuccess(table);
+                    }}
+                    onCancel={() => console.log("cancel")}
+                  />
+                </View>
                 <Button
-                  onPress={this.onActivateScan}
+                  style={{ marginTop: 10 }}
+                  onPress={this.onCancelScan}
                   icon={{
-                    name: "qrcode-scan",
+                    name: "close-circle",
                     type: "material-community",
                     color: "#fff"
                   }}
-                  title="Code scannen"
+                  title="Abbrechen"
                 />
               </View>
+            ) : (
+              <React.Fragment>
+                <View>
+                  <Image
+                    source={require("../../../assets/images/scanqr.gif")}
+                    style={{ width: "auto" }}
+                  />
+
+                  <Button
+                    onPress={this.onActivateScan}
+                    icon={{
+                      name: "qrcode-scan",
+                      type: "material-community",
+                      color: "#fff"
+                    }}
+                    title="Code scannen"
+                  />
+                </View>
+              </React.Fragment>
             )}
-          </React.Fragment>
+          </View>
         )}
       </View>
     );

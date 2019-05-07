@@ -11,6 +11,7 @@ interface IState {}
 
 class OrderConfirmationScreen extends Component<IProps, IState> {
   static navigationOptions: {
+    title: "Bestellübersicht";
     headerLeft: null;
   };
   constructor(props) {

@@ -49,7 +49,7 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
             orderDate: doc.data().orderDate.toDate()
           });
         });
-        this.setState({ orders: orders, loading: false });
+        this.setState({ orders: orders.reverse(), loading: false });
       });
   };
 

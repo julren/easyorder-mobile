@@ -27,7 +27,7 @@ class OrderOverview extends PureComponent<IProps> {
     } else {
       return (
         <View>
-          <ListItem title={<Text h1>Bestellungsübersicht</Text>} />
+          <ListItem title={<Text h1>Bestellübersicht</Text>} />
           <ListItem
             title="Bestellnummer"
             rightElement={<TextNote>{order.orderID}</TextNote>}
