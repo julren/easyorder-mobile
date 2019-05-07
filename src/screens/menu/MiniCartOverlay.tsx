@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
 
-import {
-  withCartContext,
-  CartContext,
-  CartConsumer
-} from "../../contexts/CartContext";
 import { ThemeConsumer, Text, Icon } from "react-native-elements";
+import { GlobalContextConsumer } from "../../contexts/GlobalContext";
 
 interface IProps {
   onPress: () => void;
@@ -22,45 +18,54 @@ class MiniCartOverlay extends Component<IProps, IState> {
     return (
       <ThemeConsumer>
         {({ theme }) => (
-          <CartConsumer>
+          <GlobalContextConsumer>
             {({ grandTotal, numCartItems }) => (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "rgba(0, 0, 0, 0)",
-                  height: 80,
-                  padding: 8,
-                  marginBottom: 16
-                }}
-                onPress={onPress}
-              >
+              <TouchableOpacity style={styles.container} onPress={onPress}>
                 <View
                   style={{
                     alignItems: "center",
                     backgroundColor: theme.colors.primary,
                     flexDirection: "row",
+                    justifyContent: "space-between",
                     flex: 1,
-                    padding: 16
+                    paddingHorizontal: 16
                   }}
                 >
-                  <View style={{ marginRight: 10 }}>
-                    <Icon
-                      name="shopping-cart"
-                      iconStyle={{ fontSize: 30, color: "white" }}
-                    />
+                  <View style={{ flex: 0.2 }}>
+                    <View
+                      style={{
+                        backgroundColor: "#00537B",
+                        width: 20,
+                        padding: 3,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <Text
+                        style={{
+                          ...styles.text
+                        }}
+                      >
+                        {numCartItems}
+                      </Text>
+                    </View>
                   </View>
 
-                  <View style={{ flexGrow: 1 }}>
-                    <Text style={{ color: "white" }}>
-                      {numCartItems} Artikel
+                  <View style={{ flex: 0.6 }}>
+                    <Text style={{ textAlign: "center", ...styles.text }}>
+                      Warenkorb anzeigen
                     </Text>
-                    <Text style={{ color: "white" }}>
-                      Gesammtsumme: {grandTotal.toFixed(2)}€
+                  </View>
+
+                  <View style={{ flex: 0.2 }}>
+                    <Text style={{ textAlign: "right", ...styles.text }}>
+                      {grandTotal.toFixed(2)} €
                     </Text>
                   </View>
                 </View>
               </TouchableOpacity>
             )}
-          </CartConsumer>
+          </GlobalContextConsumer>
         )}
       </ThemeConsumer>
     );
@@ -68,3 +73,13 @@ class MiniCartOverlay extends Component<IProps, IState> {
 }
 
 export default MiniCartOverlay;
+
+const styles = StyleSheet.create({
+  container: {
+    height: 55,
+    marginHorizontal: 8,
+    marginVertical: 8
+  },
+  contentContainer: {},
+  text: { color: "#fff", fontWeight: "bold" }
+});

@@ -2,7 +2,7 @@ import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "./src/navigation/AppNavigator";
-import { CartProvider } from "./src/contexts/CartContext";
+import { GlobalContextProvider } from "./src/contexts/GlobalContext";
 
 import { ThemeProvider } from "react-native-elements";
 import customTheme from "./src/config/customTheme";
@@ -19,7 +19,7 @@ export default class App extends React.Component {
 
   render() {
     const navigationPersistenceKey = __DEV__
-      ? "ReactNavigationStateDEV108"
+      ? "ReactNavigationStateDEV110"
       : null;
 
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -36,9 +36,9 @@ export default class App extends React.Component {
           {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
 
           <ThemeProvider theme={customTheme}>
-            <CartProvider>
+            <GlobalContextProvider>
               <AppNavigator persistenceKey={navigationPersistenceKey} />
-            </CartProvider>
+            </GlobalContextProvider>
           </ThemeProvider>
         </View>
       );

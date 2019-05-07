@@ -18,11 +18,11 @@ import { Button } from "react-native-elements";
 import { Text } from "react-native-elements";
 import ScrollableTabView from "react-native-scrollable-tab-view";
 
-//@ts-ignore
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import { Restaurant } from "../../../models/Restaurant";
-import Tabs from "../../../components/Tabs";
-import Tab from "../../../components/Tab";
+import Tabs from "../../../components/basic/Tabs";
+import Tab from "../../../components/basic/Tab";
+import Row from "../../../components/basic/Row";
 
 const PARALLAX_HEADER_HEIGHT = 200;
 
@@ -72,12 +72,10 @@ class RestaurantDetailScreen extends Component<Props> {
               alignItems: "center"
             }}
           >
-            <Text h1 style={{ color: "#fff", fontWeight: "bold" }}>
-              {restaurant.name}
-            </Text>
-            <Text h3 style={{ color: "#fff" }}>
-              {restaurant.description}
-            </Text>
+            <Image
+              source={{ uri: restaurant.media.logo }}
+              style={{ height: 100, width: 100 }}
+            />
 
             {/* <Button
               buttonStyle={{ padding: 10 }}
@@ -97,10 +95,10 @@ class RestaurantDetailScreen extends Component<Props> {
         )}
       >
         <Tabs>
-          <Tab tabLabel="Infos">
+          <Tab tabLabel="Infos" fixedView>
             <RestaurantInfoTab restaurant={restaurant} {...this.props} />
           </Tab>
-          <Tab tabLabel="Bewertungen">
+          <Tab tabLabel="Bewertungen" fixedView>
             <ReviewsTab restaurant={restaurant} />
           </Tab>
         </Tabs>

@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { Image, FlatList, View, Dimensions } from "react-native";
 
 import firebase, { firebaseOrders } from "../../config/firebase";
-import { Text, ListItem } from "react-native-elements";
+import { Text, ListItem, Badge } from "react-native-elements";
 import { NavigationParams } from "react-navigation";
 import { Order } from "../../models/Order";
+import TextNote from "../../components/basic/TextNote";
+import Row from "../../components/basic/Row";
 
 interface OrdersScreenProps {
   navigation: NavigationParams;
@@ -67,13 +69,28 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
               rounded: false,
               source: { uri: item.restaurant.logo, cache: "force-cache" }
             }}
-            title={item.restaurant.name}
+            title={
+              <Row>
+                <Text>{item.restaurant.name}</Text>
+              </Row>
+            }
             rightTitle={`${parseFloat(item.grandTotal).toFixed(2)} €`}
-            subtitle={item.orderDate.toLocaleString([], {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric"
-            })}
+            subtitle={
+              <View>
+                <TextNote>
+                  {item.orderDate.toLocaleString([], {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                  })}
+                </TextNote>
+                <Badge
+                  containerStyle={{ alignSelf: "flex-start" }}
+                  status={badgeColorForStatus[item.status]}
+                  value={item.status}
+                />
+              </View>
+            }
             // subtitle={item.items.map(item => `${item.item.name} | `)}
             onPress={() =>
               this.props.navigation.navigate("OrderDetail", {
@@ -101,3 +118,9 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
 }
 
 export default OrdersScreen;
+
+const badgeColorForStatus = {
+  open: "primary",
+  inProgress: "warning",
+  done: "success"
+};

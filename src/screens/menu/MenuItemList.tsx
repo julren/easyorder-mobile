@@ -6,25 +6,28 @@ import AddToCartModal from "./AddToCartModal";
 
 import { ListItem, Text, Image } from "react-native-elements";
 import MenuItemListItem from "./MenuItemListItem";
-import { withCartContext, CartContext } from "../../contexts/CartContext";
 import { MenuItem } from "../../models/MenuItem";
+import { GlobalContext } from "../../contexts/GlobalContext";
+import withGlobalContext from "../../contexts/withGlobalContext";
+import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
 
 interface IProps {
-  cartContext: CartContext;
   categoryID: string;
   onItemPress: (item: MenuItem) => void;
 }
 
 interface IState {
+  loading: boolean;
   menuItems: MenuItem[];
   modalVisible: boolean;
   selectedMenuItem: MenuItem;
 }
 
-class MenuListItem extends Component<IProps, IState> {
+class MenuItemList extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       menuItems: [],
       modalVisible: false,
       selectedMenuItem: placeHolderMenuItem
@@ -42,16 +45,18 @@ class MenuListItem extends Component<IProps, IState> {
         querySnapshot.forEach(doc => {
           menuItems.push({ id: doc.id, ...doc.data() });
         });
-        this.setState({ menuItems: menuItems });
+        this.setState({ loading: false, menuItems: menuItems });
       });
   }
 
   render() {
     const { onItemPress } = this.props;
+    const { menuItems, loading } = this.state;
+    if (loading) return <PageLoadingIndicator style={{ marginTop: 10 }} />;
     return (
       <React.Fragment>
         <FlatList
-          data={this.state.menuItems}
+          data={menuItems}
           keyExtractor={(item, index) => item.id}
           renderItem={({ item }) => (
             <MenuItemListItem
@@ -108,7 +113,7 @@ class MenuListItem extends Component<IProps, IState> {
   }
 }
 
-export default withCartContext(MenuListItem);
+export default MenuItemList;
 
 const placeHolderMenuItem: MenuItem = {
   name: "",

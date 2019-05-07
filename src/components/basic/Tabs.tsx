@@ -1,11 +1,6 @@
 import React, { Component, PureComponent } from "react";
 import ScrollableTabView from "react-native-scrollable-tab-view";
-import {
-  withTheme,
-  ThemeProps,
-  ThemeConsumerProps,
-  ThemeConsumer
-} from "react-native-elements";
+import { ThemeConsumer } from "react-native-elements";
 
 class Tabs extends PureComponent {
   render() {

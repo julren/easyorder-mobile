@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import { Modal, View, ActivityIndicator, Dimensions } from "react-native";
 import RateRestaurantModal from "./RateRestaurantModal";
-import firebase, { firebaseReviews } from "../config/firebase";
+import firebase, { firebaseReviews } from "../../config/firebase";
 import { Button, Text, Overlay } from "react-native-elements";
 import StarRating from "react-native-star-rating";
-import { Review } from "../models/Review";
+import { RestaurantReview } from "../../models/Review";
+import { Restaurant } from "../../models";
 
 interface IProps {
-  restaurantID: string;
+  restaurant: Restaurant;
   onChange: () => void;
 }
 
 interface IState {
   modalVisible: boolean;
-  review: Review | undefined;
+  review: RestaurantReview | undefined;
   loading: boolean;
 }
 
@@ -29,7 +30,7 @@ class LeaveReviewButton extends Component<IProps, IState> {
   };
 
   componentDidMount() {
-    this.getReviewForRestaurantByUser(this.props.restaurantID);
+    this.getReviewForRestaurantByUser(this.props.restaurant.id);
   }
 
   getReviewForRestaurantByUser = restaurantID => {
@@ -55,6 +56,8 @@ class LeaveReviewButton extends Component<IProps, IState> {
           console.error("Error getting document..: ", error);
         });
     } catch (error) {
+      this.setState({ loading: false });
+
       console.log(error);
     }
   };
@@ -107,7 +110,7 @@ class LeaveReviewButton extends Component<IProps, IState> {
         >
           <RateRestaurantModal
             review={this.state.review}
-            restaurantID={this.props.restaurantID}
+            restaurant={this.props.restaurant}
             onClose={this.closeModal}
           />
         </Overlay>

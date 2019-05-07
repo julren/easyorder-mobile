@@ -10,10 +10,10 @@ import {
 import firebase from "../../config/firebase";
 import BarcodeScanner from "../../components/BarcodeScanner";
 import { NavigationScreenProp } from "react-navigation";
-import LogoutButton from "../../components/LogoutButton";
-import Container from "../../components/Container";
+import LogoutButton from "../../components/basic/LogoutButton";
+import Container from "../../components/basic/Container";
 import { Icon, Text, ListItem } from "react-native-elements";
-import Separator from "../../components/Separator";
+import Separator from "../../components/basic/Separator";
 
 const restaurantBg = require("../../../assets/images/restaurantbackground.jpg");
 
@@ -74,6 +74,12 @@ export default class AccountScreen extends Component<Props, State> {
         </ImageBackground>
         <Separator heading="Konto" />
         <ListItem
+          leftIcon={{ name: "credit-card" }}
+          title="Kreditkarte"
+          rightIcon={{ name: "arrow-forward" }}
+          onPress={() => this.props.navigation.navigate("CreditCard")}
+        />
+        <ListItem
           leftIcon={{ name: "star" }}
           title="Meine Bewertungen"
           rightIcon={{ name: "arrow-forward" }}
@@ -105,7 +111,7 @@ export default class AccountScreen extends Component<Props, State> {
           rightIcon={{ name: "arrow-forward" }}
           onPress={() => this.props.navigation.navigate("Privacy")}
         />
-        <Separator border={false} />
+        <Separator />
 
         <LogoutButton />
       </ScrollView>

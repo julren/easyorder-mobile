@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import TableCodeScanner from "./TableCodeScanner";
-import { NavigationScreenProps } from "react-navigation";
+import { NavigationScreenProps, NavigationScreenProp } from "react-navigation";
 import { firebaseRestaurants } from "../../config/firebase";
-import { Restaurant } from "../../models/Restaurant";
-import { withCartContext, CartContextProps } from "../../contexts/CartContext";
+import withGlobalContext from "../../contexts/withGlobalContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
-export interface CheckInScreenProps
-  extends NavigationScreenProps,
-    CartContextProps {}
+export interface CheckInScreenProps {
+  navigation: NavigationScreenProp<any>;
+  globalContext: GlobalContext;
+}
 
 export interface CheckInScreenState {}
 
@@ -35,7 +36,7 @@ class CheckInScreen extends React.Component<
   onScanned = async table => {
     const restaurant = await this.getRestaurant(table.restaurantID);
     console.log("found restaurant", restaurant);
-    this.props.cartContext.setTable(table);
+    this.props.globalContext.setTable(table);
     this.props.navigation.navigate("Menu", {
       restaurant: restaurant
     });
@@ -56,4 +57,4 @@ class CheckInScreen extends React.Component<
   }
 }
 
-export default withCartContext(CheckInScreen);
+export default withGlobalContext(CheckInScreen);

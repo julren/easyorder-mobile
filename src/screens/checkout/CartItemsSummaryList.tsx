@@ -1,25 +1,21 @@
-import React, { Component } from "react";
-
-import {
-  withCartContext,
-  CartContext,
-  CartConsumer
-} from "../../contexts/CartContext";
+import React, { PureComponent } from "react";
 
 import { FlatList, View } from "react-native";
 import { Icon, ListItem, Text } from "react-native-elements";
+import { GlobalContextConsumer } from "../../contexts/GlobalContext";
+import CacheImage from "../../components/basic/CachedImage";
 
 interface IProps {
   viewOnly?: boolean;
   order?: any;
 }
 
-class CartOverviewList extends Component<IProps> {
+class CartItemsSummaryList extends PureComponent<IProps> {
   render() {
     const { viewOnly = false } = this.props;
 
     return (
-      <CartConsumer>
+      <GlobalContextConsumer>
         {({ cart, grandTotal, removeCartItem }) => (
           <React.Fragment>
             {cart.map((item, index) => (
@@ -29,6 +25,7 @@ class CartOverviewList extends Component<IProps> {
                 title={`${item.quantity}x ${item.item.name}`}
                 subtitle={item.item.description ? item.item.description : null}
                 leftAvatar={{
+                  ImageComponent: CacheImage,
                   rounded: false,
                   source: {
                     uri: item.item.photo
@@ -36,14 +33,7 @@ class CartOverviewList extends Component<IProps> {
                   size: "medium"
                 }}
                 rightElement={
-                  viewOnly ? null : (
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <Text>{item.item.price.toFixed(2)}€</Text>
-                      <Icon name="close" onPress={() => removeCartItem(item)} />
-                    </View>
-                  )
+                  <Text>{(item.quantity * item.item.price).toFixed(2)}€</Text>
                 }
               />
             ))}
@@ -60,9 +50,9 @@ class CartOverviewList extends Component<IProps> {
             />
           </React.Fragment>
         )}
-      </CartConsumer>
+      </GlobalContextConsumer>
     );
   }
 }
 
-export default CartOverviewList;
+export default CartItemsSummaryList;

@@ -1,9 +1,13 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, ViewStyle } from "react-native";
 import { Font } from "expo";
 import { ThemeConsumer } from "react-native-elements";
 
-export class BrandLogo extends React.Component {
+interface IProps {
+  style?: ViewStyle;
+}
+
+export class BrandLogo extends React.Component<IProps> {
   render() {
     return (
       <ThemeConsumer>

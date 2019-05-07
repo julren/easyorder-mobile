@@ -12,8 +12,8 @@ import RestaurantsDetailScreen from "../screens/restaurants/restaurantDetail/Res
 import MenuScreen from "../screens/menu/MenuScreen";
 import CartScreen from "../screens/cart/CartScreen";
 
-import { BrandLogo } from "../components/BrandLogo";
-import LogoutButton from "../components/LogoutButton";
+import { BrandLogo } from "../components/basic/BrandLogo";
+import LogoutButton from "../components/basic/LogoutButton";
 import { colors } from "../config/customTheme.js";
 import RestaurantsMapScreen from "../screens/restaurants/RestaurantsMapScreen";
 import AccountSettingsScreen from "../screens/account/AccountSettingsScren";
@@ -27,6 +27,8 @@ import CheckInScreen from "../screens/checkin/CheckInScreen";
 import OrdersScreen from "../screens/orders/OrdersScreen";
 import OrderDetailScreen from "../screens/orders/OrderDetailScreen";
 import OrderConfirmationScreen from "../screens/orderConfirmation/OrderConfirmationScreen";
+import CheckoutScreen from "../screens/checkout/CheckoutScreen";
+import CreditCardScreen from "../screens/account/CreditCardScreen";
 
 const sharedNavigationOptions = {
   headerStyle: {
@@ -43,15 +45,14 @@ const sharedNavigationOptions = {
 
 const RestaurantStack = createStackNavigator(
   {
-    Restaurants: {
-      screen: RestaurantsScreen
-    },
+    Restaurants: RestaurantsScreen,
     RestaurantDetail: RestaurantsDetailScreen,
+    RestaurantsMap: RestaurantsMapScreen,
     Menu: MenuScreen,
     Cart: CartScreen,
-    OrderDetail: OrderDetailScreen,
-    CheckIn: CheckInScreen,
-    RestaurantsMap: RestaurantsMapScreen
+    Checkout: CheckoutScreen,
+    OrderConfirmation: OrderConfirmationScreen,
+    CheckIn: CheckInScreen
   },
   {
     cardStyle: { backgroundColor: colors.grey5 },
@@ -90,6 +91,7 @@ const AccountStack = createStackNavigator(
   {
     Account: AccountScreen,
     AccountSettings: AccountSettingsScreen,
+    CreditCard: CreditCardScreen,
     MyReviews: MyReviewsScreen,
     Imprint: ImprintScreen,
     Privacy: PrivacyScreen,
@@ -143,14 +145,3 @@ const TabNavigator = createBottomTabNavigator(
 );
 
 export default TabNavigator;
-
-// const HamburgerMenu = (props: any) => {
-//   return (
-//     <Icon
-//       type="material-community"
-//       name="menu"
-//       onPress={() => props.navigationProps.toggleDrawer()}
-//       iconStyle={{ marginLeft: 16, color: "#fff" }}
-//     />
-//   );
-// };

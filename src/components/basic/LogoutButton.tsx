@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { AsyncStorage } from "react-native";
-import firebase from "../config/firebase";
+import firebase from "../../config/firebase";
 import { NavigationScreenProp, withNavigation } from "react-navigation";
 import { Button, Text } from "react-native-elements";
 

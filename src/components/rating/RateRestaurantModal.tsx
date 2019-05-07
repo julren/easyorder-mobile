@@ -6,14 +6,15 @@ import {
   AsyncStorage,
   View
 } from "react-native";
-import firebase, { firebaseReviews } from "../config/firebase";
+import firebase, { firebaseReviews } from "../../config/firebase";
 import { Text, Button, Icon, Input } from "react-native-elements";
-import TextNote from "../components/TextNote";
-import { Review } from "../models/Review";
+import TextNote from "../basic/TextNote";
+import { RestaurantReview } from "../../models/Review";
+import { Restaurant } from "../../models";
 
 interface IProps {
-  review: Review | undefined;
-  restaurantID: string;
+  review: RestaurantReview | undefined;
+  restaurant: Restaurant;
   onClose: () => void;
 }
 
@@ -37,13 +38,13 @@ class RateRestaurantModal extends Component<IProps> {
   };
 
   onSubmit = () => {
-    const review: Review = {
+    const review: RestaurantReview = {
       userID: firebase.auth().currentUser.uid,
-      restaurantID: this.props.restaurantID,
+      restaurantID: this.props.restaurant.id,
+      restaurantName: this.props.restaurant.name,
+      logo: this.props.restaurant.media.logo,
       rating: this.state.rating,
       text: this.state.text,
-      firstname: "",
-      lastname: "",
       reviewDate: firebase.firestore.Timestamp.now()
     };
 
@@ -75,14 +76,17 @@ class RateRestaurantModal extends Component<IProps> {
 
   render() {
     const { rating } = this.state;
-    const { restaurantID, onClose, review } = this.props;
+    const { restaurant, onClose, review } = this.props;
     return (
       <KeyboardAvoidingView
         behavior="padding"
         contentContainerStyle={{ padding: 16 }}
       >
         <View style={{ alignItems: "center" }}>
-          <Icon name="thumb-up" iconStyle={{ fontSize: 50 }} />
+          <Icon
+            name="thumb-up"
+            iconStyle={{ fontSize: 50, color: "#008ACD" }}
+          />
 
           <Text h1>
             {review ? "Bewertung aktualisieren" : "Bewertung abgeben"}

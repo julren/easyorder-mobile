@@ -12,7 +12,7 @@ import { MapView } from "expo";
 
 import { ListItem, Text } from "react-native-elements";
 
-import Separator from "../../../components/Separator";
+import Separator from "../../../components/basic/Separator";
 import { Restaurant } from "../../../models/Restaurant";
 import { displayNameForWeekday } from "../../../config/displayNamesForValues";
 
@@ -26,6 +26,7 @@ class RestaurantInfoTab extends PureComponent<IProps, IState> {
     const {
       restaurant: {
         name,
+        media: { logo },
         priceClass,
         description,
         businessHours,
@@ -38,6 +39,15 @@ class RestaurantInfoTab extends PureComponent<IProps, IState> {
     const longitude = parseFloat(lon);
     return (
       <View>
+        <ListItem
+          leftAvatar={{ source: { uri: logo } }}
+          title={
+            <View>
+              <Text h1>{name}</Text>
+              <Text style={{ color: "grey" }}>{description}</Text>
+            </View>
+          }
+        />
         <Separator heading="Öffnungszeiten" />
 
         <FlatList

@@ -2,9 +2,15 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { ThemeConsumer } from "react-native-elements";
 
+interface IProps {
+  heading?: string;
+  borderTop?: boolean;
+  borderBottom?: boolean;
+}
+
 class Separator extends Component<IProps> {
   render() {
-    const { heading, border = true } = this.props;
+    const { heading, borderBottom = false, borderTop = false } = this.props;
 
     return (
       <ThemeConsumer>
@@ -14,7 +20,8 @@ class Separator extends Component<IProps> {
               height: 35,
               justifyContent: "center",
               paddingHorizontal: 16,
-              borderBottomWidth: border ? 1 : 0,
+              borderTopWidth: borderTop ? 1 : 0,
+              borderBottomWidth: borderBottom ? 1 : 0,
               backgroundColor: theme.colors.grey5,
               borderColor: theme.colors.greyOutline
             }}
@@ -32,8 +39,3 @@ class Separator extends Component<IProps> {
 }
 
 export default Separator;
-
-interface IProps {
-  heading?: string;
-  border?: boolean;
-}

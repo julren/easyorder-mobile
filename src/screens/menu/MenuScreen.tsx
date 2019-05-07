@@ -9,14 +9,13 @@ import {
   Dimensions
 } from "react-native";
 import PropTypes from "prop-types";
-import { NavigationEvents, NavigationScreenProps } from "react-navigation";
+import {
+  NavigationEvents,
+  NavigationScreenProps,
+  NavigationScreenProp
+} from "react-navigation";
 import { firebaseMenuCategories } from "../../config/firebase";
 import MenuItemList from "./MenuItemList";
-import {
-  CartConsumer,
-  withCartContext,
-  CartContext
-} from "../../contexts/CartContext";
 import MiniCartOverlay from "./MiniCartOverlay";
 import { ThemeConsumer, Button, Overlay, Text } from "react-native-elements";
 
@@ -25,13 +24,19 @@ import { Tabs, Tab } from "../../components";
 import AddToCartModal from "./AddToCartModal";
 import TableCodeScanner from "../checkin/TableCodeScanner";
 import ScanTableCodeModal from "./ScanTableCodeModal";
-interface IProps extends NavigationScreenProps {
-  cartContext: CartContext;
+import withGlobalContext from "../../contexts/withGlobalContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
+import ScannedTableOverlay from "./ScannedTableOverlay";
+import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
+
+interface IProps {
+  navigation: NavigationScreenProp<any>;
+  globalContext: GlobalContext;
 }
 
 interface IState {
+  loading: boolean;
   categories: Category[];
-  addToCartModalVisible: boolean;
   scanTableCodeModalVisible: boolean;
   selectedMenuItem: MenuItem;
 }
@@ -59,8 +64,8 @@ class MenuScreen extends PureComponent<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       categories: [],
-      addToCartModalVisible: false,
       scanTableCodeModalVisible: false,
       selectedMenuItem: undefined
     };
@@ -70,8 +75,7 @@ class MenuScreen extends PureComponent<IProps, IState> {
     let restaurant = this.props.navigation.getParam("restaurant", undefined);
     if (!restaurant) return;
 
-    const cartContext = this.props.cartContext;
-    cartContext.setRestaurant(restaurant);
+    this.props.globalContext.setSelectedRestaurant(restaurant);
 
     firebaseMenuCategories
       .where("authorID", "==", restaurant.id)
@@ -83,20 +87,12 @@ class MenuScreen extends PureComponent<IProps, IState> {
           categories.push({ id: doc.id, ...doc.data() });
         });
 
-        this.setState({ categories: categories });
+        this.setState({ loading: false, categories: categories });
       });
   }
 
-  openModal = selectedMenuItem => {
-    this.setState({
-      addToCartModalVisible: true,
-      selectedMenuItem: selectedMenuItem
-    });
-  };
-
   closeModal = () => {
     this.setState({
-      addToCartModalVisible: false,
       selectedMenuItem: undefined
     });
   };
@@ -110,7 +106,7 @@ class MenuScreen extends PureComponent<IProps, IState> {
   };
 
   onItemPress = menuItem => {
-    if (this.props.cartContext.table) {
+    if (this.props.globalContext.table) {
       this.setState({ selectedMenuItem: menuItem });
     } else {
       this.openScanTableCodeModal();
@@ -118,12 +114,17 @@ class MenuScreen extends PureComponent<IProps, IState> {
   };
 
   render() {
-    const { addToCartModalVisible } = this.state;
-    const { cart, table } = this.props.cartContext;
+    const { selectedMenuItem, categories, loading } = this.state;
+    const { cart, table, resetTable } = this.props.globalContext;
+
+    if (loading) return <PageLoadingIndicator />;
     return (
       <React.Fragment>
+        {table != undefined && (
+          <ScannedTableOverlay table={table} onDelete={resetTable} />
+        )}
         <Tabs>
-          {this.state.categories.map((category, index) => (
+          {categories.map((category, index) => (
             <Tab tabLabel={category.name} key={category.id}>
               <MenuItemList
                 categoryID={category.id}
@@ -132,16 +133,18 @@ class MenuScreen extends PureComponent<IProps, IState> {
             </Tab>
           ))}
         </Tabs>
+
         <Modal
-          animationType="fade"
-          transparent={true}
-          visible={addToCartModalVisible}
+          animationType="slide"
+          transparent={false}
+          visible={selectedMenuItem !== undefined}
         >
           <AddToCartModal
-            menuItem={this.state.selectedMenuItem}
+            menuItem={selectedMenuItem}
             onClose={this.closeModal}
           />
         </Modal>
+
         <Overlay
           borderRadius={5}
           width={Dimensions.get("window").width - 40}
@@ -151,7 +154,7 @@ class MenuScreen extends PureComponent<IProps, IState> {
           onBackdropPress={this.closeScanTableCodeModal}
           height="auto"
         >
-          <ScanTableCodeModal />
+          <ScanTableCodeModal onDone={this.closeScanTableCodeModal} />
         </Overlay>
 
         {cart.length > 0 && (
@@ -161,10 +164,9 @@ class MenuScreen extends PureComponent<IProps, IState> {
             }}
           />
         )}
-        {table && <Text>{table.name}</Text>}
       </React.Fragment>
     );
   }
 }
 
-export default withCartContext(MenuScreen);
+export default withGlobalContext(MenuScreen);

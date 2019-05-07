@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Container from "../../components/Container";
+import { Container } from "../../components";
 import { Text } from "react-native-elements";
 import { ScrollView } from "react-native";
 

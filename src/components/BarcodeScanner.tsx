@@ -35,10 +35,6 @@ export default class BarcodeScanner extends Component<Props> {
       </View>
     );
   }
-
-  handleBarCodeScanned = ({ data, type }) => {
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  };
 }
 const styles = StyleSheet.create({
   container: {

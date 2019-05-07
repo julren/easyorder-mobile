@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import { ScrollView, StyleSheet } from "react-native";
-import { Button, Input, Text, Icon } from "react-native-elements";
-import Container from "../../components/Container";
-import Separator from "../../components/Separator";
+import {
+  ScrollView,
+  StyleSheet,
+  KeyboardAvoidingView,
+  View
+} from "react-native";
+import { Button, Input, Text, Icon, ListItem } from "react-native-elements";
+import Container from "../../components/basic/Container";
+import Separator from "../../components/basic/Separator";
 import firebase from "../../config/firebase";
+import { TextNote } from "../../components";
 
 export interface Props {}
 
@@ -49,47 +55,67 @@ class AccountSettingsScreen extends React.Component<Props, State> {
     const { password, passwordConfim, passwordChangeSucces } = this.state;
     const passwordsMatch = password === passwordConfim;
     return (
-      <ScrollView>
-        <Container padded="more">
-          <Text h1>Passwort ändern</Text>
-          <Text>Hier kannst du ein neues Passwort angeben</Text>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
+        <Container>
+          <View style={{ padding: 16 }}>
+            <Text h1>Passwort ändern</Text>
+            <TextNote>Hier kannst du ein neues Passwort angeben</TextNote>
+          </View>
 
-          <Input
-            value={password}
-            onChangeText={text => {
-              this.setState({ password: text });
-            }}
-            placeholder="Neues Passwort"
-            textContentType="password"
-            secureTextEntry={true}
-            containerStyle={styles.inputContainer}
-          />
-          <Input
-            value={passwordConfim}
-            onChangeText={text => {
-              this.setState({ passwordConfim: text });
-            }}
-            placeholder="Neues Passwort bestätigen"
-            textContentType="password"
-            secureTextEntry={true}
-            containerStyle={styles.inputContainer}
-            errorMessage={
-              passwordsMatch ? null : "Passwörter stimmen nicht überein"
+          <ListItem
+            title={
+              <View>
+                <Input
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  leftIcon={
+                    <Icon name="vpn-key" iconStyle={{ color: "grey" }} />
+                  }
+                  value={password}
+                  onChangeText={text => {
+                    this.setState({ password: text });
+                  }}
+                  placeholder="Neues Passwort"
+                  textContentType="password"
+                  secureTextEntry={true}
+                  containerStyle={styles.inputContainer}
+                />
+                <Input
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  leftIcon={
+                    <Icon name="vpn-key" iconStyle={{ color: "grey" }} />
+                  }
+                  value={passwordConfim}
+                  onChangeText={text => {
+                    this.setState({ passwordConfim: text });
+                  }}
+                  placeholder="Neues Passwort bestätigen"
+                  textContentType="password"
+                  secureTextEntry={true}
+                  containerStyle={styles.inputContainer}
+                  errorMessage={
+                    passwordsMatch ? null : "Passwörter stimmen nicht überein"
+                  }
+                />
+              </View>
             }
           />
+
           {passwordChangeSucces && (
             <Text style={{ color: "green", marginVertical: 10 }}>
               Passwort wurde erfolgreich geändert!
             </Text>
           )}
           <Button
+            containerStyle={{ marginHorizontal: 16 }}
             onPress={this.onSubmit}
             title="Speichern"
             disabled={password.length == 0 || !passwordsMatch}
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 18 }}
           />
         </Container>
-      </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react";
-import { Order } from "../models/Order";
+import { Order } from "../../models/Order";
 import { NavigationScreenProps } from "react-navigation";
 import { ActivityIndicator, ScrollView, View } from "react-native";
-import { ListItem, Text } from "react-native-elements";
-import Separator from "./Separator";
-import ErrorMessage from "./ErrorMessage";
-
+import { ListItem, Text, Image } from "react-native-elements";
+import Separator from "../basic/Separator";
+import ErrorMessage from "../basic/ErrorMessage";
+import TextNote from "../basic/TextNote";
 interface IProps {
   order: Order;
 }
@@ -21,47 +21,47 @@ class OrderOverview extends PureComponent<IProps> {
 
   render() {
     const { order } = this.props;
-
+    console.log(order);
     if (!order) {
       return <ErrorMessage />;
     } else {
       return (
-        <ScrollView>
+        <View>
+          <ListItem title={<Text h1>Bestellungsübersicht</Text>} />
           <ListItem
-            title={<Text h1>Bestellungsübersicht</Text>}
-            subtitle={<Text>Deine Bestellung bei {order.restaurant.name}</Text>}
+            title="Bestellnummer"
+            rightElement={<TextNote>{order.orderID}</TextNote>}
           />
-
           <ListItem
-            title={
-              <View style={{ flexDirection: "row" }}>
-                <View style={{ marginRight: 10 }}>
-                  <Text>Bestellnummer:</Text>
-                  <Text>Bestelldatum:</Text>
-                  <Text>Zahlungsart:</Text>
-                  <Text>Tischnummer:</Text>
-                </View>
-
-                <View>
-                  <Text>{order.orderID}</Text>
-                  <Text>
-                    {order.orderDate.toLocaleString([], {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit"
-                    })}
-                  </Text>
-                  <Text>{order.paymentMethod}</Text>
-                  <Text>{order.table}</Text>
-                </View>
-              </View>
+            title="Bestelldatum"
+            rightElement={
+              <TextNote>
+                {order.orderDate.toLocaleString([], {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit"
+                })}
+              </TextNote>
             }
           />
+          <ListItem
+            title="Zahlungsart"
+            rightElement={<TextNote>{order.paymentMethod.name}</TextNote>}
+          />
+          <ListItem
+            title="Tischnummer"
+            rightElement={
+              <TextNote>{order.table ? order.table.name : "2"}</TextNote>
+            }
+          />
+          {/* <ListItem
+            title="Status"
+            rightElement={<TextNote>{order.status}</TextNote>}
+          /> */}
 
           <Separator heading="Artikel" />
-
           {order.items.map((item, index) => (
             <ListItem
               key={item.item.id}
@@ -82,7 +82,6 @@ class OrderOverview extends PureComponent<IProps> {
               }
             />
           ))}
-
           <ListItem
             title={
               <Text style={{ fontWeight: "bold" }}>Summe (inkl. Mwst)</Text>
@@ -93,7 +92,6 @@ class OrderOverview extends PureComponent<IProps> {
               </Text>
             }
           />
-
           {/* 
     
                 {order.items.map((element, index) => (
@@ -170,7 +168,7 @@ class OrderOverview extends PureComponent<IProps> {
                     </Right>
                   </ListItem>
                 </List> */}
-        </ScrollView>
+        </View>
       );
     }
   }

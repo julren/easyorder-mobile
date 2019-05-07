@@ -1,28 +1,25 @@
 import React from "react";
 import { FlatList } from "react-native";
 
-import {
-  NavigationEvents,
-  NavigationScreenProp,
-  NavigationScreenProps
-} from "react-navigation";
+import { NavigationEvents, NavigationScreenProp } from "react-navigation";
 
-import { firebaseRestaurants } from "../../config/firebase";
 import RestaurantCard from "./RestaurantCard";
-import {
-  withCartContext,
-  CartContextProps,
-  CartContext
-} from "../../contexts/CartContext";
 
 import { Text, Button, Header, Icon } from "react-native-elements";
-import Container from "../../components/Container";
-import PageLoadingIndicator from "../../components/PageLoadingIndicator";
+import Container from "../../components/basic/Container";
+import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
 import { Permissions } from "expo";
 import { Location } from "expo";
-import { Restaurant } from "../../models/Restaurant";
+import { GlobalContext } from "../../contexts/GlobalContext";
+import withGlobalContext from "../../contexts/withGlobalContext";
+import CacheImage from "../../components/basic/CachedImage";
+import { Restaurant } from "../../models";
+import { firebaseRestaurants } from "../../config/firebase";
 
-interface Props extends NavigationScreenProps, CartContextProps {}
+interface Props {
+  navigation: NavigationScreenProp<any>;
+  globalContext: GlobalContext;
+}
 interface State {
   restaurants: Restaurant[];
   location: any;
@@ -35,7 +32,6 @@ interface State {
 class RestaurantsScreen extends React.Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     const location = navigation.getParam("location", undefined);
-    const restaurants = navigation.getParam("restaurants", undefined);
 
     return {
       title: location
@@ -47,7 +43,6 @@ class RestaurantsScreen extends React.Component<Props, State> {
           type="clear"
           onPress={() =>
             navigation.navigate("RestaurantsMap", {
-              restaurants: restaurants,
               location: location
             })
           }
@@ -67,8 +62,13 @@ class RestaurantsScreen extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this._getLocationAsync();
+    this.getLocationAsync();
+    this.getRestaurants();
     // Get Restaurants from database
+    // this.props.navigation.setParams({ restaurants: this.props.globalContext.restaurants });
+  }
+
+  getRestaurants = () => {
     firebaseRestaurants
       .get()
       .then(querySnapshot => {
@@ -76,15 +76,14 @@ class RestaurantsScreen extends React.Component<Props, State> {
         querySnapshot.forEach(function(doc) {
           restaurantsData.push({ id: doc.id, ...doc.data() });
         });
-        this.props.navigation.setParams({ restaurants: restaurantsData });
         this.setState({ restaurants: restaurantsData });
       })
       .catch(error => {
-        console.error("Error getting document..: ", error);
+        console.error("Error getting restaurants..: ", error);
       });
-  }
+  };
 
-  _getLocationAsync = async () => {
+  getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== "granted") {
       this.setState({
@@ -104,54 +103,45 @@ class RestaurantsScreen extends React.Component<Props, State> {
         return responseJson;
       });
 
-    console.log(locationDetails);
     this.props.navigation.setParams({ location: locationDetails });
     this.setState({ location: locationDetails });
   };
 
   render() {
-    const { restaurants, location } = this.state;
-
     // Consumes Cart Context to be able to clear cart when the user goes back to list from restaurant view
-    const { cartContext } = this.props;
+    const { globalContext } = this.props;
+    const { restaurants } = this.state;
 
     if (restaurants.length == 0) return <PageLoadingIndicator />;
 
     return (
       <React.Fragment>
         <Container>
-          {/* Helper from react-navigation. When Screen will focus (be active) clear cart of cartContext */}
+          {/* Helper from react-navigation. When Screen will focus (be active) clear cart of globalContext */}
           <NavigationEvents
-            onWillFocus={payload => cartContext.clearCartContext()}
+            onWillFocus={payload => globalContext.resetSelectedRestaurant()}
           />
-
-          {/* Kartenansicht der Restaurants */}
-          {/* <Content padder> */}
-          {/* <Card>
-              <CardItem>
-                 <RestaurantsMap restaurants={restaurants} />
-                 </CardItem>
-                </Card> */}
 
           {/* Liste der Restaurantdarstellung rendern */}
 
           <FlatList
             ListHeaderComponent={
-              <Container padded>
+              <Container>
                 <Text h1>Restaurants in der Nähe</Text>
               </Container>
             }
             contentContainerStyle={{ padding: 8 }}
             keyExtractor={item => item.id}
-            data={this.state.restaurants}
+            data={restaurants}
             renderItem={({ item }) => (
               <RestaurantCard
                 restaurant={item}
-                onRestaurantSelect={() =>
+                onRestaurantSelect={() => {
+                  this.props.globalContext.setSelectedRestaurant(item);
                   this.props.navigation.navigate("Menu", {
                     restaurant: item
-                  })
-                }
+                  });
+                }}
               />
             )}
           />
@@ -161,4 +151,4 @@ class RestaurantsScreen extends React.Component<Props, State> {
   }
 }
 
-export default withCartContext(RestaurantsScreen);
+export default withGlobalContext(RestaurantsScreen);

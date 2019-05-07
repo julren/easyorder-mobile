@@ -4,32 +4,30 @@ import { MapView } from "expo";
 import { NavigationScreenProp } from "react-navigation";
 import { View } from "react-native";
 import { Text, ListItem } from "react-native-elements";
+import withGlobalContext from "../../contexts/withGlobalContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
-export interface Props {
+export interface IProps {
   navigation: NavigationScreenProp<any, any>;
+  globalContext: GlobalContext;
 }
 
-export interface State {}
+export interface IState {}
 
-class RestaurantsMapScreen extends Component<Props, State> {
+class RestaurantsMapScreen extends Component<IProps, IState> {
   static navigationOptions = {
     title: "Restaurants in der Nähe"
   };
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {};
   }
 
   render() {
-    const restaurants: Restaurant[] = this.props.navigation.getParam(
-      "restaurants",
-      []
-    );
+    const restaurants: Restaurant[] = this.props.globalContext.restaurants;
     const location = this.props.navigation.getParam("location", {});
 
-    console.log(restaurants, location);
-    // @ts-ignore-start
     return (
       <MapView
         provider={"google"}
@@ -43,7 +41,6 @@ class RestaurantsMapScreen extends Component<Props, State> {
         }}
       >
         {restaurants.map(restaurant => (
-          // @ts-ignore
           <MapView.Marker
             key={restaurant.id}
             coordinate={{
@@ -77,4 +74,4 @@ class RestaurantsMapScreen extends Component<Props, State> {
   }
 }
 
-export default RestaurantsMapScreen;
+export default withGlobalContext(RestaurantsMapScreen);

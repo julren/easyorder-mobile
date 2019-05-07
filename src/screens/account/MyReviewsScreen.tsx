@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import Container from "../../components/Container";
-import { Text, ListItem, Icon } from "react-native-elements";
+import Container from "../../components/basic/Container";
+import StarRating from "react-native-star-rating";
+import { Text, ListItem, Icon, Badge } from "react-native-elements";
 import firebase, { firebaseReviews } from "../../config/firebase";
-import { Review } from "../../models/Review";
+import { RestaurantReview } from "../../models/Review";
 import { FlatList, View } from "react-native";
 
 export interface Props {}
 
 export interface State {
-  reviews: Review[];
+  reviews: RestaurantReview[];
   loading: boolean;
 }
 
@@ -29,26 +30,24 @@ class MyReviewsScreen extends Component<Props, State> {
     this.getReviews();
   }
 
-  getReviews = () => {
-    try {
-      firebaseReviews
-        .where("userID", "==", firebase.auth().currentUser.uid)
-        .get()
-        .then(querySnapshot => {
-          if (!querySnapshot.empty) {
-            let reviews = [];
+  getReviews = async () => {
+    let reviews = [];
 
-            querySnapshot.forEach(reviewDoc => {
-              reviews.push({ ...reviewDoc.data(), id: reviewDoc.id });
-            });
-
-            this.setState({ reviews: reviews, loading: false });
-          }
-        })
-        .catch(error => {
-          console.error("Error getting document: ", error);
-        });
-    } catch (error) {}
+    await firebaseReviews
+      .where("userID", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(querySnapshot => {
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(reviewDoc => {
+            reviews.push({ ...reviewDoc.data(), id: reviewDoc.id });
+          });
+        }
+      })
+      .catch(error => {
+        console.error("Error getting document: ", error);
+      });
+    console.log(reviews);
+    this.setState({ reviews: reviews, loading: false });
   };
 
   render() {
@@ -60,19 +59,47 @@ class MyReviewsScreen extends Component<Props, State> {
             <Text h1>Meine Bewertungen</Text>
           </Container>
         }
+        ListEmptyComponent={
+          !this.state.loading && (
+            <Container padded="more">
+              <Text>Keine Bewertungen bisher</Text>
+            </Container>
+          )
+        }
         data={reviews}
         keyExtractor={item => item.id}
         onRefresh={() => this.getReviews()}
         refreshing={this.state.loading}
         renderItem={({ item }) => (
           <ListItem
-            title={item.restaurantID}
-            subtitle={item.reviewDate.toDate().toLocaleString([], {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric"
-            })}
-            rightTitle={<RatingDisplay rating={item.rating} />}
+            leftAvatar={{ source: { uri: item.logo } }}
+            title={
+              <View>
+                <Text>{item.restaurantName}</Text>
+              </View>
+            }
+            subtitle={
+              <View>
+                <StarRating
+                  disabled
+                  starSize={14}
+                  maxStarts={5}
+                  rating={item.rating}
+                  fullStarColor="#FFD700"
+                  emptyStarColor="#d3d3d3"
+                  containerStyle={{ justifyContent: "flex-start" }}
+                />
+              </View>
+            }
+            rightElement={
+              <Text style={{ color: "grey", fontSize: 12 }}>
+                {item.reviewDate.toDate().toLocaleString([], {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric"
+                })}
+              </Text>
+            }
           />
         )}
       />

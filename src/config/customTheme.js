@@ -34,16 +34,17 @@ export default {
     }
   },
   Text: {
-    h1Style: { fontSize: 24, fontWeight: "bold" },
+    h1Style: {
+      fontSize: 24,
+      fontWeight: "bold"
+    },
     h2Style: { fontSize: 21, fontWeight: "bold" },
-    h3Style: { fontSize: 18, fontWeight: "bold" },
-    h4Style: { fontSize: 16, fontWeight: "bold" }
+    h3Style: { fontSize: 18, fontWeight: "bold" }
   },
   Input: {
     containerStyle: { paddingVertical: 5 },
     leftIconContainerStyle: { marginLeft: 0, marginRight: 10 }
   },
-  Icon: {
-    color: colors.primary
-  }
+  Icon: {}
 };
+  

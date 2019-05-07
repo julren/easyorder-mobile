@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
-import { withCartContext } from "../../contexts/CartContext";
 import { firebaseTables } from "../../config/firebase";
 import { FirebaseApp } from "@firebase/app-types";
 import { Icon, Text } from "react-native-elements";
@@ -71,25 +70,27 @@ class TableCodeScanner extends Component<
         )}
         <Icon iconStyle={styles.qr} name="ios-qr-scanner" type="ionicon" />
 
-        {this.props.withText && (
-          <React.Fragment>
-            <Text
-              style={{ color: "red" }}
-              onPress={() =>
-                this.handleBarCodeScanned({
-                  data: "0Fq5H8qxTFnmVl68mpsn",
-                  type: "test"
-                })
-              }
-            >
-              Testwerte
-            </Text>
+        <React.Fragment>
+          <Text
+            style={{
+              color: "red",
+              position: "absolute",
+              top: 150
+            }}
+            onPress={() =>
+              this.handleBarCodeScanned({
+                data: "0Fq5H8qxTFnmVl68mpsn",
+                type: "test"
+              })
+            }
+          >
+            Testwerte
+          </Text>
 
-            <Text onPress={onCancel} style={styles.cancel}>
-              Abbrechen
-            </Text>
-          </React.Fragment>
-        )}
+          <Text onPress={onCancel} style={styles.cancel}>
+            Abbrechen
+          </Text>
+        </React.Fragment>
       </BarCodeScanner>
     );
   }

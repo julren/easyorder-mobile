@@ -2,17 +2,19 @@ import React, { Component } from "react";
 import { FlatList, View, ActivityIndicator, ScrollView } from "react-native";
 import StarRating from "react-native-star-rating";
 import { firebaseReviews } from "../../../config/firebase";
-import LeaveReviewButton from "../../../components/LeaveReviewButton";
-import { Review } from "../../../models/Review";
+import LeaveReviewButton from "../../../components/rating/LeaveReviewButton";
+import { RestaurantReview } from "../../../models/Review";
 import { Restaurant } from "../../../models/Restaurant";
 import { Text, ListItem, Card } from "react-native-elements";
-import Separator from "../../../components/Separator";
+import Separator from "../../../components/basic/Separator";
+import ReviewRatingDistributionChart from "../../../components/rating/ReviewRatingDistributionChart";
+import ReviewsList from "../../../components/rating/ReviewsList";
 
 interface IProps {
   restaurant: Restaurant;
 }
 interface IState {
-  reviews: Review[];
+  reviews: RestaurantReview[];
   loading: boolean;
 }
 
@@ -21,29 +23,7 @@ class ReviewsTab extends Component<IProps, IState> {
     super(props);
     this.state = {
       loading: true,
-      reviews: [
-        {
-          id: "435g34623e23",
-          restaurantID: "",
-          userID: "",
-          rating: 4,
-          text:
-            "Cooles Restaurant, aber hat auch SChwächen. Getränke kamen spät. Aber dafür war das Essen sehr sehr lecker. Wir werden auf jeden Fall wiederkommen!",
-          firstname: "Hans",
-          lastname: "Meier",
-          reviewDate: "2019-04-10"
-        },
-        {
-          id: "fr7832r7f9h",
-          restaurantID: "",
-          userID: "",
-          rating: 5,
-          text: "ecker essen 😄",
-          firstname: "Peter",
-          lastname: "Beel",
-          reviewDate: "2019-02-01"
-        }
-      ]
+      reviews: []
     };
   }
 
@@ -76,6 +56,7 @@ class ReviewsTab extends Component<IProps, IState> {
 
   render() {
     const { restaurant } = this.props;
+    console.log(restaurant);
     const { reviews, loading } = this.state;
     // restaurant.rating = {
     //   overall: 4.2,
@@ -98,101 +79,19 @@ class ReviewsTab extends Component<IProps, IState> {
           marginBottom: 15
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 16
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            {Object.keys(restaurant.ratingDistribution).map((key, index) => (
-              <View
-                key={index}
-                style={{
-                  flexDirection: "row",
-                  marginBottom: 4
-                }}
-              >
-                <Text>{key}</Text>
-
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    marginLeft: 5,
-                    borderRadius: 10,
-                    backgroundColor: "#f4f4f4"
-                  }}
-                >
-                  <View
-                    style={{
-                      flex:
-                        restaurant.ratingDistribution[key] /
-                        restaurant.totalRatingPoints,
-                      borderRadius: 10,
-                      backgroundColor: "#FFD700"
-                    }}
-                  />
-                </View>
-              </View>
-            ))}
-          </View>
-
-          <View
-            style={{
-              marginLeft: "auto",
-              justifyContent: "center",
-              alignItems: "center",
-
-              padding: 10
-            }}
-          >
-            <Text style={{ fontSize: 30 }}>{restaurant.avgRating}</Text>
-
-            <StarRating
-              starSize={20}
-              maxStarts={5}
-              rating={restaurant.avgRating}
-              fullStarColor="#FFD700"
-              emptyStarColor="#d3d3d3"
-            />
-            <Text>({restaurant.totalNumRatings})</Text>
-          </View>
-        </View>
-        <Separator />
-
-        <Separator border={true} heading="Bewertungen" />
-
-        <FlatList
-          data={this.state.reviews}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <ListItem
-              leftIcon={{ name: "person", iconStyle: { color: "grey" } }}
-              subtitle={item.text}
-              subtitleStyle={{ color: null }}
-              titleStyle={{ color: "grey" }}
-              title={`Review vom ${item.reviewDate.toDate().toLocaleString([], {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric"
-              })}`}
-              rightTitle={
-                <StarRating
-                  starSize={15}
-                  maxStarts={5}
-                  rating={item.rating}
-                  fullStarColor="#FFD700"
-                  emptyStarColor="#d3d3d3"
-                />
-              }
-            />
-          )}
+        <ReviewRatingDistributionChart
+          ratingDistribution={restaurant.ratingDistribution}
+          totalNumRatings={restaurant.totalNumRatings}
+          totalRatingPoints={restaurant.totalRatingPoints}
+          avgRating={restaurant.avgRating}
         />
 
+        <Separator borderBottom borderTop heading="Bewertungen" />
+
+        <ReviewsList reviews={this.state.reviews} />
+
         <LeaveReviewButton
-          restaurantID={restaurant.id}
+          restaurant={restaurant}
           onChange={this.refreshReviews}
         />
       </ScrollView>

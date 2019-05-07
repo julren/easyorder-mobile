@@ -3,21 +3,27 @@ import { Text, Icon } from "react-native-elements";
 import { ImageBackground, View } from "react-native";
 import { NavigationScreenProps } from "react-navigation";
 import { OrderOverview, Container } from "../../components";
+import ErrorMessage from "../../components/basic/ErrorMessage";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface IProps extends NavigationScreenProps {}
 interface IState {}
 
 class OrderConfirmationScreen extends Component<IProps, IState> {
+  static navigationOptions: {
+    headerLeft: null;
+  };
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   render() {
-    const { order } = this.props.navigation.getParam("order", undefined);
+    const order = this.props.navigation.getParam("order");
 
+    if (order === undefined) return <ErrorMessage />;
     return (
-      <Container>
+      <ScrollView>
         <ImageBackground
           source={{ uri: order.restaurant.coverPhoto }}
           style={{
@@ -34,20 +40,18 @@ class OrderConfirmationScreen extends Component<IProps, IState> {
             }}
           >
             <Icon
-              name="check-bold"
+              type="material-community"
+              name="check-circle-outline"
               iconStyle={{ color: "#fff", fontSize: 50 }}
             />
-            <Text style={{ color: "#fff" }}>
+            <Text h2 style={{ color: "#fff" }}>
               Vielen Dank für deine Bestellung!
-            </Text>
-            <Text h1 style={{ color: "#fff", fontWeight: "bold" }}>
-              {order.restaurant.name}
             </Text>
           </View>
         </ImageBackground>
 
         <OrderOverview order={order} />
-      </Container>
+      </ScrollView>
     );
   }
 }

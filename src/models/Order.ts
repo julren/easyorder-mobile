@@ -1,7 +1,9 @@
 import { MenuItem } from "./MenuItem";
 import { Table } from "./Table";
+import { PaymentMethod } from "./PaymentMethod";
 export interface Order {
   id?: string;
+  status?: string;
   customerID: string;
   grandTotal: string;
   items: {
@@ -11,7 +13,7 @@ export interface Order {
   mwst: number;
   orderDate: any;
   orderID: string;
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
   restaurant: {
     coverPhoto: string;
     logo: string;

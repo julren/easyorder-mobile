@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Container from "../../components/Container";
+import Container from "../../components/basic/Container";
 import { Text, ListItem } from "react-native-elements";
 import { ScrollView } from "react-native";
-import Separator from "../../components/Separator";
+import Separator from "../../components/basic/Separator";
 
 export interface Props {}
 
