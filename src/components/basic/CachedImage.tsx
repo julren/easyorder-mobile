@@ -14,7 +14,6 @@ export default class CacheImage extends React.Component<ImageProps> {
   };
 
   componentDidMount = async () => {
-    console.log(this.props);
     const {
       source: { uri = "" }
     }: any = this.props;
@@ -42,6 +41,8 @@ export default class CacheImage extends React.Component<ImageProps> {
 
   render() {
     const { ...attributes } = this.props;
-    return <Image {...attributes} source={this.state.source} />;
+    return (
+      <Image {...attributes} source={this.state.source} resizeMode="contain" />
+    );
   }
 }

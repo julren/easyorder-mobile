@@ -35,8 +35,13 @@ class ScanTableCodeModal extends PureComponent<IProps, IState> {
     this.setState({ scanActive: false });
   };
 
-  onScanSuccess = table => {
-    this.props.globalContext.setTable(table);
+  onScanSuccess = result => {
+    const { restaurantDoc, tableDoc } = result;
+    this.props.globalContext.setTable({ id: tableDoc.id, ...tableDoc.data() });
+    this.props.globalContext.setSelectedRestaurant({
+      id: restaurantDoc.id,
+      ...restaurantDoc.data()
+    });
     this.setState({ scanActive: false, scanSuccess: true });
 
     // Wait 2 seconds for the success animation to finish
@@ -47,12 +52,22 @@ class ScanTableCodeModal extends PureComponent<IProps, IState> {
 
   render() {
     const { scanActive, scanSuccess } = this.state;
-    const { setTable, table } = this.props.globalContext;
+    const { setTable, table, selectedRestaurant } = this.props.globalContext;
     const { onDone } = this.props;
     return (
       <View>
         {scanSuccess ? (
           <View>
+            <Text
+              style={{
+                color: "#008ACD",
+                fontWeight: "bold",
+                alignSelf: "center"
+              }}
+            >
+              {selectedRestaurant.name}
+            </Text>
+
             <CheckmarkAnimation
               style={{
                 height: 250,

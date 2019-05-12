@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Text, Icon } from "react-native-elements";
+import { Text, Icon, Button } from "react-native-elements";
 import { ImageBackground, View } from "react-native";
-import { NavigationScreenProps } from "react-navigation";
+import { NavigationScreenProps, NavigationActions } from "react-navigation";
 import { OrderOverview, Container } from "../../components";
 import ErrorMessage from "../../components/basic/ErrorMessage";
 import { ScrollView } from "react-native-gesture-handler";
@@ -10,10 +10,25 @@ interface IProps extends NavigationScreenProps {}
 interface IState {}
 
 class OrderConfirmationScreen extends Component<IProps, IState> {
-  static navigationOptions: {
-    title: "Bestellübersicht";
-    headerLeft: null;
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Bestellübersicht",
+      headerLeft: null,
+      headerRight: (
+        <Button
+          titleStyle={{ color: "#fff" }}
+          type="clear"
+          title="Fertig"
+          onPress={() => {
+            navigation.reset([
+              NavigationActions.navigate({ routeName: "Restaurants" })
+            ]);
+          }}
+        />
+      )
+    };
   };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -35,7 +50,7 @@ class OrderConfirmationScreen extends Component<IProps, IState> {
           <View
             style={{
               flex: 1,
-              backgroundColor: "rgba(60, 109, 130, 0.7)",
+              backgroundColor: "rgba(0,0,0, 0.7)",
               justifyContent: "center",
               alignItems: "center"
             }}

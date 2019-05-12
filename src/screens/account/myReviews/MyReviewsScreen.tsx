@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import Container from "../../components/basic/Container";
+import Container from "../../../components/basic/Container";
 import StarRating from "react-native-star-rating";
 import { Text, ListItem, Icon, Badge } from "react-native-elements";
-import firebase, { firebaseReviews } from "../../config/firebase";
-import { RestaurantReview } from "../../models/Review";
+import firebase, {
+  firebaseMenuItemReviews,
+  firebaseRestaurantReviews
+} from "../../../config/firebase";
+import { RestaurantReview } from "../../../models/RestaurantReview";
 import { FlatList, View } from "react-native";
 
 export interface Props {}
@@ -31,9 +34,13 @@ class MyReviewsScreen extends Component<Props, State> {
   }
 
   getReviews = async () => {
+    this.getRestaurantReviews();
+  };
+
+  getRestaurantReviews = async () => {
     let reviews = [];
 
-    await firebaseReviews
+    await firebaseRestaurantReviews
       .where("userID", "==", firebase.auth().currentUser.uid)
       .get()
       .then(querySnapshot => {
@@ -44,9 +51,27 @@ class MyReviewsScreen extends Component<Props, State> {
         }
       })
       .catch(error => {
-        console.error("Error getting document: ", error);
+        console.error("Error getting firebaseRestaurantReviews: ", error);
       });
-    console.log(reviews);
+    this.setState({ reviews: reviews, loading: false });
+  };
+
+  getMenuItemReviews = async () => {
+    let reviews = [];
+
+    await firebaseMenuItemReviews
+      .where("userID", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(querySnapshot => {
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(reviewDoc => {
+            reviews.push({ ...reviewDoc.data(), id: reviewDoc.id });
+          });
+        }
+      })
+      .catch(error => {
+        console.error("Error getting firebaseMenuItemReviews: ", error);
+      });
     this.setState({ reviews: reviews, loading: false });
   };
 

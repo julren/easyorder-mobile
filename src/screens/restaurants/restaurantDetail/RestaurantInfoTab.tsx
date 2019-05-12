@@ -15,6 +15,7 @@ import { ListItem, Text } from "react-native-elements";
 import Separator from "../../../components/basic/Separator";
 import { Restaurant } from "../../../models/Restaurant";
 import { displayNameForWeekday } from "../../../config/displayNamesForValues";
+import CacheImage from "../../../components/basic/CachedImage";
 
 interface IProps {
   restaurant: Restaurant;
@@ -31,7 +32,7 @@ class RestaurantInfoTab extends PureComponent<IProps, IState> {
         description,
         businessHours,
         contactInfo: { email, phone },
-        adress: { city, street, postcode, lat, lon }
+        address: { city, street, postcode, lat, lon }
       }
     } = this.props;
 
@@ -40,7 +41,13 @@ class RestaurantInfoTab extends PureComponent<IProps, IState> {
     return (
       <View>
         <ListItem
-          leftAvatar={{ source: { uri: logo } }}
+          leftAvatar={
+            <CacheImage
+              source={{ uri: logo }}
+              resizeMode="contain"
+              style={{ width: 40, height: 40 }}
+            />
+          }
           title={
             <View>
               <Text h1>{name}</Text>

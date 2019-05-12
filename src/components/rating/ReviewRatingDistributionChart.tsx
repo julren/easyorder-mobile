@@ -4,10 +4,7 @@ import StarRating from "react-native-star-rating";
 import { Text } from "react-native-elements";
 
 interface IProps {
-  ratingDistribution: any;
-  totalNumRatings: number;
-  totalRatingPoints: number;
-  avgRating: number;
+  rating: any;
 }
 
 class ReviewRatingDistributionChart extends PureComponent<IProps> {
@@ -16,6 +13,8 @@ class ReviewRatingDistributionChart extends PureComponent<IProps> {
     this.state = {};
   }
   render() {
+    const { rating = fallbackRating } = this.props;
+
     const {
       ratingDistribution = {
         "1": 0,
@@ -27,7 +26,7 @@ class ReviewRatingDistributionChart extends PureComponent<IProps> {
       totalNumRatings = 0,
       totalRatingPoints = 0,
       avgRating = 0.0
-    } = this.props;
+    } = rating;
 
     return (
       <View
@@ -38,35 +37,41 @@ class ReviewRatingDistributionChart extends PureComponent<IProps> {
         }}
       >
         <View style={{ flex: 1 }}>
-          {Object.keys(ratingDistribution).map((key, index) => (
-            <View
-              key={index}
-              style={{
-                flexDirection: "row",
-                marginBottom: 4
-              }}
-            >
-              <Text>{key}</Text>
-
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  marginLeft: 5,
-                  borderRadius: 10,
-                  backgroundColor: "#f4f4f4"
-                }}
-              >
+          {Object.keys(ratingDistribution)
+            .sort((a: any, b: any) => b - a)
+            .map((key, index) => {
+              return (
                 <View
+                  key={index}
                   style={{
-                    flex: ratingDistribution[key] / totalRatingPoints,
-                    borderRadius: 10,
-                    backgroundColor: "#FFD700"
+                    flexDirection: "row",
+                    marginBottom: 4
                   }}
-                />
-              </View>
-            </View>
-          ))}
+                >
+                  <Text>{key}</Text>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      marginLeft: 5,
+                      borderRadius: 10,
+                      backgroundColor: "#f4f4f4"
+                    }}
+                  >
+                    <View
+                      style={{
+                        flex:
+                          (ratingDistribution[key] * parseInt(key)) /
+                          totalRatingPoints,
+                        borderRadius: 10,
+                        backgroundColor: "#FFD700"
+                      }}
+                    />
+                  </View>
+                </View>
+              );
+            })}
         </View>
 
         <View
@@ -94,3 +99,16 @@ class ReviewRatingDistributionChart extends PureComponent<IProps> {
 }
 
 export default ReviewRatingDistributionChart;
+
+const fallbackRating = {
+  ratingDistribution: {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0
+  },
+  totalNumRatings: 0,
+  totalRatingPoints: 0,
+  avgRating: 0.0
+};

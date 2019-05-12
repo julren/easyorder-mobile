@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import firebase, {
   firebaseOrders,
-  firebaseTables,
   firebaseRestaurants
 } from "../config/firebase";
 import {
@@ -205,7 +204,8 @@ class GlobalContextProvider extends Component<any, any> {
       cart,
       grandTotal,
       mwst,
-      paymentMethod
+      paymentMethod,
+      table
     } = this.state;
 
     const order = {
@@ -221,7 +221,8 @@ class GlobalContextProvider extends Component<any, any> {
         coverPhoto: selectedRestaurant.media.coverPhoto
       },
       orderDate: firebase.firestore.Timestamp.now(),
-      status: "open"
+      status: "open",
+      table: table
     };
 
     return new Promise((resolve, reject) => {
@@ -229,7 +230,11 @@ class GlobalContextProvider extends Component<any, any> {
         .add(order)
         .then(docRef => {
           docRef.get().then(doc => {
-            resolve({ id: doc.id, ...doc.data() });
+            resolve({
+              ...doc.data(),
+              id: doc.id,
+              orderDate: doc.data().orderDate.toDate()
+            });
           });
         })
         .catch(error => {
@@ -240,7 +245,6 @@ class GlobalContextProvider extends Component<any, any> {
   };
 
   render() {
-    //TODO: evtl ? pattern ändern, bei jedem state change wird der provider neu gerendert und damit die ganze app
     return (
       <GlobalContext.Provider
         value={{

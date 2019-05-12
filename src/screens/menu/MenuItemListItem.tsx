@@ -19,7 +19,6 @@ interface IProps {
 
 class MenuItemListItem extends PureComponent<IProps> {
   render() {
-    console.log("rerendered MenuItemListItem");
     const { menuItem, globalContext, ...rest } = this.props;
     const numInCart = globalContext.getNumOfItemInCart(menuItem);
 

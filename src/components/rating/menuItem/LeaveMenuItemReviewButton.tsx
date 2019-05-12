@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { Modal, View, ActivityIndicator, Dimensions } from "react-native";
-import RateRestaurantModal from "./RateRestaurantModal";
-import firebase, { firebaseReviews } from "../../config/firebase";
+import firebase, {
+  firebaseRestaurants,
+  firebaseMenuItemReviews
+} from "../../../config/firebase";
 import { Button, Text, Overlay } from "react-native-elements";
 import StarRating from "react-native-star-rating";
-import { RestaurantReview } from "../../models/Review";
-import { Restaurant } from "../../models";
+import { RestaurantReview } from "../../../models/RestaurantReview";
+import { Restaurant, MenuItem } from "../../../models";
+import ReviewMenuItemModal from "./ReviewMenuItemModal";
 
 interface IProps {
-  restaurant: Restaurant;
+  menuItem: MenuItem;
   onChange: () => void;
 }
 
@@ -18,8 +21,14 @@ interface IState {
   loading: boolean;
 }
 
-class LeaveReviewButton extends Component<IProps, IState> {
-  state = { modalVisible: false, review: undefined, loading: true };
+class LeaveMenuItemReviewButton extends Component<IProps, IState> {
+  state = {
+    modalVisible: false,
+    mode: undefined,
+    review: undefined,
+    menuItem: undefined,
+    loading: true
+  };
 
   openModal = () => {
     this.setState({ modalVisible: true });
@@ -30,15 +39,15 @@ class LeaveReviewButton extends Component<IProps, IState> {
   };
 
   componentDidMount() {
-    this.getReviewForRestaurantByUser(this.props.restaurant.id);
+    this.getMenuItemReviewOfUser(this.props.menuItem.id);
   }
 
-  getReviewForRestaurantByUser = restaurantID => {
+  getMenuItemReviewOfUser = menuItemId => {
     try {
       this.setState({ loading: true });
-      firebaseReviews
+      firebaseMenuItemReviews
         .where("userID", "==", firebase.auth().currentUser.uid)
-        .where("restaurantID", "==", restaurantID)
+        .where("menuItemID", "==", this.props.menuItem.id)
         .get()
         .then(querySnapshot => {
           let reviews = [];
@@ -57,7 +66,6 @@ class LeaveReviewButton extends Component<IProps, IState> {
         });
     } catch (error) {
       this.setState({ loading: false });
-
       console.log(error);
     }
   };
@@ -94,7 +102,7 @@ class LeaveReviewButton extends Component<IProps, IState> {
     return (
       <React.Fragment>
         <Button
-          title={review ? "Bewertung aktualisieren" : "Restaurant bewerten"}
+          title={review ? "Bewertung aktualisieren" : "Gericht bewerten"}
           onPress={this.openModal}
           containerStyle={{ margin: 16 }}
         />
@@ -108,9 +116,9 @@ class LeaveReviewButton extends Component<IProps, IState> {
           borderRadius={20}
           width={Dimensions.get("window").width - 40}
         >
-          <RateRestaurantModal
+          <ReviewMenuItemModal
             review={this.state.review}
-            restaurant={this.props.restaurant}
+            menuItem={this.props.menuItem}
             onClose={this.closeModal}
           />
         </Overlay>
@@ -119,4 +127,4 @@ class LeaveReviewButton extends Component<IProps, IState> {
   }
 }
 
-export default LeaveReviewButton;
+export default LeaveMenuItemReviewButton;

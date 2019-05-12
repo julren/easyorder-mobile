@@ -10,12 +10,13 @@ import {
 import { Button, Text, Icon, Input, ListItem } from "react-native-elements";
 import StarRating from "react-native-star-rating";
 
-import { MenuItem } from "../../models/MenuItem";
-import { GlobalContextConsumer } from "../../contexts/GlobalContext";
-import { Container, Tabs, Tab, Separator } from "../../components";
-import ReviewRatingDistributionChart from "../../components/rating/ReviewRatingDistributionChart";
-import ReviewsList from "../../components/rating/ReviewsList";
-import MenuItemListItem from "./MenuItemListItem";
+import { MenuItem } from "../../../models/MenuItem";
+import { GlobalContextConsumer } from "../../../contexts/GlobalContext";
+import { Container, Tabs, Tab, Separator } from "../../../components";
+import ReviewRatingDistributionChart from "../../../components/rating/ReviewRatingDistributionChart";
+import MenuItemListItem from "../MenuItemListItem";
+import MenuItemReviewsList from "../../../components/rating/menuItem/MenuItemReviewsList";
+import MenuItemReviewsTab from "./MenuItemReviewsTab";
 
 interface IProps {
   onClose: () => void;
@@ -44,7 +45,7 @@ class AddToCartModal extends Component<IProps> {
           </Tab>
 
           <Tab tabLabel="Bewertungen" fixedView>
-            <MenuItemReviewsTab />
+            <MenuItemReviewsTab menuItem={menuItem} />
           </Tab>
         </Tabs>
       </React.Fragment>
@@ -193,23 +194,6 @@ class MenuItemInfoTab extends PureComponent<{ menuItem: any; onClose: any }> {
           </Container>
         )}
       </GlobalContextConsumer>
-    );
-  }
-}
-
-class MenuItemReviewsTab extends PureComponent {
-  render() {
-    return (
-      <Container>
-        <ReviewRatingDistributionChart
-          ratingDistribution={undefined}
-          totalNumRatings={undefined}
-          totalRatingPoints={undefined}
-          avgRating={undefined}
-        />
-        <Separator borderBottom borderTop heading="Bewertungen" />
-        <ReviewsList reviews={undefined} />
-      </Container>
     );
   }
 }

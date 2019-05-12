@@ -36,22 +36,26 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
 
   getOrdersOfUser = async () => {
     this.setState({ loading: true });
+    try {
+      firebaseOrders
+        .where("customerID", "==", firebase.auth().currentUser.uid)
+        .get()
+        .then(querySnapshot => {
+          const orders = [];
 
-    firebaseOrders
-      .where("customerID", "==", "UIC6MGkgiQg0QLWLBUgikC8gSGa2")
-      .get()
-      .then(querySnapshot => {
-        const orders = [];
-
-        querySnapshot.forEach(doc => {
-          orders.push({
-            ...doc.data(),
-            orderID: doc.id,
-            orderDate: doc.data().orderDate.toDate()
+          querySnapshot.forEach(doc => {
+            orders.push({
+              ...doc.data(),
+              id: doc.id,
+              orderDate: doc.data().orderDate.toDate()
+            });
           });
+          this.setState({ orders: orders.reverse(), loading: false });
         });
-        this.setState({ orders: orders.reverse(), loading: false });
-      });
+    } catch (error) {
+      console.log(error);
+      this.setState({ loading: false });
+    }
   };
 
   render() {
@@ -72,12 +76,12 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
             </Container>
           )
         }
-        keyExtractor={item => item.orderID}
+        keyExtractor={item => item.id}
         onRefresh={() => this.getOrdersOfUser()}
         refreshing={this.state.loading}
         renderItem={({ item }) => (
           <ListItem
-            key={item.orderID}
+            key={item.id}
             leftAvatar={{
               rounded: false,
               source: { uri: item.restaurant.logo, cache: "force-cache" }
@@ -112,19 +116,6 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
             }
           />
         )}
-        ListEmptyComponent={
-          this.state.loading ? null : (
-            <View
-              style={{
-                padding: 16,
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <Text h2>Keine Bestellungen bisher</Text>
-            </View>
-          )
-        }
       />
     );
   }

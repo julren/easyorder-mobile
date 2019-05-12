@@ -20,7 +20,7 @@ import AccountSettingsScreen from "../screens/account/AccountSettingsScren";
 import ImprintScreen from "../screens/account/ImprintScreen";
 import PrivacyScreen from "../screens/account/PrivacyScreen";
 import ContactScreen from "../screens/account/ContactScreen";
-import MyReviewsScreen from "../screens/account/MyReviewsScreen";
+import MyReviewsScreen from "../screens/account/myReviews/MyReviewsScreen";
 import { Icon } from "react-native-elements";
 import TabBarIcon from "./TabBarIcon";
 import CheckInScreen from "../screens/checkin/CheckInScreen";

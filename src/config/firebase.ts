@@ -21,10 +21,9 @@ db.settings({
 });
 
 export const firebaseRestaurants = db.collection("restaurants");
-export const firebaseMenuCategories = db.collection("categories");
-export const firebaseMenuItems = db.collection("menuItems");
 export const firebaseOrders = db.collection("orders");
-export const firebaseReviews = db.collection("reviews");
-export const firebaseTables = db.collection("tables");
+export const firebaseUsers = db.collection("users");
+export const firebaseRestaurantReviews = db.collection("restaurantReviews");
+export const firebaseMenuItemReviews = db.collection("menuItemReviews");
 
 export default firebase;

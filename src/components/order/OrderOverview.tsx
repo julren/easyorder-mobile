@@ -27,12 +27,17 @@ class OrderOverview extends PureComponent<IProps> {
     } else {
       return (
         <View>
-          <ListItem title={<Text h1>Bestellübersicht</Text>} />
           <ListItem
-            title="Bestellnummer"
-            rightElement={<TextNote>{order.orderID}</TextNote>}
+            containerStyle={{ borderBottomWidth: 0, paddingVertical: 8 }}
+            title={<Text h1>Bestellübersicht</Text>}
           />
           <ListItem
+            containerStyle={{ paddingVertical: 0, borderBottomWidth: 0 }}
+            title="Bestellnummer"
+            rightElement={<TextNote>{order.id}</TextNote>}
+          />
+          <ListItem
+            containerStyle={{ paddingVertical: 0, borderBottomWidth: 0 }}
             title="Bestelldatum"
             rightElement={
               <TextNote>
@@ -47,10 +52,12 @@ class OrderOverview extends PureComponent<IProps> {
             }
           />
           <ListItem
+            containerStyle={{ paddingVertical: 0, borderBottomWidth: 0 }}
             title="Zahlungsart"
             rightElement={<TextNote>{order.paymentMethod.name}</TextNote>}
           />
           <ListItem
+            containerStyle={{ paddingTop: 0, paddingBottom: 4 }}
             title="Tischnummer"
             rightElement={
               <TextNote>{order.table ? order.table.name : "2"}</TextNote>

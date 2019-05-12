@@ -32,18 +32,17 @@ interface State {
 class RestaurantsScreen extends React.Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     const location = navigation.getParam("location", undefined);
-
+    const restaurants = navigation.getParam("restaurants", []);
     return {
-      title: location
-        ? `${location.address.road}, ${location.address.town}`
-        : "Restaurants in der Nähe",
+      title: "Restaurants",
       headerRight: (
         <Button
           icon={{ name: "map", color: "#fff" }}
           type="clear"
           onPress={() =>
             navigation.navigate("RestaurantsMap", {
-              location: location
+              location: location,
+              restaurants: restaurants
             })
           }
         />
@@ -65,11 +64,11 @@ class RestaurantsScreen extends React.Component<Props, State> {
     this.getLocationAsync();
     this.getRestaurants();
     // Get Restaurants from database
-    // this.props.navigation.setParams({ restaurants: this.props.globalContext.restaurants });
   }
 
   getRestaurants = () => {
     firebaseRestaurants
+      .orderBy("name")
       .get()
       .then(querySnapshot => {
         let restaurantsData = [];
@@ -77,6 +76,7 @@ class RestaurantsScreen extends React.Component<Props, State> {
           restaurantsData.push({ id: doc.id, ...doc.data() });
         });
         this.setState({ restaurants: restaurantsData });
+        this.props.navigation.setParams({ restaurants: restaurantsData });
       })
       .catch(error => {
         console.error("Error getting restaurants..: ", error);
@@ -110,7 +110,7 @@ class RestaurantsScreen extends React.Component<Props, State> {
   render() {
     // Consumes Cart Context to be able to clear cart when the user goes back to list from restaurant view
     const { globalContext } = this.props;
-    const { restaurants } = this.state;
+    const { restaurants, location } = this.state;
 
     if (restaurants.length == 0) return <PageLoadingIndicator />;
 
@@ -128,6 +128,11 @@ class RestaurantsScreen extends React.Component<Props, State> {
             ListHeaderComponent={
               <Container>
                 <Text h1>Restaurants in der Nähe</Text>
+                <Text>
+                  {location
+                    ? `${location.address.road}, ${location.address.town}`
+                    : null}
+                </Text>
               </Container>
             }
             contentContainerStyle={{ padding: 8 }}

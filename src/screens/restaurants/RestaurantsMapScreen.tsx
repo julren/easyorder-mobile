@@ -25,7 +25,10 @@ class RestaurantsMapScreen extends Component<IProps, IState> {
   }
 
   render() {
-    const restaurants: Restaurant[] = this.props.globalContext.restaurants;
+    const restaurants: Restaurant[] = this.props.navigation.getParam(
+      "restaurants",
+      []
+    );
     const location = this.props.navigation.getParam("location", {});
 
     return (
@@ -44,15 +47,16 @@ class RestaurantsMapScreen extends Component<IProps, IState> {
           <MapView.Marker
             key={restaurant.id}
             coordinate={{
-              latitude: parseFloat(restaurant.adress.lat),
-              longitude: parseFloat(restaurant.adress.lon)
+              latitude: parseFloat(restaurant.address.lat),
+              longitude: parseFloat(restaurant.address.lon)
             }}
             title={restaurant.name}
           >
             <MapView.Callout
               onPress={() =>
                 this.props.navigation.navigate("RestaurantDetail", {
-                  restaurant: restaurant
+                  restaurant: restaurant,
+                  withMenuLink: true
                 })
               }
             >

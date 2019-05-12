@@ -14,20 +14,20 @@ import {
   NavigationScreenProps,
   NavigationScreenProp
 } from "react-navigation";
-import { firebaseMenuCategories } from "../../config/firebase";
 import MenuItemList from "./MenuItemList";
 import MiniCartOverlay from "./MiniCartOverlay";
 import { ThemeConsumer, Button, Overlay, Text } from "react-native-elements";
 
-import { Category, MenuItem } from "../../models";
+import { MenuSection, MenuItem, Restaurant } from "../../models";
 import { Tabs, Tab } from "../../components";
-import AddToCartModal from "./AddToCartModal";
+import AddToCartModal from "./addToCartModal/AddToCartModal";
 import TableCodeScanner from "../checkin/TableCodeScanner";
 import ScanTableCodeModal from "./ScanTableCodeModal";
 import withGlobalContext from "../../contexts/withGlobalContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import ScannedTableOverlay from "./ScannedTableOverlay";
 import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
+import { firebaseRestaurants } from "../../config/firebase";
 
 interface IProps {
   navigation: NavigationScreenProp<any>;
@@ -36,7 +36,8 @@ interface IProps {
 
 interface IState {
   loading: boolean;
-  categories: Category[];
+  menuSections: MenuSection[];
+  restaurant: Restaurant;
   scanTableCodeModalVisible: boolean;
   selectedMenuItem: MenuItem;
 }
@@ -65,7 +66,8 @@ class MenuScreen extends PureComponent<IProps, IState> {
     super(props);
     this.state = {
       loading: true,
-      categories: [],
+      menuSections: [],
+      restaurant: undefined,
       scanTableCodeModalVisible: false,
       selectedMenuItem: undefined
     };
@@ -74,20 +76,24 @@ class MenuScreen extends PureComponent<IProps, IState> {
   componentDidMount() {
     let restaurant = this.props.navigation.getParam("restaurant", undefined);
     if (!restaurant) return;
-
     this.props.globalContext.setSelectedRestaurant(restaurant);
 
-    firebaseMenuCategories
-      .where("authorID", "==", restaurant.id)
+    firebaseRestaurants
+      .doc(restaurant.id)
+      .collection("menuSections")
       .get()
       .then(querySnapshot => {
-        let categories = [];
+        let menuSections = [];
 
         querySnapshot.forEach(doc => {
-          categories.push({ id: doc.id, ...doc.data() });
+          menuSections.push({ id: doc.id, ...doc.data() });
         });
 
-        this.setState({ loading: false, categories: categories });
+        this.setState({
+          loading: false,
+          menuSections: menuSections,
+          restaurant: restaurant
+        });
       });
   }
 
@@ -114,7 +120,7 @@ class MenuScreen extends PureComponent<IProps, IState> {
   };
 
   render() {
-    const { selectedMenuItem, categories, loading } = this.state;
+    const { selectedMenuItem, menuSections, loading, restaurant } = this.state;
     const { cart, table, resetTable } = this.props.globalContext;
 
     if (loading) return <PageLoadingIndicator />;
@@ -123,17 +129,21 @@ class MenuScreen extends PureComponent<IProps, IState> {
         {table != undefined && (
           <ScannedTableOverlay table={table} onDelete={resetTable} />
         )}
-        <Tabs>
-          {categories.map((category, index) => (
-            <Tab tabLabel={category.name} key={category.id}>
-              <MenuItemList
-                categoryID={category.id}
-                onItemPress={this.onItemPress}
-              />
-            </Tab>
-          ))}
-        </Tabs>
-
+        {menuSections.length > 0 ? (
+          <Tabs>
+            {menuSections.map((category, index) => (
+              <Tab tabLabel={category.name} key={category.id}>
+                <MenuItemList
+                  restaurantID={restaurant.id}
+                  menuSectionID={category.id}
+                  onItemPress={this.onItemPress}
+                />
+              </Tab>
+            ))}
+          </Tabs>
+        ) : (
+          <Text>(Keine MenuSections gefunden)</Text>
+        )}
         <Modal
           animationType="slide"
           transparent={false}

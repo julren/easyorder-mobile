@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Modal, FlatList } from "react-native";
 import PropTypes from "prop-types";
-import { firebaseMenuItems } from "../../config/firebase";
-import AddToCartModal from "./AddToCartModal";
+import AddToCartModal from "./addToCartModal/AddToCartModal";
 
 import { ListItem, Text, Image } from "react-native-elements";
 import MenuItemListItem from "./MenuItemListItem";
@@ -10,9 +9,11 @@ import { MenuItem } from "../../models/MenuItem";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import withGlobalContext from "../../contexts/withGlobalContext";
 import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
+import { firebaseRestaurants } from "../../config/firebase";
 
 interface IProps {
-  categoryID: string;
+  menuSectionID: string;
+  restaurantID: string;
   onItemPress: (item: MenuItem) => void;
 }
 
@@ -35,10 +36,13 @@ class MenuItemList extends Component<IProps, IState> {
   }
 
   componentDidMount() {
-    const { categoryID } = this.props;
-
-    firebaseMenuItems
-      .where("categoryID", "==", categoryID)
+    const { menuSectionID, restaurantID } = this.props;
+    firebaseRestaurants
+      .doc(restaurantID)
+      .collection("menuSections")
+      .doc(menuSectionID)
+      .collection("menuItems")
+      .orderBy("name")
       .get()
       .then(querySnapshot => {
         let menuItems = [];
@@ -46,7 +50,8 @@ class MenuItemList extends Component<IProps, IState> {
           menuItems.push({ id: doc.id, ...doc.data() });
         });
         this.setState({ loading: false, menuItems: menuItems });
-      });
+      })
+      .catch(error => console.log(error));
   }
 
   render() {
@@ -59,6 +64,7 @@ class MenuItemList extends Component<IProps, IState> {
           data={menuItems}
           keyExtractor={(item, index) => item.id}
           renderItem={({ item }) => (
+            // @ts-ignore
             <MenuItemListItem
               onPress={() => onItemPress(item)}
               menuItem={item}
@@ -120,6 +126,6 @@ const placeHolderMenuItem: MenuItem = {
   description: "",
   price: 0,
   photo: "",
-  categoryID: "",
-  authorID: ""
+  photoThumb: "",
+  categoryID: ""
 };

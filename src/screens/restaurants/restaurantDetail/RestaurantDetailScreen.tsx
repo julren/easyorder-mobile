@@ -17,12 +17,13 @@ import { Button } from "react-native-elements";
 
 import { Text } from "react-native-elements";
 import ScrollableTabView from "react-native-scrollable-tab-view";
-
+// @ts-ignore
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import { Restaurant } from "../../../models/Restaurant";
 import Tabs from "../../../components/basic/Tabs";
 import Tab from "../../../components/basic/Tab";
 import Row from "../../../components/basic/Row";
+import CacheImage from "../../../components/basic/CachedImage";
 
 const PARALLAX_HEADER_HEIGHT = 200;
 
@@ -46,6 +47,10 @@ class RestaurantDetailScreen extends Component<Props> {
     };
   }
   render() {
+    const withMenuLink: boolean = this.props.navigation.getParam(
+      "withMenuLink",
+      false
+    );
     const restaurant: Restaurant = this.props.navigation.getParam(
       "restaurant",
       {}
@@ -72,25 +77,28 @@ class RestaurantDetailScreen extends Component<Props> {
               alignItems: "center"
             }}
           >
-            <Image
+            <CacheImage
               source={{ uri: restaurant.media.logo }}
               style={{ height: 100, width: 100 }}
+              resizeMode="contain"
             />
 
-            {/* <Button
-              buttonStyle={{ padding: 10 }}
-              icon={{
-                name: "restaurant-menu",
-                color: "#fff"
-              }}
-              title="Speisekarte"
-              containerStyle={{ marginTop: 20 }}
-              onPress={() =>
-                this.props.navigation.navigate("Menu", {
-                  restaurant: restaurant
-                })
-              }
-            /> */}
+            {withMenuLink && (
+              <Button
+                buttonStyle={{ padding: 10 }}
+                icon={{
+                  name: "restaurant-menu",
+                  color: "#fff"
+                }}
+                title="Speisekarte"
+                containerStyle={{ marginTop: 20 }}
+                onPress={() =>
+                  this.props.navigation.navigate("Menu", {
+                    restaurant: restaurant
+                  })
+                }
+              />
+            )}
           </View>
         )}
       >

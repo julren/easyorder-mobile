@@ -33,12 +33,14 @@ class CheckInScreen extends React.Component<
       });
   };
 
-  onScanned = async table => {
-    const restaurant = await this.getRestaurant(table.restaurantID);
-    console.log("found restaurant", restaurant);
-    this.props.globalContext.setTable(table);
+  onScanned = async result => {
+    const { restaurantDoc, tableDoc } = result;
+
+    console.log(result);
+
+    this.props.globalContext.setTable({ id: tableDoc.id, ...tableDoc.data() });
     this.props.navigation.navigate("Menu", {
-      restaurant: restaurant
+      restaurant: { id: restaurantDoc.id, ...restaurantDoc.data() }
     });
   };
 

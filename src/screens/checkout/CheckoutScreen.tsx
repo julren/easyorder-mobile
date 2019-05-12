@@ -14,7 +14,6 @@ import {
   NavigationProp
 } from "react-navigation";
 import { Text, ListItem, Button, Image, Icon } from "react-native-elements";
-import { firebaseOrders, firebaseTables } from "../../config/firebase";
 import withGlobalContext from "../../contexts/withGlobalContext";
 import BuyNowOverlay from "./BuyNowOverlay";
 import { Constants } from "expo";

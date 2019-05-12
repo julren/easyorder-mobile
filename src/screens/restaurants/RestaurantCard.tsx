@@ -37,7 +37,7 @@ class RestaurantCard extends Component<IProps> {
         <Card image={{ uri: coverPhoto }} imageStyle={styles.coverPhoto}>
           <ListItem
             bottomDivider={false}
-            containerStyle={{ paddingHorizontal: 0, paddingVertical: 4 }}
+            containerStyle={{ paddingHorizontal: 0, paddingVertical: 0 }}
             title={
               <View>
                 <Text h2>{name}</Text>
@@ -66,6 +66,7 @@ class RestaurantCard extends Component<IProps> {
             leftElement={
               <CacheImage
                 source={{ uri: logo }}
+                resizeMode="contain"
                 style={{ width: 40, height: 40 }}
               />
             }
@@ -89,5 +90,5 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
 
-  coverPhoto: { height: 175 }
+  coverPhoto: { height: 200 }
 });

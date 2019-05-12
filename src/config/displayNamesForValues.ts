@@ -1,6 +1,6 @@
 export const displayNameForWeekday = {
   monday: "Montag",
-  thuesday: "Dienstag",
+  tuesday: "Dienstag",
   wednesday: "Mittwoch",
   thursday: "Donnerstag",
   friday: "Freitag",
@@ -9,7 +9,7 @@ export const displayNameForWeekday = {
 };
 
 export const displayNameForPriceCategory = {
-  0: "Günstig",
-  1: "Durchschnittlich",
-  2: "Gehoben"
+  cheap: "Günstig",
+  moderate: "Durchschnittlich",
+  premium: "Gehoben"
 };

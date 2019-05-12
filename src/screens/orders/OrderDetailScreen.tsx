@@ -5,6 +5,7 @@ import { Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import CacheImage from "../../components/basic/CachedImage";
 import { View } from "react-native";
+import LeaveRestaurantReviewButton from "../../components/rating/restaurant/LeaveRestaurantReviewButton";
 
 interface IProps extends NavigationScreenProps {}
 
@@ -22,7 +23,7 @@ class OrderDetailScreen extends PureComponent<IProps> {
     const order = this.props.navigation.getParam("order", undefined);
 
     return (
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
         <View
           style={{
             justifyContent: "center",

@@ -6,11 +6,11 @@ import {
   AsyncStorage,
   View
 } from "react-native";
-import firebase, { firebaseReviews } from "../../config/firebase";
+import firebase, { firebaseRestaurantReviews } from "../../../config/firebase";
 import { Text, Button, Icon, Input } from "react-native-elements";
-import TextNote from "../basic/TextNote";
-import { RestaurantReview } from "../../models/Review";
-import { Restaurant } from "../../models";
+import TextNote from "../../basic/TextNote";
+import { RestaurantReview } from "../../../models/RestaurantReview";
+import { Restaurant } from "../../../models";
 
 interface IProps {
   review: RestaurantReview | undefined;
@@ -18,7 +18,7 @@ interface IProps {
   onClose: () => void;
 }
 
-class RateRestaurantModal extends Component<IProps> {
+class ReviewRestaurantModal extends Component<IProps> {
   state = {
     rating: 0,
     text: ""
@@ -52,7 +52,7 @@ class RateRestaurantModal extends Component<IProps> {
   };
 
   createReview = review => {
-    firebaseReviews
+    firebaseRestaurantReviews
       .add(review)
       .then(() => {
         this.props.onClose();
@@ -63,7 +63,7 @@ class RateRestaurantModal extends Component<IProps> {
   };
 
   updateReview = review => {
-    firebaseReviews
+    firebaseRestaurantReviews
       .doc(this.props.review.id)
       .update(review)
       .then(() => {
@@ -135,4 +135,4 @@ class RateRestaurantModal extends Component<IProps> {
   }
 }
 
-export default RateRestaurantModal;
+export default ReviewRestaurantModal;

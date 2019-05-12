@@ -12,7 +12,6 @@ export interface Order {
   }[];
   mwst: number;
   orderDate: any;
-  orderID: string;
   paymentMethod: PaymentMethod;
   restaurant: {
     coverPhoto: string;

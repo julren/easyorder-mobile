@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
-import { firebaseTables } from "../../config/firebase";
+import { firebaseRestaurants } from "../../config/firebase";
 import { FirebaseApp } from "@firebase/app-types";
 import { Icon, Text } from "react-native-elements";
+import { QrCodeData } from "../../models/QrCodeData";
 
 export interface TableCodeScannerProps {
   onCancel: () => void;
@@ -37,16 +38,50 @@ class TableCodeScanner extends Component<
     this.setState({ hasCameraPermission: status === "granted" });
   };
 
-  getTableDoc = async tableID => {
-    return await firebaseTables
-      .doc(tableID)
+  checkCode = async tableCode => {
+    try {
+      const { restaurantId, tableId }: QrCodeData = JSON.parse(tableCode);
+      const restaurantDoc = await this.getRestaurantDoc(restaurantId);
+      const tableDoc = await this.getTableDoc(restaurantDoc, tableId);
+      return { tableDoc: tableDoc, restaurantDoc: restaurantDoc };
+    } catch (error) {
+      console.log(error);
+      throw new Error("Code scan failed.");
+    }
+  };
+
+  getRestaurantDoc = async restaurantId => {
+    return firebaseRestaurants
+      .doc(restaurantId)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          return doc;
+        } else {
+          throw new Error(
+            "Restaurant with ID " + restaurantId + " does not exist."
+          );
+        }
+      });
+  };
+
+  getTableDoc = async (restaurantDoc, tableId) => {
+    return restaurantDoc.ref
+      .collection("tables")
+      .doc(tableId)
       .get()
       .then(doc => {
         return doc;
       })
       .catch(error => {
         console.log(error);
-        return undefined;
+        throw new Error(
+          "Table with ID " +
+            tableId +
+            " in Restaurant with ID " +
+            restaurantDoc.id +
+            " does not exist."
+        );
       });
   };
 
@@ -79,7 +114,7 @@ class TableCodeScanner extends Component<
             }}
             onPress={() =>
               this.handleBarCodeScanned({
-                data: "0Fq5H8qxTFnmVl68mpsn",
+                data: `{"restaurantId":"WTpxRrjqspaedb8EnBTMRO1KVDM2","restaurantName":"La Dolce Vita","tableId":"ACM9f1hLwYKZIrvDPQAg","tableName":"Tisch 4"}`,
                 type: "test"
               })
             }
@@ -101,12 +136,14 @@ class TableCodeScanner extends Component<
   handleBarCodeScanned = async ({ data, type }) => {
     this.setState({ scannedCode: data });
     if (this.state.scannedCode !== data) {
-      console.log("checking");
-      const tableDoc = await this.getTableDoc(data);
-      const table = { id: tableDoc.id, ...tableDoc.data() };
-      if (tableDoc.exists) {
+      console.log("checking qr code: ", data);
+
+      try {
+        const result = await this.checkCode(data);
         this.setState({ scannedCode: "" });
-        return this.props.onScanned(table);
+        return this.props.onScanned(result);
+      } catch (error) {
+        console.log(error);
       }
     }
   };

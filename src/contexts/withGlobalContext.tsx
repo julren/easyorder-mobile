@@ -6,15 +6,15 @@ import { GlobalContextConsumer, GlobalContext } from "./GlobalContext";
  * @param Component: Child Component to wrap in GlobalContext
  */
 
-interface GlobalContextProps {
+export interface WithGlobalContextProps {
   globalContext: GlobalContext;
 }
 
-const withGlobalContext = <BaseProps extends GlobalContextProps>(
+const withGlobalContext = <BaseProps extends WithGlobalContextProps>(
   Component: React.ComponentType<BaseProps>
 ) => {
   class GlobalContextConsumerWrapper extends React.Component<
-    BaseProps & GlobalContextProps
+    BaseProps & WithGlobalContextProps
   > {
     static navigationOptions: any;
     render() {

@@ -44,7 +44,6 @@ export default class SignUpScreen extends Component<IProps> {
 
   onSubmit = (values, actions) => {
     const { email, password, displayName } = values;
-    console.log(values);
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)

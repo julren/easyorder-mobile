@@ -2,18 +2,18 @@ import React, { PureComponent } from "react";
 import { FlatList, View } from "react-native";
 import { ListItem, Text } from "react-native-elements";
 import StarRating from "react-native-star-rating";
-import { RestaurantReview } from "../../models";
+import { RestaurantReview } from "../../../models";
 
 interface IProps {
-  reviews: RestaurantReview[];
+  restaurantReviews: RestaurantReview[];
 }
 
-class ReviewsList extends PureComponent<IProps> {
+class RestaurantReviewsList extends PureComponent<IProps> {
   render() {
-    const { reviews = [] } = this.props;
+    const { restaurantReviews = [] } = this.props;
     return (
       <FlatList
-        data={reviews}
+        data={restaurantReviews}
         keyExtractor={item => item.id}
         ListEmptyComponent={
           <View
@@ -53,4 +53,4 @@ class ReviewsList extends PureComponent<IProps> {
   }
 }
 
-export default ReviewsList;
+export default RestaurantReviewsList;
