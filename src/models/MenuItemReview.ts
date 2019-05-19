@@ -3,6 +3,7 @@ export interface MenuItemReview {
   userID: string;
   restaurantID: string;
   restaurantName: string;
+  menuSectionID: string;
   menuItemID: string;
   menuItemName: string;
   photo: string;

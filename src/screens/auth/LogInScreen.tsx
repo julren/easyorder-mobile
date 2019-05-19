@@ -13,20 +13,22 @@ import * as Yup from "yup";
 
 import { Input, Button, Text, Image, Icon } from "react-native-elements";
 
-import firebase from "../../config/firebase";
+import firebase, { firebaseUsers } from "../../config/firebase";
 import { BrandLogo } from "../../components/basic/BrandLogo";
 import { NavigationScreenProp } from "react-navigation";
 import Container from "../../components/basic/Container";
 import AuthPageWrapper from "./AuthPageWrapper";
+import { Permissions } from "expo";
+import { Notifications } from "expo";
+import withGlobalContext from "../../contexts/withGlobalContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
-const LoginValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email()
-    .required("Required"),
-  password: Yup.string().required("Required")
-});
+interface IProps {
+  navigation: NavigationScreenProp<any, any>;
+  globalContext: GlobalContext;
+}
 
-export default class LogInScreen extends Component<IProps> {
+class LogInScreen extends Component<IProps> {
   static navigationOptions = {
     header: null
   };
@@ -43,6 +45,37 @@ export default class LogInScreen extends Component<IProps> {
     this.props.navigation.replace("SignUp");
   };
 
+  setUpPush = async () => {
+    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    if (status !== "granted") {
+      alert(
+        "Bitte aktivieren Sie Pushbenachrichtigungen in den Einstellungen."
+      );
+      return null;
+    }
+
+    let token = await Notifications.getExpoPushTokenAsync();
+    return token;
+  };
+
+  getUser = async uid => {
+    const expoPushToken = await this.setUpPush();
+
+    await firebaseUsers.doc(uid).set({ expoPushToken: expoPushToken });
+    debugger;
+    return firebaseUsers
+      .doc(uid)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          debugger;
+          return { id: doc.id, ...doc.data() };
+        } else {
+          return null;
+        }
+      });
+  };
+
   onSubmit = (values, actions) => {
     const { email, password } = values;
     console.log("trying to login with creds: ", email, password);
@@ -51,6 +84,14 @@ export default class LogInScreen extends Component<IProps> {
       .signInWithEmailAndPassword(email, password)
       .then(resp => {
         console.log("Login sucessfull");
+        debugger;
+
+        return this.getUser(resp.user.uid);
+      })
+      .then(user => {
+        this.props.globalContext.setUser(user);
+        debugger;
+
         Keyboard.dismiss();
         actions.setSubmitting(false);
         this.props.navigation.navigate("AuthLoading");
@@ -164,6 +205,8 @@ export default class LogInScreen extends Component<IProps> {
   }
 }
 
+export default withGlobalContext(LogInScreen);
+
 const styles = StyleSheet.create({
   formContainer: {
     flex: 4,
@@ -173,7 +216,9 @@ const styles = StyleSheet.create({
     marginBottom: 15
   }
 });
-
-interface IProps {
-  navigation: NavigationScreenProp<any, any>;
-}
+const LoginValidationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email()
+    .required("Required"),
+  password: Yup.string().required("Required")
+});

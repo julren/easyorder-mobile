@@ -47,7 +47,11 @@ class MenuItemList extends Component<IProps, IState> {
       .then(querySnapshot => {
         let menuItems = [];
         querySnapshot.forEach(doc => {
-          menuItems.push({ id: doc.id, ...doc.data() });
+          menuItems.push({
+            id: doc.id,
+            menuSectionID: menuSectionID,
+            ...doc.data()
+          });
         });
         this.setState({ loading: false, menuItems: menuItems });
       })

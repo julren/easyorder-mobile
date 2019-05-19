@@ -37,6 +37,9 @@ export interface GlobalContext {
   status: string;
   numCartItems: number;
 
+  setUser: (user) => void;
+  clearUser: () => void;
+
   setSelectedRestaurant: (selectedRestaurant: Restaurant) => void;
   setPaymentMethod: (paymentMethod: PaymentMethod) => void;
   setTable: (tableID: string) => void;
@@ -58,6 +61,7 @@ class GlobalContextProvider extends Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
+      user: undefined,
       cart: [],
       selectedRestaurant: undefined,
       table: undefined,
@@ -74,6 +78,14 @@ class GlobalContextProvider extends Component<any, any> {
 
   // SetUp Provider
   componentDidMount() {}
+
+  setUser = user => {
+    this.setState({ user: user });
+  };
+
+  clearUser = () => {
+    this.setState({ user: undefined });
+  };
 
   setSelectedRestaurant = (selectedRestaurant: Restaurant) => {
     this.setState({ selectedRestaurant, cart: [] });
@@ -249,7 +261,10 @@ class GlobalContextProvider extends Component<any, any> {
       <GlobalContext.Provider
         value={{
           ...this.state,
-          cart: this.state.cart,
+
+          setUser: this.setUser,
+          clearUser: this.clearUser,
+
           setSelectedRestaurant: this.setSelectedRestaurant,
           setPaymentMethod: this.setPaymentMethod,
           setTable: this.setTable,
