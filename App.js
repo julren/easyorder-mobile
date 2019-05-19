@@ -10,6 +10,7 @@ import customTheme from "./src/config/customTheme";
 /* Support Expo */
 import { setExpoStatusBarHeight } from "react-navigation-collapsible";
 import { Constants } from "expo";
+import InAppNotificationProvider from "./src/components/InAppNotificationProvider";
 setExpoStatusBarHeight(Constants.statusBarHeight);
 
 export default class App extends React.Component {
@@ -36,9 +37,11 @@ export default class App extends React.Component {
           {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
 
           <ThemeProvider theme={customTheme}>
-            <GlobalContextProvider>
-              <AppNavigator persistenceKey={navigationPersistenceKey} />
-            </GlobalContextProvider>
+            <InAppNotificationProvider>
+              <GlobalContextProvider>
+                <AppNavigator persistenceKey={navigationPersistenceKey} />
+              </GlobalContextProvider>
+            </InAppNotificationProvider>
           </ThemeProvider>
         </View>
       );
