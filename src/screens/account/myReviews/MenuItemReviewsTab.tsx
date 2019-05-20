@@ -31,6 +31,7 @@ class MenuItemReviewsTab extends React.Component<Props, State> {
 
     await firebaseMenuItemReviews
       .where("userID", "==", firebase.auth().currentUser.uid)
+      .orderBy("reviewDate", "desc")
       .get()
       .then(querySnapshot => {
         if (!querySnapshot.empty) {

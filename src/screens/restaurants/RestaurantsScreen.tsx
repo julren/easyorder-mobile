@@ -2,6 +2,7 @@ import React from "react";
 import { FlatList } from "react-native";
 
 import { NavigationEvents, NavigationScreenProp } from "react-navigation";
+import geohash from "ngeohash";
 
 import RestaurantCard from "./RestaurantCard";
 
@@ -15,6 +16,7 @@ import withGlobalContext from "../../contexts/withGlobalContext";
 import CacheImage from "../../components/basic/CachedImage";
 import { Restaurant } from "../../models";
 import { firebaseRestaurants } from "../../config/firebase";
+import { Accuracy } from "expo-location";
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -60,21 +62,33 @@ class RestaurantsScreen extends React.Component<Props, State> {
     this.props.navigation.setParams({ title: "Restaurants" });
   }
 
-  componentDidMount() {
-    this.getLocationAsync();
-    this.getRestaurants();
+  async componentDidMount() {
+    const location = await this.getLocationAsync();
+    this.getLocationAddress(location);
+
+    this.getRestaurants(location);
     // Get Restaurants from database
   }
 
-  getRestaurants = () => {
+  getRestaurants = location => {
+    const currentLocationGeohash = geohash.encode(
+      location.coords.latitude,
+      location.coords.longitude,
+      3
+    );
+    console.log("location", location);
+    console.log("currentLocationGeohash", currentLocationGeohash);
+
     firebaseRestaurants
-      .orderBy("name")
+      .where("address.geohash", ">=", currentLocationGeohash)
+      .orderBy("address.geohash")
       .get()
       .then(querySnapshot => {
         let restaurantsData = [];
         querySnapshot.forEach(function(doc) {
           restaurantsData.push({ id: doc.id, ...doc.data() });
         });
+        console.log("found num restaurants: ", restaurantsData.length);
         this.setState({ restaurants: restaurantsData });
         this.props.navigation.setParams({ restaurants: restaurantsData });
       })
@@ -91,8 +105,10 @@ class RestaurantsScreen extends React.Component<Props, State> {
       });
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    return Location.getCurrentPositionAsync({ accuracy: Accuracy.Balanced });
+  };
 
+  getLocationAddress = async location => {
     const locationDetails = await fetch(
       `https://nominatim.openstreetmap.org/reverse.php?format=html&lat=${
         location.coords.latitude

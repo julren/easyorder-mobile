@@ -30,10 +30,10 @@ class MyReviewsScreen extends Component<Props, State> {
   render() {
     return (
       <Tabs>
-        <Tab tabLabel="Restaurants">
+        <Tab tabLabel="Restaurants" fixedView>
           <RestaurantReviewsTab />
         </Tab>
-        <Tab tabLabel="Gerichte">
+        <Tab tabLabel="Gerichte" fixedView>
           <MenuItemReviewsTab />
         </Tab>
       </Tabs>

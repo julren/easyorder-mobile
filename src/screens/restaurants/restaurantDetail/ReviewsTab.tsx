@@ -37,7 +37,9 @@ class ReviewsTab extends Component<IProps, IState> {
   getReviews = async () => {
     return await firebaseRestaurantReviews
       .where("restaurantID", "==", this.props.restaurant.id)
+      .orderBy("reviewDate", "desc")
       .get()
+
       .then(querySnapshot => {
         let reviews = [];
         if (querySnapshot.empty) {

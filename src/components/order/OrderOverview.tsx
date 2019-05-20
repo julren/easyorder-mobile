@@ -6,6 +6,7 @@ import { ListItem, Text, Image } from "react-native-elements";
 import Separator from "../basic/Separator";
 import ErrorMessage from "../basic/ErrorMessage";
 import TextNote from "../basic/TextNote";
+import { displayNameForOrderStatus } from "../../config/displayNamesForValues";
 interface IProps {
   order: Order;
 }
@@ -57,16 +58,19 @@ class OrderOverview extends PureComponent<IProps> {
             rightElement={<TextNote>{order.paymentMethod.name}</TextNote>}
           />
           <ListItem
-            containerStyle={{ paddingTop: 0, paddingBottom: 4 }}
+            containerStyle={{ paddingVertical: 0, borderBottomWidth: 0 }}
             title="Tischnummer"
             rightElement={
               <TextNote>{order.table ? order.table.name : "2"}</TextNote>
             }
           />
-          {/* <ListItem
+          <ListItem
+            containerStyle={{ paddingTop: 0, paddingBottom: 4 }}
             title="Status"
-            rightElement={<TextNote>{order.status}</TextNote>}
-          /> */}
+            rightElement={
+              <TextNote>{displayNameForOrderStatus[order.status]}</TextNote>
+            }
+          />
 
           <Separator heading="Artikel" />
           {order.items.map((item, index) => (

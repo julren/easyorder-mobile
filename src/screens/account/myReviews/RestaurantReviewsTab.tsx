@@ -30,6 +30,7 @@ class RestaurantReviewsTab extends React.Component<Props, State> {
 
     await firebaseRestaurantReviews
       .where("userID", "==", firebase.auth().currentUser.uid)
+      .orderBy("reviewDate", "desc")
       .get()
       .then(querySnapshot => {
         if (!querySnapshot.empty) {

@@ -6,6 +6,7 @@ export interface Restaurant {
     city: string;
     lat: string;
     lon: string;
+    geohash: string;
     postcode: string;
     street: string;
   };

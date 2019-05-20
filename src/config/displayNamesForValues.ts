@@ -13,3 +13,10 @@ export const displayNameForPriceCategory = {
   moderate: "Durchschnittlich",
   premium: "Gehoben"
 };
+
+export const displayNameForOrderStatus = {
+  open: "Offen",
+  inProgress: "In Bearbeitung",
+  readyForServing: "Servierbereit",
+  archived: "Abgeschlossen"
+};

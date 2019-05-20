@@ -8,6 +8,7 @@ import { Order } from "../../models/Order";
 import TextNote from "../../components/basic/TextNote";
 import Row from "../../components/basic/Row";
 import { Container } from "../../components";
+import { displayNameForOrderStatus } from "../../config/displayNamesForValues";
 
 interface OrdersScreenProps {
   navigation: NavigationParams;
@@ -103,8 +104,10 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
                 </TextNote>
                 <Badge
                   containerStyle={{ alignSelf: "flex-start" }}
-                  status={badgeColorForStatus[item.status]}
-                  value={item.status}
+                  badgeStyle={{
+                    backgroundColor: badgeColorForStatus[item.status]
+                  }}
+                  value={displayNameForOrderStatus[item.status]}
                 />
               </View>
             }
@@ -124,7 +127,8 @@ class OrdersScreen extends Component<OrdersScreenProps, OrdersScreenState> {
 export default OrdersScreen;
 
 const badgeColorForStatus = {
-  open: "primary",
-  inProgress: "warning",
-  done: "success"
+  open: "#3E8ADC",
+  inProgress: "#F6AC14",
+  readyForServing: "#53C419",
+  archived: "#a7a7a7"
 };

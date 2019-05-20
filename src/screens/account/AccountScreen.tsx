@@ -29,19 +29,12 @@ export default class AccountScreen extends Component<Props, State> {
     title: "Account"
   };
 
-  getUserFromStorage = async () => {
-    try {
-      const value = await AsyncStorage.getItem("user");
-      if (value !== null) {
-        this.setState({ user: JSON.parse(value) });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   componentDidMount() {
-    this.getUserFromStorage();
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user: user });
+      }
+    });
   }
 
   render() {
