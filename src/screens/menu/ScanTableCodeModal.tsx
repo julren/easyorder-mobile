@@ -16,6 +16,7 @@ interface IProps {
 interface IState {
   scanActive: boolean;
   scanSuccess: boolean;
+  loading: boolean;
 }
 
 class ScanTableCodeModal extends PureComponent<IProps, IState> {
@@ -23,7 +24,8 @@ class ScanTableCodeModal extends PureComponent<IProps, IState> {
     super(props);
     this.state = {
       scanActive: false,
-      scanSuccess: false
+      scanSuccess: false,
+      loading: false
     };
   }
 
@@ -51,7 +53,7 @@ class ScanTableCodeModal extends PureComponent<IProps, IState> {
   };
 
   render() {
-    const { scanActive, scanSuccess } = this.state;
+    const { scanActive, scanSuccess, loading } = this.state;
     const { setTable, table, selectedRestaurant } = this.props.globalContext;
     const { onDone } = this.props;
     return (
