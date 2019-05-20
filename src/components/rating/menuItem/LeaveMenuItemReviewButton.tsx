@@ -19,6 +19,7 @@ interface IState {
   modalVisible: boolean;
   review: RestaurantReview | undefined;
   loading: boolean;
+  alreadyReviewedInSession: boolean;
 }
 
 class LeaveMenuItemReviewButton extends Component<IProps, IState> {
@@ -27,7 +28,8 @@ class LeaveMenuItemReviewButton extends Component<IProps, IState> {
     mode: undefined,
     review: undefined,
     menuItem: undefined,
-    loading: true
+    loading: true,
+    alreadyReviewedInSession: false
   };
 
   openModal = () => {
@@ -35,7 +37,8 @@ class LeaveMenuItemReviewButton extends Component<IProps, IState> {
   };
   closeModal = () => {
     this.props.onChange();
-    this.setState({ modalVisible: false });
+    this.getMenuItemReviewOfUser(this.props.menuItem.id);
+    this.setState({ modalVisible: false, alreadyReviewedInSession: true });
   };
 
   componentDidMount() {
@@ -71,7 +74,12 @@ class LeaveMenuItemReviewButton extends Component<IProps, IState> {
   };
 
   render() {
-    const { loading, review, modalVisible } = this.state;
+    const {
+      loading,
+      review,
+      modalVisible,
+      alreadyReviewedInSession
+    } = this.state;
     if (loading) return <ActivityIndicator />;
 
     // if (review) {
@@ -98,7 +106,7 @@ class LeaveMenuItemReviewButton extends Component<IProps, IState> {
     //     </View>
     //   );
     // }
-
+    if (alreadyReviewedInSession) return <React.Fragment />;
     return (
       <React.Fragment>
         <Button
