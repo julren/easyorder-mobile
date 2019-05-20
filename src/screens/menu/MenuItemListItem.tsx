@@ -73,16 +73,18 @@ const LeftElement = ({ menuItem }) => (
       </Text>
 
       <Row>
-        <Text>{menuItem.avgRating}</Text>
         <StarRating
           containerStyle={{ justifyContent: "flex-start" }}
           maxStars={5}
-          rating={menuItem.avgRating}
+          rating={menuItem.rating ? menuItem.rating.avgRating : 0}
           halfStarEnabled
           fullStarColor="#F8C533"
           emptyStarColor="#CBCBCB"
           starSize={14}
         />
+        <Text style={{ color: "grey", fontSize: 12, marginLeft: 4 }}>
+          ({menuItem.rating ? menuItem.rating.totalNumRatings : 0})
+        </Text>
       </Row>
     </View>
     <Text style={styles.menuItemPrice}>{menuItem.price.toFixed(2)}€</Text>

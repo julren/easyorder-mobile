@@ -27,7 +27,7 @@ class RestaurantCard extends Component<IProps> {
     // TODO: distance, rating
 
     const distance = 1.2;
-    const rating = 4;
+
     const { restaurant, onRestaurantSelect } = this.props;
     const { name, priceClass, cuisine } = restaurant;
     const { coverPhoto, logo } = restaurant.media;
@@ -42,18 +42,24 @@ class RestaurantCard extends Component<IProps> {
               <View>
                 <Text h2>{name}</Text>
                 <Row>
-                  <Text style={{ color: "grey", fontSize: 12, marginRight: 4 }}>
-                    {rating.toFixed(1)}
-                  </Text>
+                  {/* <Text style={{ color: "grey", fontSize: 12, marginRight: 4 }}>
+                    {restaurant.rating
+                      ? restaurant.rating.avgRating.toFixed(1)
+                      : 0}
+                  </Text> */}
                   <StarRating
                     disabled
                     containerStyle={{ justifyContent: "flex-start" }}
                     starSize={12}
                     maxStarts={5}
-                    rating={rating}
+                    rating={restaurant.rating ? restaurant.rating.avgRating : 0}
                     fullStarColor="#FFD700"
                     emptyStarColor="#d3d3d3"
                   />
+                  <Text style={{ color: "grey", fontSize: 12, marginLeft: 4 }}>
+                    ({restaurant.rating ? restaurant.rating.totalNumRatings : 0}
+                    )
+                  </Text>
                 </Row>
 
                 <Text

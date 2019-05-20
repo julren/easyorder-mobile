@@ -1,4 +1,4 @@
-import { Rating } from "react-native-ratings";
+import { Rating } from "./Rating";
 
 export interface Restaurant {
   id?: string;
