@@ -6,12 +6,16 @@ import CreditCardForm from "../../components/basic/CreditCardForm";
 import withGlobalContext from "../../contexts/withGlobalContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { TextNote } from "../../components";
+import firebase, { firebaseUsers } from "../../config/firebase";
+import { NavigationScreenProps } from "react-navigation";
 
-export interface Props {
+export interface Props extends NavigationScreenProps<any> {
   globalContext: GlobalContext;
 }
 
-export interface State {}
+export interface State {
+  creditCardInfo: any;
+}
 
 class CreditCardScreen extends React.Component<Props, State> {
   static navigationOptions = {
@@ -20,11 +24,29 @@ class CreditCardScreen extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = { creditCardInfo: undefined };
+  }
+
+  componentDidMount() {
+    this.getCreditCardInfo();
   }
 
   onSave = creditCardInfo => {
-    console.log("saved", creditCardInfo);
+    firebaseUsers
+      .doc(firebase.auth().currentUser.uid)
+      .set({ creditCardInfo: creditCardInfo });
+    this.props.navigation.pop();
+  };
+
+  getCreditCardInfo = () => {
+    firebaseUsers
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then(doc => {
+        if (doc.exists && doc.data().creditCardInfo) {
+          this.setState({ creditCardInfo: doc.data().creditCardInfo });
+        }
+      });
   };
 
   render() {
@@ -35,7 +57,14 @@ class CreditCardScreen extends React.Component<Props, State> {
             <Text h1>Kreditkarte bearbeiten</Text>
             <TextNote>Hier kannst du deine Kreditkarte bearbeiten</TextNote>
           </View>
-          <ListItem title={<CreditCardForm onSubmit={this.onSave} />} />
+          <ListItem
+            title={
+              <CreditCardForm
+                onSubmit={this.onSave}
+                intialValues={this.state.creditCardInfo}
+              />
+            }
+          />
         </Container>
       </ScrollView>
     );

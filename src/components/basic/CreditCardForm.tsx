@@ -27,6 +27,7 @@ class CreditCardForm extends PureComponent<IProps> {
                   verificationCode: ""
                 }
           }
+          enableReinitialize
           onSubmit={onSubmit}
         >
           {({
@@ -180,6 +181,7 @@ class CreditCardForm extends PureComponent<IProps> {
               </View>
 
               <Button
+                onPress={() => handleSubmit()}
                 disabled={!isValid}
                 title="Speichern"
                 containerStyle={{ marginVertical: 8 }}
