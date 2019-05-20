@@ -36,8 +36,6 @@ class CheckInScreen extends React.Component<
   onScanned = async result => {
     const { restaurantDoc, tableDoc } = result;
 
-    console.log(result);
-
     this.props.globalContext.setTable({ id: tableDoc.id, ...tableDoc.data() });
     this.props.navigation.navigate("Menu", {
       restaurant: { id: restaurantDoc.id, ...restaurantDoc.data() }

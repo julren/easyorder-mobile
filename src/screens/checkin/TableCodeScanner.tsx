@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, ActivityIndicator } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
 import { firebaseRestaurants } from "../../config/firebase";
 import { FirebaseApp } from "@firebase/app-types";
@@ -15,6 +15,7 @@ export interface TableCodeScannerProps {
 export interface TableCodeScannerState {
   hasCameraPermission: any;
   scannedCode: string;
+  loading: boolean;
 }
 
 class TableCodeScanner extends Component<
@@ -25,7 +26,8 @@ class TableCodeScanner extends Component<
     super(props);
     this.state = {
       hasCameraPermission: undefined,
-      scannedCode: ""
+      scannedCode: "",
+      loading: false
     };
   }
 
@@ -86,7 +88,7 @@ class TableCodeScanner extends Component<
   };
 
   render() {
-    const { hasCameraPermission } = this.state;
+    const { hasCameraPermission, loading } = this.state;
     const { onCancel, onScanned } = this.props;
 
     if (hasCameraPermission === null) {
@@ -104,7 +106,16 @@ class TableCodeScanner extends Component<
           <Text style={styles.description}>Tischcode scannen</Text>
         )}
         <Icon iconStyle={styles.qr} name="ios-qr-scanner" type="ionicon" />
-
+        {loading && (
+          <ActivityIndicator
+            size="large"
+            color="white"
+            style={{
+              position: "absolute",
+              top: 150
+            }}
+          />
+        )}
         <React.Fragment>
           <Text
             style={{
@@ -136,11 +147,12 @@ class TableCodeScanner extends Component<
   handleBarCodeScanned = async ({ data, type }) => {
     this.setState({ scannedCode: data });
     if (this.state.scannedCode !== data) {
+      this.setState({ loading: true });
       console.log("checking qr code: ", data);
 
       try {
         const result = await this.checkCode(data);
-        this.setState({ scannedCode: "" });
+        this.setState({ scannedCode: "", loading: false });
         return this.props.onScanned(result);
       } catch (error) {
         console.log(error);

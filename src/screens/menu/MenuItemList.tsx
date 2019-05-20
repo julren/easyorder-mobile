@@ -129,6 +129,7 @@ const placeHolderMenuItem: MenuItem = {
   name: "",
   description: "",
   price: 0,
+  rating: undefined,
   photo: "",
   photoThumb: "",
   categoryID: ""
