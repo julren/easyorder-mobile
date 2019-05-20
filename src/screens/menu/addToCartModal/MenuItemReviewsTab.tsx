@@ -23,6 +23,10 @@ class MenuItemReviewsTab extends Component<IProps, IState> {
     };
   }
 
+  componentDidMount() {
+    this.getMenuItemReviews();
+  }
+
   getMenuItemReviews = async () => {
     return await firebaseMenuItemReviews
       .where("menuItemID", "==", this.props.menuItem.id)
@@ -36,6 +40,7 @@ class MenuItemReviewsTab extends Component<IProps, IState> {
             reviews.push({ id: doc.id, ...doc.data() });
           });
         }
+        console.log("reviews", reviews);
         this.setState({ reviews: reviews });
       });
   };

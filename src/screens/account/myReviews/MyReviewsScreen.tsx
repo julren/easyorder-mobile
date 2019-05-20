@@ -9,134 +9,36 @@ import firebase, {
 import { RestaurantReview } from "../../../models/RestaurantReview";
 import { FlatList, View } from "react-native";
 
+import { Tabs, Tab } from "../../../components";
+import RestaurantReviewsTab from "./RestaurantReviewsTab";
+import MenuItemReviewsTab from "./MenuItemReviewsTab";
+
 export interface Props {}
 
-export interface State {
-  reviews: RestaurantReview[];
-  loading: boolean;
-}
+export interface State {}
 
 class MyReviewsScreen extends Component<Props, State> {
   static navigationOptions = {
-    title: "Bestellungen"
+    title: "Meine Bewertungen"
   };
 
   constructor(props: Props) {
     super(props);
-    this.state = {
-      reviews: [],
-      loading: true
-    };
+    this.state = {};
   }
-
-  componentDidMount() {
-    this.getReviews();
-  }
-
-  getReviews = async () => {
-    this.getRestaurantReviews();
-  };
-
-  getRestaurantReviews = async () => {
-    let reviews = [];
-
-    await firebaseRestaurantReviews
-      .where("userID", "==", firebase.auth().currentUser.uid)
-      .get()
-      .then(querySnapshot => {
-        if (!querySnapshot.empty) {
-          querySnapshot.forEach(reviewDoc => {
-            reviews.push({ ...reviewDoc.data(), id: reviewDoc.id });
-          });
-        }
-      })
-      .catch(error => {
-        console.error("Error getting firebaseRestaurantReviews: ", error);
-      });
-    this.setState({ reviews: reviews, loading: false });
-  };
-
-  getMenuItemReviews = async () => {
-    let reviews = [];
-
-    await firebaseMenuItemReviews
-      .where("userID", "==", firebase.auth().currentUser.uid)
-      .get()
-      .then(querySnapshot => {
-        if (!querySnapshot.empty) {
-          querySnapshot.forEach(reviewDoc => {
-            reviews.push({ ...reviewDoc.data(), id: reviewDoc.id });
-          });
-        }
-      })
-      .catch(error => {
-        console.error("Error getting firebaseMenuItemReviews: ", error);
-      });
-    this.setState({ reviews: reviews, loading: false });
-  };
 
   render() {
-    const { reviews } = this.state;
     return (
-      <FlatList
-        ListHeaderComponent={
-          <Container padded="more">
-            <Text h1>Meine Bewertungen</Text>
-          </Container>
-        }
-        ListEmptyComponent={
-          !this.state.loading && (
-            <Container padded="more">
-              <Text>Keine Bewertungen bisher</Text>
-            </Container>
-          )
-        }
-        data={reviews}
-        keyExtractor={item => item.id}
-        onRefresh={() => this.getReviews()}
-        refreshing={this.state.loading}
-        renderItem={({ item }) => (
-          <ListItem
-            leftAvatar={{ source: { uri: item.logo } }}
-            title={
-              <View>
-                <Text>{item.restaurantName}</Text>
-              </View>
-            }
-            subtitle={
-              <View>
-                <StarRating
-                  disabled
-                  starSize={14}
-                  maxStarts={5}
-                  rating={item.rating}
-                  fullStarColor="#FFD700"
-                  emptyStarColor="#d3d3d3"
-                  containerStyle={{ justifyContent: "flex-start" }}
-                />
-              </View>
-            }
-            rightElement={
-              <Text style={{ color: "grey", fontSize: 12 }}>
-                {item.reviewDate.toDate().toLocaleString([], {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric"
-                })}
-              </Text>
-            }
-          />
-        )}
-      />
+      <Tabs>
+        <Tab tabLabel="Restaurants">
+          <RestaurantReviewsTab />
+        </Tab>
+        <Tab tabLabel="Gerichte">
+          <MenuItemReviewsTab />
+        </Tab>
+      </Tabs>
     );
   }
 }
 
 export default MyReviewsScreen;
-
-const RatingDisplay = ({ rating }) => (
-  <View style={{ flexDirection: "row" }}>
-    <Text>{`${rating.toString()} `}</Text>
-    <Icon name="star" color="#F8C533" size={14} />
-  </View>
-);
