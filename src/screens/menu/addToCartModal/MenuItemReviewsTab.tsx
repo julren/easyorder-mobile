@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Container, Separator } from "../../../components";
-import ReviewRatingDistributionChart from "../../../components/rating/ReviewRatingDistributionChart";
-import MenuItemReviewsList from "../../../components/rating/menuItem/MenuItemReviewsList";
-import { MenuItem } from "../../../models";
-import firebase, { firebaseMenuItemReviews } from "../../../config/firebase";
-import { MenuItemReview } from "../../../models/MenuItemReview";
 import LeaveMenuItemReviewButton from "../../../components/rating/menuItem/LeaveMenuItemReviewButton";
+import MenuItemReviewsList from "../../../components/rating/menuItem/MenuItemReviewsList";
+import ReviewRatingDistributionChart from "../../../components/rating/ReviewRatingDistributionChart";
+import { firebaseMenuItemReviews } from "../../../config/firebase";
+import { MenuItem } from "../../../models";
+import { MenuItemReview } from "../../../models/MenuItemReview";
 
 interface IProps {
   menuItem: MenuItem;

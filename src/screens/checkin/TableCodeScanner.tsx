@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Dimensions, ActivityIndicator } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
-import { firebaseRestaurants } from "../../config/firebase";
-import { FirebaseApp } from "@firebase/app-types";
+import React, { Component } from "react";
+import { ActivityIndicator, Dimensions, StyleSheet } from "react-native";
 import { Icon, Text } from "react-native-elements";
+import { firebaseRestaurants } from "../../config/firebase";
 import { QrCodeData } from "../../models/QrCodeData";
 
 export interface TableCodeScannerProps {

@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { Image, FlatList, View, Dimensions } from "react-native";
-
-import firebase, { firebaseOrders } from "../../config/firebase";
-import { Text, ListItem, Badge } from "react-native-elements";
+import { FlatList, View } from "react-native";
+import { Badge, ListItem, Text } from "react-native-elements";
 import { NavigationParams } from "react-navigation";
-import { Order } from "../../models/Order";
-import TextNote from "../../components/basic/TextNote";
-import Row from "../../components/basic/Row";
 import { Container } from "../../components";
+import Row from "../../components/basic/Row";
+import TextNote from "../../components/basic/TextNote";
 import { displayNameForOrderStatus } from "../../config/displayNamesForValues";
+import firebase, { firebaseOrders } from "../../config/firebase";
+import { Order } from "../../models/Order";
 
 interface OrdersScreenProps {
   navigation: NavigationParams;

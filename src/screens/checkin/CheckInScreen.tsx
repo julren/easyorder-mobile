@@ -1,21 +1,16 @@
-import React, { Component } from "react";
-import TableCodeScanner from "./TableCodeScanner";
-import { NavigationScreenProps, NavigationScreenProp } from "react-navigation";
+import React from "react";
+import { NavigationScreenProps } from "react-navigation";
 import { firebaseRestaurants } from "../../config/firebase";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import { GlobalContext } from "../../contexts/GlobalContext";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import TableCodeScanner from "./TableCodeScanner";
 
-export interface CheckInScreenProps {
-  navigation: NavigationScreenProp<any>;
-  globalContext: GlobalContext;
-}
+interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
-export interface CheckInScreenState {}
+export interface IState {}
 
-class CheckInScreen extends React.Component<
-  CheckInScreenProps,
-  CheckInScreenState
-> {
+class CheckInScreen extends React.Component<IProps, IState> {
   static navigationOptions = {
     header: null
   };
@@ -42,7 +37,7 @@ class CheckInScreen extends React.Component<
     });
   };
 
-  constructor(props: CheckInScreenProps) {
+  constructor(props) {
     super(props);
     this.state = {};
   }

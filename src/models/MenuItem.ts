@@ -1,4 +1,4 @@
-import { Rating } from "react-native-ratings";
+import { Rating } from "./Rating";
 
 export interface MenuItem {
   id?: string;
@@ -9,4 +9,5 @@ export interface MenuItem {
   photoThumb: string;
   price: number;
   rating: Rating;
+  menuSectionID?: string;
 }

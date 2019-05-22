@@ -1,17 +1,12 @@
 import React, { Component } from "react";
-import { FlatList, View, ActivityIndicator, ScrollView } from "react-native";
-import StarRating from "react-native-star-rating";
-import {
-  firebaseRestaurants,
-  firebaseRestaurantReviews
-} from "../../../config/firebase";
-import LeaveRestaurantReviewButton from "../../../components/rating/restaurant/LeaveRestaurantReviewButton";
-import { RestaurantReview } from "../../../models/RestaurantReview";
-import { Restaurant } from "../../../models/Restaurant";
-import { Text, ListItem, Card } from "react-native-elements";
+import { ActivityIndicator, ScrollView } from "react-native";
 import Separator from "../../../components/basic/Separator";
-import ReviewRatingDistributionChart from "../../../components/rating/ReviewRatingDistributionChart";
+import LeaveRestaurantReviewButton from "../../../components/rating/restaurant/LeaveRestaurantReviewButton";
 import RestaurantReviewsList from "../../../components/rating/restaurant/RestaurantReviewsList";
+import ReviewRatingDistributionChart from "../../../components/rating/ReviewRatingDistributionChart";
+import { firebaseRestaurantReviews } from "../../../config/firebase";
+import { Restaurant } from "../../../models/Restaurant";
+import { RestaurantReview } from "../../../models/RestaurantReview";
 
 interface IProps {
   restaurant: Restaurant;
@@ -56,33 +51,20 @@ class ReviewsTab extends Component<IProps, IState> {
   render() {
     const { restaurant } = this.props;
     const { reviews, loading } = this.state;
-    // restaurant.rating = {
-    //   overall: 4.2,
-    //   numberOfRatings: 18,
-    //   distribution: [
-    //     { starRating: 5, numberOfRatings: 20, percentage: 0.6 },
-    //     { starRating: 4, numberOfRatings: 4, percentage: 0.2 },
-    //     { starRating: 3, numberOfRatings: 1, percentage: 0.1 },
-    //     { starRating: 2, numberOfRatings: 1, percentage: 0.1 },
-    //     { starRating: 1, numberOfRatings: 0, percentage: 0 }
-    //   ]
-    // };
 
     if (loading) return <ActivityIndicator />;
 
     return (
       <ScrollView
         style={{
+          flex: 1,
           marginTop: 5,
           marginBottom: 15
         }}
       >
         <ReviewRatingDistributionChart rating={restaurant.rating} />
-
         <Separator borderBottom borderTop heading="Bewertungen" />
-
         <RestaurantReviewsList restaurantReviews={this.state.reviews} />
-
         <LeaveRestaurantReviewButton
           restaurant={restaurant}
           onChange={this.getReviews}

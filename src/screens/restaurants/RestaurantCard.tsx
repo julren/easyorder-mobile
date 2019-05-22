@@ -1,23 +1,16 @@
+import geohashDistance from "geohash-distance";
+import geohash from "ngeohash";
 import React, { Component } from "react";
-import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Card, ListItem, Text } from "react-native-elements";
 import StarRating from "react-native-star-rating";
-
-import {
-  Card,
-  ListItem,
-  Button,
-  Icon,
-  Text,
-  Rating,
-  ThemeConsumer
-} from "react-native-elements";
-import { Restaurant } from "../../models/Restaurant";
-import { displayNameForPriceCategory } from "../../config/displayNamesForValues";
 import CacheImage from "../../components/basic/CachedImage";
-import { TextNote } from "../../components";
 import Row from "../../components/basic/Row";
+import { displayNameForPriceCategory } from "../../config/displayNamesForValues";
+import { Restaurant } from "../../models/Restaurant";
 
 interface IProps {
+  currentLocationGeoHash: string;
   restaurant: Restaurant;
   onRestaurantSelect: (e) => void;
 }
@@ -26,11 +19,20 @@ class RestaurantCard extends Component<IProps> {
   render() {
     // TODO: distance, rating
 
-    const distance = 1.2;
-
-    const { restaurant, onRestaurantSelect } = this.props;
-    const { name, priceClass, cuisine } = restaurant;
+    const {
+      restaurant,
+      onRestaurantSelect,
+      currentLocationGeoHash
+    } = this.props;
+    const { name, priceClass, cuisine, address } = restaurant;
     const { coverPhoto, logo } = restaurant.media;
+
+    const distance = currentLocationGeoHash
+      ? geohashDistance.inKm(
+          currentLocationGeoHash,
+          geohash.encode(address.lat, address.lon, 7)
+        )
+      : undefined;
 
     return (
       <TouchableOpacity onPress={onRestaurantSelect}>
@@ -61,12 +63,13 @@ class RestaurantCard extends Component<IProps> {
                     )
                   </Text>
                 </Row>
-
-                <Text
-                  style={{ color: "grey", fontSize: 12 }}
-                >{`${distance} km entfernt · ${cuisine} · ${
-                  displayNameForPriceCategory[priceClass]
-                }`}</Text>
+                {distance ? (
+                  <Text
+                    style={{ color: "grey", fontSize: 12 }}
+                  >{`${distance.toFixed(1)} km entfernt · ${cuisine} · ${
+                    displayNameForPriceCategory[priceClass]
+                  }`}</Text>
+                ) : null}
               </View>
             }
             leftElement={

@@ -1,15 +1,14 @@
 import React, { PureComponent } from "react";
-import { Text, Image, Button, Icon } from "react-native-elements";
 import { View } from "react-native";
-import TableCodeScanner from "../checkin/TableCodeScanner";
-import { NavigationScreenProps } from "react-navigation";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import CheckmarkAnimation from "./CheckmarkAnimation";
+import { Button, Image, Text } from "react-native-elements";
 import { TextNote } from "../../components";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import TableCodeScanner from "../checkin/TableCodeScanner";
+import CheckmarkAnimation from "./CheckmarkAnimation";
 
-interface IProps {
-  globalContext: GlobalContext;
+interface IProps extends WithGlobalContextProps {
   onDone: () => void;
 }
 

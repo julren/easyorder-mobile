@@ -1,29 +1,15 @@
 import React, { Component } from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  ImageBackground,
-  View,
-  Dimensions
-} from "react-native";
-
-import { withTheme, Header } from "react-native-elements";
-import { Header as NavHeader, NavigationScreenProp } from "react-navigation";
-import RestaurantInfoTab from "./RestaurantInfoTab";
-import ReviewsTab from "./ReviewsTab";
-import { Button } from "react-native-elements";
-
-import { Text } from "react-native-elements";
-import ScrollableTabView from "react-native-scrollable-tab-view";
+import { Image, StyleSheet, View } from "react-native";
+import { Button, withTheme } from "react-native-elements";
 // @ts-ignore
 import ParallaxScrollView from "react-native-parallax-scroll-view";
-import { Restaurant } from "../../../models/Restaurant";
-import Tabs from "../../../components/basic/Tabs";
-import Tab from "../../../components/basic/Tab";
-import Row from "../../../components/basic/Row";
+import { NavigationScreenProp } from "react-navigation";
 import CacheImage from "../../../components/basic/CachedImage";
+import Tab from "../../../components/basic/Tab";
+import Tabs from "../../../components/basic/Tabs";
+import { Restaurant } from "../../../models/Restaurant";
+import RestaurantInfoTab from "./RestaurantInfoTab";
+import ReviewsTab from "./ReviewsTab";
 
 const PARALLAX_HEADER_HEIGHT = 200;
 

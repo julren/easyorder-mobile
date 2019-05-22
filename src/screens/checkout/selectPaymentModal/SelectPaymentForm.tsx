@@ -1,15 +1,6 @@
 import React, { PureComponent } from "react";
-import { Formik, Field } from "formik";
-import * as Yup from "yup";
-import { View, StyleSheet } from "react-native";
-import {
-  Input,
-  Icon,
-  Button,
-  Text,
-  ListItem,
-  CheckBox
-} from "react-native-elements";
+import { StyleSheet, View } from "react-native";
+import { ListItem } from "react-native-elements";
 import { PaymentMethod } from "../../../models/PaymentMethod";
 
 interface IProps {

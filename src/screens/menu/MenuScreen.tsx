@@ -1,38 +1,21 @@
 import React, { PureComponent } from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  Modal,
-  Dimensions
-} from "react-native";
-import PropTypes from "prop-types";
-import {
-  NavigationEvents,
-  NavigationScreenProps,
-  NavigationScreenProp
-} from "react-navigation";
-import MenuItemList from "./MenuItemList";
-import MiniCartOverlay from "./MiniCartOverlay";
-import { ThemeConsumer, Button, Overlay, Text } from "react-native-elements";
-
-import { MenuSection, MenuItem, Restaurant } from "../../models";
-import { Tabs, Tab } from "../../components";
-import AddToCartModal from "./addToCartModal/AddToCartModal";
-import TableCodeScanner from "../checkin/TableCodeScanner";
-import ScanTableCodeModal from "./ScanTableCodeModal";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import ScannedTableOverlay from "./ScannedTableOverlay";
+import { Dimensions, Modal } from "react-native";
+import { Button, Overlay, Text } from "react-native-elements";
+import { NavigationScreenProps } from "react-navigation";
+import { Tab, Tabs } from "../../components";
 import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
 import { firebaseRestaurants } from "../../config/firebase";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import { MenuItem, MenuSection, Restaurant } from "../../models";
+import AddToCartModal from "./addToCartModal/AddToCartModal";
+import MenuItemList from "./MenuItemList";
+import MiniCartOverlay from "./MiniCartOverlay";
+import ScannedTableOverlay from "./ScannedTableOverlay";
+import ScanTableCodeModal from "./ScanTableCodeModal";
 
-interface IProps {
-  navigation: NavigationScreenProp<any>;
-  globalContext: GlobalContext;
-}
+interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
 interface IState {
   loading: boolean;
@@ -142,7 +125,7 @@ class MenuScreen extends PureComponent<IProps, IState> {
             ))}
           </Tabs>
         ) : (
-          <Text>(Keine MenuSections gefunden)</Text>
+          <Text>(Keine MenuSections angelegt)</Text>
         )}
         <Modal
           animationType="slide"

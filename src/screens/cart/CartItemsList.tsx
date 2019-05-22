@@ -1,9 +1,8 @@
-import React, { PureComponent, Fragment } from "react";
-
-import { FlatList, View, Modal } from "react-native";
+import React, { PureComponent } from "react";
+import { View } from "react-native";
 import { Icon, ListItem, Text } from "react-native-elements";
-import { GlobalContextConsumer } from "../../contexts/GlobalContext";
 import CacheImage from "../../components/basic/CachedImage";
+import { GlobalContextConsumer } from "../../contexts/GlobalContext";
 
 interface IProps {
   viewOnly?: boolean;
@@ -19,10 +18,8 @@ class CartItemsList extends PureComponent<IProps> {
         {({
           cart,
           grandTotal,
-          removeCartItem,
           increaseCartItemQuantity,
-          decreaseCartItemQuantity,
-          updateCartItemQuantity
+          decreaseCartItemQuantity
         }) => (
           <React.Fragment>
             {cart.map((cartItem, index) => (

@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
-import { View, Image } from "react-native";
-import { Text, Button, ThemeConsumer, Icon } from "react-native-elements";
+import { Image, View } from "react-native";
+import { Button, Text, ThemeConsumer } from "react-native-elements";
 import { Table } from "../../models";
 
 interface IProps {

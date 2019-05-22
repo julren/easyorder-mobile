@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Icon, IconProps } from "react-native-elements";
 import { colors } from "../config/customTheme";
 

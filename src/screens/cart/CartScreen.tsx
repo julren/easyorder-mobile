@@ -1,19 +1,15 @@
 import React, { Component } from "react";
-import { Modal, ScrollView, View, StyleSheet } from "react-native";
-
-import { GlobalContext } from "../../contexts/GlobalContext";
-import Separator from "../../components/basic/Separator";
-import { NavigationScreenProp, NavigationScreenProps } from "react-navigation";
-import { Text, ListItem, Button, Icon } from "react-native-elements";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import { Constants } from "expo";
-import CartItemsList from "./CartItemsList";
+import { ScrollView, View } from "react-native";
+import { Button, Icon, ListItem, Text } from "react-native-elements";
+import { NavigationScreenProps } from "react-navigation";
 import Row from "../../components/basic/Row";
+import Separator from "../../components/basic/Separator";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import CartItemsList from "./CartItemsList";
 
-interface IProps {
-  navigation: NavigationScreenProp<any>;
-  globalContext: GlobalContext;
-}
+interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
 interface IState {
   paymentModalVisible: boolean;

@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Modal, View, ActivityIndicator, Dimensions } from "react-native";
+import {
+  Modal,
+  View,
+  ActivityIndicator,
+  Dimensions,
+  ViewStyle
+} from "react-native";
 import ReviewRestaurantModal from "./ReviewRestaurantModal";
 import firebase, {
   firebaseRestaurants,
@@ -13,6 +19,7 @@ import { Restaurant, MenuItem } from "../../../models";
 interface IProps {
   restaurant: Restaurant;
   onChange: () => void;
+  containerStyle?: ViewStyle;
 }
 
 interface IState {
@@ -85,33 +92,8 @@ class LeaveRestaurantReviewButton extends Component<IProps, IState> {
 
     if (loading) return <ActivityIndicator />;
 
-    // if (review) {
-    //   return (
-    //     <View style={{ margin: 16, alignItems: "flex-start" }}>
-    //       <Text>
-    //         {`Deine Restaurantbewertung vom ${review.reviewDate
-    //           .toDate()
-    //           .toLocaleString([], {
-    //             day: "2-digit",
-    //             month: "2-digit",
-    //             year: "numeric"
-    //           })}:`}
-    //       </Text>
-
-    //       <StarRating
-    //         starSize={20}
-    //         maxStarts={5}
-    //         rating={review.rating}
-    //         fullStarColor="#FFD700"
-    //         emptyStarColor="#d3d3d3"
-    //         starStyle={{ marginRight: 5 }}
-    //       />
-    //     </View>
-    //   );
-    // }
-
     return (
-      <React.Fragment>
+      <View style={{ ...this.props.containerStyle }}>
         <Button
           title={review ? "Bewertung aktualisieren" : "Restaurant bewerten"}
           onPress={this.openModal}
@@ -133,7 +115,7 @@ class LeaveRestaurantReviewButton extends Component<IProps, IState> {
             onClose={this.closeModal}
           />
         </Overlay>
-      </React.Fragment>
+      </View>
     );
   }
 }

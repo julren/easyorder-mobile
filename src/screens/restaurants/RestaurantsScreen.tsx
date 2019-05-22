@@ -1,29 +1,24 @@
+import { Location, Permissions } from "expo";
+import { Accuracy } from "expo-location";
+import geohash from "ngeohash";
 import React from "react";
 import { FlatList } from "react-native";
-
-import { NavigationEvents, NavigationScreenProp } from "react-navigation";
-import geohash from "ngeohash";
-
-import RestaurantCard from "./RestaurantCard";
-
-import { Text, Button, Header, Icon } from "react-native-elements";
+import { Button, Text } from "react-native-elements";
+import { NavigationEvents, NavigationScreenProps } from "react-navigation";
 import Container from "../../components/basic/Container";
 import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
-import { Permissions } from "expo";
-import { Location } from "expo";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import CacheImage from "../../components/basic/CachedImage";
-import { Restaurant } from "../../models";
 import { firebaseRestaurants } from "../../config/firebase";
-import { Accuracy } from "expo-location";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import { Restaurant } from "../../models";
+import RestaurantCard from "./RestaurantCard";
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-  globalContext: GlobalContext;
-}
-interface State {
+interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
+
+interface IState {
   restaurants: Restaurant[];
+  currentLocationGeoHash: string;
   location: any;
   errorMessage: any;
 }
@@ -31,7 +26,7 @@ interface State {
 /**
  * Screen that shows List of nearby restaurants
  */
-class RestaurantsScreen extends React.Component<Props, State> {
+class RestaurantsScreen extends React.Component<IProps, IState> {
   static navigationOptions = ({ navigation }) => {
     const location = navigation.getParam("location", undefined);
     const restaurants = navigation.getParam("restaurants", []);
@@ -56,6 +51,7 @@ class RestaurantsScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       restaurants: [],
+      currentLocationGeoHash: "",
       location: undefined,
       errorMessage: ""
     };
@@ -64,10 +60,19 @@ class RestaurantsScreen extends React.Component<Props, State> {
 
   async componentDidMount() {
     const location = await this.getLocationAsync();
-    this.getLocationAddress(location);
 
-    this.getRestaurants(location);
-    // Get Restaurants from database
+    if (location) {
+      const currentLocationGeoHash = geohash.encode(
+        location.coords.latitude,
+        location.coords.longitude,
+        7
+      );
+
+      this.setState({ currentLocationGeoHash: currentLocationGeoHash });
+
+      this.getLocationAddress(location);
+      this.getRestaurants(location);
+    }
   }
 
   getRestaurants = location => {
@@ -100,11 +105,10 @@ class RestaurantsScreen extends React.Component<Props, State> {
   getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== "granted") {
-      this.setState({
+      return this.setState({
         errorMessage: "Permission to access location was denied"
       });
     }
-
     return Location.getCurrentPositionAsync({ accuracy: Accuracy.Balanced });
   };
 
@@ -116,6 +120,7 @@ class RestaurantsScreen extends React.Component<Props, State> {
     )
       .then(response => response.json())
       .then(responseJson => {
+        console.log(responseJson);
         return responseJson;
       });
 
@@ -126,48 +131,51 @@ class RestaurantsScreen extends React.Component<Props, State> {
   render() {
     // Consumes Cart Context to be able to clear cart when the user goes back to list from restaurant view
     const { globalContext } = this.props;
-    const { restaurants, location } = this.state;
+    const { restaurants, currentLocationGeoHash, location } = this.state;
 
     if (restaurants.length == 0) return <PageLoadingIndicator />;
 
     return (
-      <React.Fragment>
-        <Container>
-          {/* Helper from react-navigation. When Screen will focus (be active) clear cart of globalContext */}
-          <NavigationEvents
-            onWillFocus={payload => globalContext.resetSelectedRestaurant()}
-          />
+      <Container>
+        {/* Helper from react-navigation. When Screen will focus (be active) clear cart of globalContext */}
+        <NavigationEvents
+          onWillFocus={payload => globalContext.resetSelectedRestaurant()}
+        />
 
-          {/* Liste der Restaurantdarstellung rendern */}
+        {/* Liste der Restaurantdarstellung rendern */}
 
-          <FlatList
-            ListHeaderComponent={
-              <Container>
-                <Text h1>Restaurants in der Nähe</Text>
-                <Text>
-                  {location
-                    ? `${location.address.road}, ${location.address.town}`
-                    : null}
-                </Text>
-              </Container>
-            }
-            contentContainerStyle={{ padding: 8 }}
-            keyExtractor={item => item.id}
-            data={restaurants}
-            renderItem={({ item }) => (
-              <RestaurantCard
-                restaurant={item}
-                onRestaurantSelect={() => {
-                  this.props.globalContext.setSelectedRestaurant(item);
-                  this.props.navigation.navigate("Menu", {
-                    restaurant: item
-                  });
-                }}
-              />
-            )}
-          />
-        </Container>
-      </React.Fragment>
+        <FlatList
+          ListHeaderComponent={
+            <Container>
+              <Text h1>Restaurants in der Nähe</Text>
+              <Text>
+                {location
+                  ? `${location.address.road}, ${
+                      location.address.town
+                        ? location.address.town
+                        : location.address.county
+                    }`
+                  : null}
+              </Text>
+            </Container>
+          }
+          contentContainerStyle={{ padding: 8 }}
+          keyExtractor={item => item.id}
+          data={restaurants}
+          renderItem={({ item }) => (
+            <RestaurantCard
+              currentLocationGeoHash={currentLocationGeoHash}
+              restaurant={item}
+              onRestaurantSelect={() => {
+                this.props.globalContext.setSelectedRestaurant(item);
+                this.props.navigation.navigate("Menu", {
+                  restaurant: item
+                });
+              }}
+            />
+          )}
+        />
+      </Container>
     );
   }
 }

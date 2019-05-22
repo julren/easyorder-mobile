@@ -1,21 +1,11 @@
-import React, { Component, PureComponent } from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  FlatList
-} from "react-native";
-
 import { MapView } from "expo";
-
+import React, { PureComponent } from "react";
+import { StyleSheet, View } from "react-native";
 import { ListItem, Text } from "react-native-elements";
-
-import Separator from "../../../components/basic/Separator";
-import { Restaurant } from "../../../models/Restaurant";
-import { displayNameForWeekday } from "../../../config/displayNamesForValues";
 import CacheImage from "../../../components/basic/CachedImage";
+import Separator from "../../../components/basic/Separator";
+import { displayNameForWeekday } from "../../../config/displayNamesForValues";
+import { Restaurant } from "../../../models/Restaurant";
 
 interface IProps {
   restaurant: Restaurant;
@@ -57,22 +47,18 @@ class RestaurantInfoTab extends PureComponent<IProps, IState> {
         />
         <Separator heading="Öffnungszeiten" />
 
-        <FlatList
-          data={businessHours}
-          keyExtractor={item => item.day}
-          scrollEnabled={false}
-          renderItem={({ item }) => (
-            <ListItem
-              bottomDivider
-              title={<Text>{displayNameForWeekday[item.day]}</Text>}
-              rightElement={
-                <Text>
-                  {item.openingHour} - {item.closingHour}
-                </Text>
-              }
-            />
-          )}
-        />
+        {businessHours.map((businessHour, index) => (
+          <ListItem
+            key={index}
+            bottomDivider
+            title={<Text>{displayNameForWeekday[businessHour.day]}</Text>}
+            rightElement={
+              <Text>
+                {businessHour.openingHour} - {businessHour.closingHour}
+              </Text>
+            }
+          />
+        ))}
 
         <Separator heading="Adresse" />
 

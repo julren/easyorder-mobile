@@ -10,47 +10,52 @@ interface IProps {
 
 class MenuItemReviewsList extends PureComponent<IProps> {
   render() {
-    const { menuItemReviews = [] } = this.props;
+    const { menuItemReviews = [], ...rest } = this.props;
     return (
       <FlatList
+        {...rest}
         data={menuItemReviews}
         keyExtractor={item => item.id}
-        ListEmptyComponent={
-          <View
-            style={{
-              alignItems: "center",
-              padding: 5
-            }}
-          >
-            <Text style={{ fontSize: 36 }}>👻</Text>
-            <Text>Keine Bewertungen bisher.</Text>
-          </View>
-        }
-        renderItem={({ item }) => (
-          <ListItem
-            leftIcon={{ name: "person", iconStyle: { color: "grey" } }}
-            subtitle={item.text}
-            subtitleStyle={{ color: null }}
-            titleStyle={{ color: "grey" }}
-            title={`Review vom ${item.reviewDate.toDate().toLocaleString([], {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric"
-            })}`}
-            rightTitle={
-              <StarRating
-                starSize={15}
-                maxStarts={5}
-                rating={item.rating}
-                fullStarColor="#FFD700"
-                emptyStarColor="#d3d3d3"
-              />
-            }
-          />
-        )}
+        ListEmptyComponent={ListEmptyComponent}
+        renderItem={MenuItemReviewListItem}
       />
     );
   }
 }
 
 export default MenuItemReviewsList;
+
+const ListEmptyComponent = () => (
+  <View
+    style={{
+      alignItems: "center",
+      padding: 5
+    }}
+  >
+    <Text style={{ fontSize: 36 }}>⭐️</Text>
+    <Text>Keine Restaurantbewertungen bisher.</Text>
+  </View>
+);
+
+const MenuItemReviewListItem = ({ item }) => (
+  <ListItem
+    leftIcon={{ name: "person", iconStyle: { color: "grey" } }}
+    subtitle={item.text}
+    subtitleStyle={{ color: null }}
+    titleStyle={{ color: "grey" }}
+    title={`Review vom ${item.reviewDate.toDate().toLocaleString([], {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    })}`}
+    rightTitle={
+      <StarRating
+        starSize={15}
+        maxStarts={5}
+        rating={item.rating}
+        fullStarColor="#FFD700"
+        emptyStarColor="#d3d3d3"
+      />
+    }
+  />
+);

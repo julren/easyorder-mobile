@@ -1,20 +1,21 @@
 import React, { PureComponent } from "react";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ViewStyle } from "react-native";
 import { Input, Icon, Button, Text, CheckBox } from "react-native-elements";
 
 interface IProps {
   onSubmit: (creditCardInfo) => void;
   intialValues?: any;
+  containerStyle?: ViewStyle;
 }
 
 class CreditCardForm extends PureComponent<IProps> {
   render() {
-    const { onSubmit } = this.props;
+    const { onSubmit, containerStyle } = this.props;
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, ...containerStyle }}>
         <Formik
           validationSchema={VerificationSchema}
           initialValues={

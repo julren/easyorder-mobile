@@ -1,32 +1,17 @@
+import { Notifications, Permissions } from "expo";
+import { Field, Formik } from "formik";
 import React, { Component } from "react";
-import {
-  View,
-  StyleSheet,
-  Keyboard,
-  Alert,
-  ImageBackground,
-  KeyboardAvoidingView
-} from "react-native";
-
-import { Formik, Field } from "formik";
+import { Alert, Keyboard, StyleSheet, View } from "react-native";
+import { Button, Input, Text } from "react-native-elements";
+import { NavigationScreenProps } from "react-navigation";
 import * as Yup from "yup";
-
-import { Input, Button, Text, Image, Icon } from "react-native-elements";
-
 import firebase, { firebaseUsers } from "../../config/firebase";
-import { BrandLogo } from "../../components/basic/BrandLogo";
-import { NavigationScreenProp } from "react-navigation";
-import Container from "../../components/basic/Container";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
 import AuthPageWrapper from "./AuthPageWrapper";
-import { Permissions } from "expo";
-import { Notifications } from "expo";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import { GlobalContext } from "../../contexts/GlobalContext";
 
-interface IProps {
-  navigation: NavigationScreenProp<any, any>;
-  globalContext: GlobalContext;
-}
+interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
 class LogInScreen extends Component<IProps> {
   static navigationOptions = {

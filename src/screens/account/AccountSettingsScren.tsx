@@ -1,15 +1,9 @@
-import React, { Component } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  KeyboardAvoidingView,
-  View
-} from "react-native";
-import { Button, Input, Text, Icon, ListItem } from "react-native-elements";
-import Container from "../../components/basic/Container";
-import Separator from "../../components/basic/Separator";
-import firebase from "../../config/firebase";
+import React from "react";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import { Button, Icon, Input, ListItem, Text } from "react-native-elements";
 import { TextNote } from "../../components";
+import Container from "../../components/basic/Container";
+import firebase from "../../config/firebase";
 
 export interface Props {}
 

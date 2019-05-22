@@ -1,30 +1,20 @@
-import React, { Component } from "react";
-import firebase, {
-  firebaseOrders,
-  firebaseRestaurants
-} from "../config/firebase";
-import {
-  NavigationScreenProp,
-  NavigationScreenOptions,
-  NavigationScreenProps,
-  NavigationInjectedProps
-} from "react-navigation";
-import { any } from "prop-types";
+import React, { Component, Provider } from "react";
+import firebase, { firebaseOrders } from "../config/firebase";
+
 import { MenuItem } from "../models/MenuItem";
 import { Restaurant } from "../models/Restaurant";
 import globalContexUtils from "./globalContextUtils";
 import { Table } from "../models";
-import CartOverviewList from "../screens/checkout/CartItemsSummaryList";
-import { AsyncStorage } from "react-native";
 import { PaymentMethod } from "../models/PaymentMethod";
+import { ProviderProps } from "create-react-context";
+import { GlobalContextProps } from "./GlobalContextProps";
 
-const GlobalContext = React.createContext<Partial<GlobalContext>>({});
+const GlobalContext = React.createContext<Partial<GlobalContextProps>>({});
 
 const GlobalContextConsumer = GlobalContext.Consumer;
 
-export interface GlobalContext {
+interface IState {
   user: any;
-  restaurants: Restaurant[];
   cart: {
     item: MenuItem;
     quantity: number;
@@ -36,28 +26,12 @@ export interface GlobalContext {
   grandTotal: number;
   status: string;
   numCartItems: number;
-
-  setUser: (user) => void;
-  clearUser: () => void;
-
-  setSelectedRestaurant: (selectedRestaurant: Restaurant) => void;
-  setPaymentMethod: (paymentMethod: PaymentMethod) => void;
-  setTable: (tableID: string) => void;
-
-  addCartItem: (item: MenuItem, quantity: number) => void;
-  removeCartItem: (cartItem: { item: MenuItem; quantity: number }) => void;
-  getNumOfItemInCart: (item: MenuItem) => number;
-  updateCartItemQuantity: (item: MenuItem, quantity: number) => void;
-  decreaseCartItemQuantity: (item: MenuItem) => void;
-  increaseCartItemQuantity: (item: MenuItem) => void;
-
-  resetSelectedRestaurant: () => void;
-  resetTable: () => void;
-
-  placeOrder: () => Promise<any>;
 }
 
-class GlobalContextProvider extends Component<any, any> {
+class GlobalContextProvider extends Component<
+  ProviderProps<GlobalContextProps>,
+  IState
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -140,9 +114,9 @@ class GlobalContextProvider extends Component<any, any> {
   resetSelectedRestaurant = () => {
     this.setState({
       cart: [],
-      restaurant: undefined,
+      selectedRestaurant: undefined,
       table: undefined,
-      paymentMethod: {},
+      paymentMethod: undefined,
       mwst: 0,
       grandTotal: 0,
       status: "",

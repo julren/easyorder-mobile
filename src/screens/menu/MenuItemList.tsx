@@ -1,15 +1,9 @@
 import React, { Component } from "react";
-import { Modal, FlatList } from "react-native";
-import PropTypes from "prop-types";
-import AddToCartModal from "./addToCartModal/AddToCartModal";
-
-import { ListItem, Text, Image } from "react-native-elements";
-import MenuItemListItem from "./MenuItemListItem";
-import { MenuItem } from "../../models/MenuItem";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import withGlobalContext from "../../contexts/withGlobalContext";
+import { FlatList } from "react-native";
 import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
 import { firebaseRestaurants } from "../../config/firebase";
+import { MenuItem } from "../../models/MenuItem";
+import MenuItemListItem from "./MenuItemListItem";
 
 interface IProps {
   menuSectionID: string;

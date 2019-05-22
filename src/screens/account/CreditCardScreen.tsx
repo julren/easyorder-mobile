@@ -3,17 +3,17 @@ import Container from "../../components/basic/Container";
 import { Text, ListItem } from "react-native-elements";
 import { ScrollView, View } from "react-native";
 import CreditCardForm from "../../components/basic/CreditCardForm";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import { GlobalContext } from "../../contexts/GlobalContext";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import { GlobalContextProps } from "../../contexts/GlobalContextProps";
 import { TextNote } from "../../components";
 import firebase, { firebaseUsers } from "../../config/firebase";
 import { NavigationScreenProps } from "react-navigation";
 
-export interface Props extends NavigationScreenProps<any> {
-  globalContext: GlobalContext;
-}
+interface Props extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
-export interface State {
+interface State {
   creditCardInfo: any;
 }
 

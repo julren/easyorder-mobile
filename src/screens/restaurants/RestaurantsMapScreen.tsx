@@ -1,16 +1,13 @@
-import React, { Component } from "react";
-import { Restaurant } from "../../models/Restaurant";
 import { MapView } from "expo";
-import { NavigationScreenProp } from "react-navigation";
-import { View } from "react-native";
-import { Text, ListItem } from "react-native-elements";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import { GlobalContext } from "../../contexts/GlobalContext";
+import React, { Component } from "react";
+import { ListItem } from "react-native-elements";
+import { NavigationScreenProps } from "react-navigation";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import { Restaurant } from "../../models/Restaurant";
 
-export interface IProps {
-  navigation: NavigationScreenProp<any, any>;
-  globalContext: GlobalContext;
-}
+interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
 export interface IState {}
 

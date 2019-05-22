@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
-import PropTypes from "prop-types";
-
-import { ThemeConsumer, Text, Icon } from "react-native-elements";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Text, ThemeConsumer } from "react-native-elements";
 import { GlobalContextConsumer } from "../../contexts/GlobalContext";
 
 interface IProps {

@@ -1,18 +1,15 @@
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
+import { StyleSheet, View } from "react-native";
 import { ListItem, Text } from "react-native-elements";
-import { MenuItem } from "../../models/MenuItem";
-import { View, StyleSheet } from "react-native";
-import {
-  GlobalContextConsumer,
-  GlobalContext
-} from "../../contexts/GlobalContext";
-import withGlobalContext from "../../contexts/withGlobalContext";
 import StarRating from "react-native-star-rating";
 import CacheImage from "../../components/basic/CachedImage";
 import Row from "../../components/basic/Row";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import { MenuItem } from "../../models/MenuItem";
 
-interface IProps {
-  globalContext: GlobalContext;
+interface IProps extends WithGlobalContextProps {
   menuItem: MenuItem;
   onPress?: () => void;
 }

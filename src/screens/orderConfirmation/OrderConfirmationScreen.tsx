@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Text, Icon, Button } from "react-native-elements";
 import { ImageBackground, View } from "react-native";
-import { NavigationScreenProps, NavigationActions } from "react-navigation";
-import { OrderOverview, Container } from "../../components";
-import ErrorMessage from "../../components/basic/ErrorMessage";
+import { Button, Icon, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import { NavigationActions, NavigationScreenProps } from "react-navigation";
+import { OrderOverview } from "../../components";
+import ErrorMessage from "../../components/basic/ErrorMessage";
 
 interface IProps extends NavigationScreenProps {}
 interface IState {}

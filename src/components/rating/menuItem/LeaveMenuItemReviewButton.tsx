@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Modal, View, ActivityIndicator, Dimensions } from "react-native";
+import {
+  Modal,
+  View,
+  ActivityIndicator,
+  Dimensions,
+  ViewStyle
+} from "react-native";
 import firebase, {
   firebaseRestaurants,
   firebaseMenuItemReviews
@@ -13,6 +19,7 @@ import ReviewMenuItemModal from "./ReviewMenuItemModal";
 interface IProps {
   menuItem: MenuItem;
   onChange: () => void;
+  containerStyle?: ViewStyle;
 }
 
 interface IState {
@@ -82,33 +89,9 @@ class LeaveMenuItemReviewButton extends Component<IProps, IState> {
     } = this.state;
     if (loading) return <ActivityIndicator />;
 
-    // if (review) {
-    //   return (
-    //     <View style={{ margin: 16, alignItems: "flex-start" }}>
-    //       <Text>
-    //         {`Deine Restaurantbewertung vom ${review.reviewDate
-    //           .toDate()
-    //           .toLocaleString([], {
-    //             day: "2-digit",
-    //             month: "2-digit",
-    //             year: "numeric"
-    //           })}:`}
-    //       </Text>
-
-    //       <StarRating
-    //         starSize={20}
-    //         maxStarts={5}
-    //         rating={review.rating}
-    //         fullStarColor="#FFD700"
-    //         emptyStarColor="#d3d3d3"
-    //         starStyle={{ marginRight: 5 }}
-    //       />
-    //     </View>
-    //   );
-    // }
     if (alreadyReviewedInSession) return <React.Fragment />;
     return (
-      <React.Fragment>
+      <View style={{ ...this.props.containerStyle }}>
         <Button
           title={review ? "Bewertung aktualisieren" : "Gericht bewerten"}
           onPress={this.openModal}
@@ -130,7 +113,7 @@ class LeaveMenuItemReviewButton extends Component<IProps, IState> {
             onClose={this.closeModal}
           />
         </Overlay>
-      </React.Fragment>
+      </View>
     );
   }
 }

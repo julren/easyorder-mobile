@@ -6,10 +6,11 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 
-import { GlobalContext } from "../../../contexts/GlobalContext";
 import { Text, Button, ListItem, Input, Icon } from "react-native-elements";
 import Container from "../../../components/basic/Container";
-import withGlobalContext from "../../../contexts/withGlobalContext";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../../contexts/withGlobalContext";
 import SelectPaymentForm from "./SelectPaymentForm";
 import CreditCardForm from "../../../components/basic/CreditCardForm";
 import { PaymentMethod } from "../../../models/PaymentMethod";
@@ -19,8 +20,7 @@ interface IState {
   selectedPaymentMethod: PaymentMethod;
 }
 
-interface IProps {
-  globalContext: GlobalContext;
+interface IProps extends WithGlobalContextProps {
   onClose: (paymentMethod) => void;
 }
 

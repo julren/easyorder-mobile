@@ -1,17 +1,7 @@
 import React, { Component } from "react";
-import Container from "../../../components/basic/Container";
-import StarRating from "react-native-star-rating";
-import { Text, ListItem, Icon, Badge } from "react-native-elements";
-import firebase, {
-  firebaseMenuItemReviews,
-  firebaseRestaurantReviews
-} from "../../../config/firebase";
-import { RestaurantReview } from "../../../models/RestaurantReview";
-import { FlatList, View } from "react-native";
-
-import { Tabs, Tab } from "../../../components";
-import RestaurantReviewsTab from "./RestaurantReviewsTab";
+import { Tab, Tabs } from "../../../components";
 import MenuItemReviewsTab from "./MenuItemReviewsTab";
+import RestaurantReviewsTab from "./RestaurantReviewsTab";
 
 export interface Props {}
 

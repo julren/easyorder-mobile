@@ -1,8 +1,6 @@
-import React, { Component } from "react";
-import { Platform, ScrollView } from "react-native";
+import React from "react";
 import {
   createStackNavigator,
-  createDrawerNavigator,
   createBottomTabNavigator
 } from "react-navigation";
 
@@ -12,8 +10,6 @@ import RestaurantsDetailScreen from "../screens/restaurants/restaurantDetail/Res
 import MenuScreen from "../screens/menu/MenuScreen";
 import CartScreen from "../screens/cart/CartScreen";
 
-import { BrandLogo } from "../components/basic/BrandLogo";
-import LogoutButton from "../components/basic/LogoutButton";
 import { colors } from "../config/customTheme.js";
 import RestaurantsMapScreen from "../screens/restaurants/RestaurantsMapScreen";
 import AccountSettingsScreen from "../screens/account/AccountSettingsScren";
@@ -21,7 +17,6 @@ import ImprintScreen from "../screens/account/ImprintScreen";
 import PrivacyScreen from "../screens/account/PrivacyScreen";
 import ContactScreen from "../screens/account/ContactScreen";
 import MyReviewsScreen from "../screens/account/myReviews/MyReviewsScreen";
-import { Icon } from "react-native-elements";
 import TabBarIcon from "./TabBarIcon";
 import CheckInScreen from "../screens/checkin/CheckInScreen";
 import OrdersScreen from "../screens/orders/OrdersScreen";

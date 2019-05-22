@@ -1,11 +1,9 @@
 import React, { PureComponent } from "react";
-import { Container, OrderOverview } from "../../components";
-import { NavigationScreenProps } from "react-navigation";
-import { Text } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
-import CacheImage from "../../components/basic/CachedImage";
 import { View } from "react-native";
-import LeaveRestaurantReviewButton from "../../components/rating/restaurant/LeaveRestaurantReviewButton";
+import { ScrollView } from "react-native-gesture-handler";
+import { NavigationScreenProps } from "react-navigation";
+import { OrderOverview } from "../../components";
+import CacheImage from "../../components/basic/CachedImage";
 
 interface IProps extends NavigationScreenProps {}
 

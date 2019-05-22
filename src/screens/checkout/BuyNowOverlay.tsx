@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
-import PropTypes from "prop-types";
-
-import { ThemeConsumer, Text, Icon, Button } from "react-native-elements";
+import { StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
 import { GlobalContextConsumer } from "../../contexts/GlobalContext";
 
 interface IProps {

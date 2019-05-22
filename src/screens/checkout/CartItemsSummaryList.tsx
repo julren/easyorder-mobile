@@ -1,9 +1,7 @@
 import React, { PureComponent } from "react";
-
-import { FlatList, View } from "react-native";
-import { Icon, ListItem, Text } from "react-native-elements";
-import { GlobalContextConsumer } from "../../contexts/GlobalContext";
+import { ListItem, Text } from "react-native-elements";
 import CacheImage from "../../components/basic/CachedImage";
+import { GlobalContextConsumer } from "../../contexts/GlobalContext";
 
 interface IProps {
   viewOnly?: boolean;

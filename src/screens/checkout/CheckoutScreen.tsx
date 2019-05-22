@@ -1,27 +1,17 @@
 import React, { Component } from "react";
-import { Modal, ScrollView, View, StyleSheet } from "react-native";
-
-import { GlobalContext } from "../../contexts/GlobalContext";
-import SelectPaymentModal from "./selectPaymentModal/SelectPaymentModal";
-import BarcodeScanner from "../../components/BarcodeScanner";
-import CartItemsSummaryList from "./CartItemsSummaryList";
-import Separator from "../../components/basic/Separator";
-import {
-  NavigationScreenProp,
-  NavigationScreenProps,
-  NavigationActions,
-  NavigationState,
-  NavigationProp
-} from "react-navigation";
-import { Text, ListItem, Button, Image, Icon } from "react-native-elements";
-import withGlobalContext from "../../contexts/withGlobalContext";
-import BuyNowOverlay from "./BuyNowOverlay";
-import { Constants } from "expo";
+import { Modal, ScrollView, View } from "react-native";
+import { Icon, ListItem, Text } from "react-native-elements";
+import { NavigationScreenProps } from "react-navigation";
 import Row from "../../components/basic/Row";
+import Separator from "../../components/basic/Separator";
+import withGlobalContext, {
+  WithGlobalContextProps
+} from "../../contexts/withGlobalContext";
+import BuyNowOverlay from "./BuyNowOverlay";
+import CartItemsSummaryList from "./CartItemsSummaryList";
+import SelectPaymentModal from "./selectPaymentModal/SelectPaymentModal";
 
-interface IProps extends NavigationScreenProps {
-  globalContext: GlobalContext;
-}
+interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
 interface IState {
   paymentModalVisible: boolean;

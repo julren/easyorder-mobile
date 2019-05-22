@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { GlobalContextConsumer, GlobalContext } from "./GlobalContext";
+import { GlobalContextConsumer } from "./GlobalContext";
+import { GlobalContextProps } from "./GlobalContextProps";
 
 /**
  * HoC that provides GlobalContext to other Component
@@ -7,7 +8,7 @@ import { GlobalContextConsumer, GlobalContext } from "./GlobalContext";
  */
 
 export interface WithGlobalContextProps {
-  globalContext: GlobalContext;
+  globalContext?: GlobalContextProps;
 }
 
 const withGlobalContext = <BaseProps extends WithGlobalContextProps>(
@@ -21,7 +22,7 @@ const withGlobalContext = <BaseProps extends WithGlobalContextProps>(
       const { ...props } = this.props;
       return (
         <GlobalContextConsumer>
-          {(globalContext: GlobalContext) => (
+          {(globalContext: GlobalContextProps) => (
             <Component {...props as BaseProps} globalContext={globalContext} />
           )}
         </GlobalContextConsumer>

@@ -1,11 +1,22 @@
 import React, { PureComponent } from "react";
 import { Text } from "react-native-elements";
-import { View } from "react-native";
+import { View, ViewStyle } from "react-native";
 
-class ErrorMessage extends PureComponent {
+interface IProps {
+  containerStyle?: ViewStyle;
+}
+
+class ErrorMessage extends PureComponent<IProps> {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          ...this.props.containerStyle
+        }}
+      >
         <Text h2>Whoops, etwas ist schiefgelaufen. 😵</Text>
       </View>
     );

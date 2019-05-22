@@ -14,13 +14,10 @@ import { Restaurant, MenuItem } from "../../../models";
 import withGlobalContext, {
   WithGlobalContextProps
 } from "../../../contexts/withGlobalContext";
-import { GlobalContext } from "../../../contexts/GlobalContext";
 
-interface IProps {
-  globalContext: GlobalContext;
+interface IProps extends WithGlobalContextProps {
   review: MenuItemReview | undefined;
-  menuItem: MenuItem & { menuSectionID: string };
-  category: any;
+  menuItem: MenuItem;
   onClose: () => void;
 }
 
@@ -96,8 +93,6 @@ class ReviewMenuItemModal extends Component<IProps> {
             name="thumb-up"
             iconStyle={{ fontSize: 50, color: "#008ACD" }}
           />
-
-          <Text>{JSON.stringify(menuItem, null, 1)}</Text>
 
           <Text h1>
             {review ? "Bewertung aktualisieren" : "Bewertung abgeben"}
