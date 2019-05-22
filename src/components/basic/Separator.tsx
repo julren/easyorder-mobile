@@ -27,7 +27,12 @@ class Separator extends Component<IProps> {
             }}
           >
             {heading && (
-              <Text style={{ color: theme.colors.grey2, fontSize: 12 }}>
+              <Text
+                style={{
+                  color: theme.colors.grey2,
+                  fontSize: 12
+                }}
+              >
                 {heading.toUpperCase()}
               </Text>
             )}

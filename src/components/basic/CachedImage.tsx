@@ -42,7 +42,7 @@ export default class CacheImage extends React.Component<ImageProps> {
   render() {
     const { ...attributes } = this.props;
     return (
-      <Image {...attributes} source={this.state.source} resizeMode="contain" />
+      <Image source={this.state.source} resizeMode="cover" {...attributes} />
     );
   }
 }

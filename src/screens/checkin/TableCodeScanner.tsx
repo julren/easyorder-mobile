@@ -177,11 +177,11 @@ const styles = StyleSheet.create({
     fontSize: 320
   },
   description: {
-    fontSize: width * 0.08,
+    fontSize: width * 0.07,
     textAlign: "center",
     width: "70%",
     color: "white",
-    marginTop: "10%"
+    marginTop: "15%"
   },
   cancel: {
     fontSize: width * 0.05,

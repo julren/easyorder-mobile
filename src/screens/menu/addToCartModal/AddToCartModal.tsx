@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Dimensions, ImageBackground, StatusBar, View } from "react-native";
 import { Icon } from "react-native-elements";
-import { Tab, Tabs } from "../../../components";
 import { MenuItem } from "../../../models/MenuItem";
 import MenuItemDetailsTab from "./MenuItemDetailsTab";
 import MenuItemReviewsTab from "./MenuItemReviewsTab";
+import Tabs from "../../../components/basic/Tabs";
+import Tab from "../../../components/basic/Tab";
 
 interface IProps {
   onClose: () => void;

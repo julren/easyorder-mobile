@@ -6,11 +6,12 @@ import {
 
 import AccountScreen from "../screens/account/AccountScreen";
 import RestaurantsScreen from "../screens/restaurants/RestaurantsScreen";
-import RestaurantsDetailScreen from "../screens/restaurants/restaurantDetail/RestaurantDetailScreen";
+import RestaurantsDetailScreen from "../screens/restaurantDetail/RestaurantDetailScreen";
 import MenuScreen from "../screens/menu/MenuScreen";
 import CartScreen from "../screens/cart/CartScreen";
 
-import { colors } from "../config/customTheme.js";
+import { colors } from "../config/customTheme";
+
 import RestaurantsMapScreen from "../screens/restaurants/RestaurantsMapScreen";
 import AccountSettingsScreen from "../screens/account/AccountSettingsScren";
 import ImprintScreen from "../screens/account/ImprintScreen";
@@ -27,13 +28,7 @@ import CreditCardScreen from "../screens/account/CreditCardScreen";
 
 const sharedNavigationOptions = {
   headerStyle: {
-    // elevation: 0, // remove shadow on Android
-    // shadowOpacity: 0, // remove shadow on iOS
-    // borderBottomWidth: 0
     backgroundColor: colors.primary
-  },
-  headerTitleStyle: {
-    fontFamily: "ProximaNova_bold"
   },
   headerTintColor: "#fff"
 };

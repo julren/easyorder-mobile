@@ -1,9 +1,14 @@
 import React from "react";
-import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+  ScrollView
+} from "react-native";
 import { Button, Icon, Input, ListItem, Text } from "react-native-elements";
-import { TextNote } from "../../components";
 import Container from "../../components/basic/Container";
 import firebase from "../../config/firebase";
+import TextNote from "../../components/basic/TextNote";
 
 export interface Props {}
 
@@ -50,7 +55,7 @@ class AccountSettingsScreen extends React.Component<Props, State> {
     const passwordsMatch = password === passwordConfim;
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <Container>
+        <ScrollView>
           <View style={{ padding: 16 }}>
             <Text h1>Passwort ändern</Text>
             <TextNote>Hier kannst du ein neues Passwort angeben</TextNote>
@@ -108,7 +113,7 @@ class AccountSettingsScreen extends React.Component<Props, State> {
             disabled={password.length == 0 || !passwordsMatch}
             style={{ marginTop: 18 }}
           />
-        </Container>
+        </ScrollView>
       </KeyboardAvoidingView>
     );
   }

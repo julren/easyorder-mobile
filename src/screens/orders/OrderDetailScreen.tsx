@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
-import { View } from "react-native";
+import { View, ImageBackground } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { NavigationScreenProps } from "react-navigation";
-import { OrderOverview } from "../../components";
+import OrderOverview from "../../components/order/OrderOverview";
 import CacheImage from "../../components/basic/CachedImage";
 
 interface IProps extends NavigationScreenProps {}
@@ -32,6 +32,7 @@ class OrderDetailScreen extends PureComponent<IProps> {
           <CacheImage
             source={{ uri: order.restaurant.logo }}
             style={{ width: 150, height: 150 }}
+            resizeMode="contain"
           />
         </View>
         <OrderOverview order={order} />

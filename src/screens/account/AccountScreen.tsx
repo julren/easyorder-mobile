@@ -1,19 +1,10 @@
 import React, { Component } from "react";
-import {
-  AsyncStorage,
-  StyleSheet,
-  ImageBackground,
-  View,
-  ScrollView
-} from "react-native";
-
-import firebase from "../../config/firebase";
-import BarcodeScanner from "../../components/BarcodeScanner";
+import { ImageBackground, ScrollView, StyleSheet, View } from "react-native";
+import { Icon, ListItem, Text } from "react-native-elements";
 import { NavigationScreenProp } from "react-navigation";
 import LogoutButton from "../../components/basic/LogoutButton";
-import Container from "../../components/basic/Container";
-import { Icon, Text, ListItem } from "react-native-elements";
 import Separator from "../../components/basic/Separator";
+import firebase from "../../config/firebase";
 
 const restaurantBg = require("../../../assets/images/restaurantbackground.jpg");
 
@@ -67,41 +58,41 @@ export default class AccountScreen extends Component<Props, State> {
         </ImageBackground>
         <Separator heading="Konto" />
         <ListItem
-          leftIcon={{ name: "credit-card", iconStyle: styles.iconColor }}
+          leftIcon={{ name: "credit-card", iconStyle: styles.iconStyle }}
           title="Kreditkarte"
-          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconStyle }}
           onPress={() => this.props.navigation.navigate("CreditCard")}
         />
         <ListItem
-          leftIcon={{ name: "star", iconStyle: styles.iconColor }}
+          leftIcon={{ name: "star", iconStyle: styles.iconStyle }}
           title="Meine Bewertungen"
-          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconStyle }}
           onPress={() => this.props.navigation.navigate("MyReviews")}
         />
         <ListItem
-          leftIcon={{ name: "settings", iconStyle: styles.iconColor }}
+          leftIcon={{ name: "settings", iconStyle: styles.iconStyle }}
           title="Einstellungen"
-          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconStyle }}
           onPress={() => this.props.navigation.navigate("AccountSettings")}
         />
         <Separator heading="Infos & Hilfe" />
 
         <ListItem
-          leftIcon={{ name: "help", iconStyle: styles.iconColor }}
+          leftIcon={{ name: "help", iconStyle: styles.iconStyle }}
           title="Kontakt aufnehmen"
-          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconStyle }}
           onPress={() => this.props.navigation.navigate("Contact")}
         />
         <ListItem
-          leftIcon={{ name: "info", iconStyle: styles.iconColor }}
+          leftIcon={{ name: "info", iconStyle: styles.iconStyle }}
           title="Impressum"
-          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconStyle }}
           onPress={() => this.props.navigation.navigate("Imprint")}
         />
         <ListItem
-          leftIcon={{ name: "security", iconStyle: styles.iconColor }}
+          leftIcon={{ name: "security", iconStyle: styles.iconStyle }}
           title="Datenschutz"
-          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconColor }}
+          rightIcon={{ name: "arrow-forward", iconStyle: styles.iconStyle }}
           onPress={() => this.props.navigation.navigate("Privacy")}
         />
         <Separator />
@@ -113,8 +104,8 @@ export default class AccountScreen extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
-  iconColor: {
-    color: "#43484d"
+  iconStyle: {
+    color: "#282828"
   },
   headerContainer: {
     flex: 1,

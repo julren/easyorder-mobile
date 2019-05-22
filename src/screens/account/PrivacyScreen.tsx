@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView } from "react-native";
 import { Text } from "react-native-elements";
-import { Container } from "../../components";
+import Container from "../../components/basic/Container";
 
 export interface Props {}
 

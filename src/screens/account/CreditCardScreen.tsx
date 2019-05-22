@@ -1,15 +1,14 @@
-import React, { Component } from "react";
-import Container from "../../components/basic/Container";
-import { Text, ListItem } from "react-native-elements";
+import React from "react";
 import { ScrollView, View } from "react-native";
+import { ListItem, Text } from "react-native-elements";
+import { NavigationScreenProps } from "react-navigation";
+import Container from "../../components/basic/Container";
 import CreditCardForm from "../../components/basic/CreditCardForm";
+import TextNote from "../../components/basic/TextNote";
+import firebase, { firebaseUsers } from "../../config/firebase";
 import withGlobalContext, {
   WithGlobalContextProps
 } from "../../contexts/withGlobalContext";
-import { GlobalContextProps } from "../../contexts/GlobalContextProps";
-import { TextNote } from "../../components";
-import firebase, { firebaseUsers } from "../../config/firebase";
-import { NavigationScreenProps } from "react-navigation";
 
 interface Props extends NavigationScreenProps<any>, WithGlobalContextProps {}
 

@@ -2,10 +2,10 @@ import React from "react";
 import { FlatList, View } from "react-native";
 import { ListItem, Text } from "react-native-elements";
 import StarRating from "react-native-star-rating";
-import { TextNote } from "../../../components";
 import Container from "../../../components/basic/Container";
 import firebase, { firebaseRestaurantReviews } from "../../../config/firebase";
 import { RestaurantReview } from "../../../models/RestaurantReview";
+import TextNote from "../../../components/basic/TextNote";
 export interface Props {}
 
 export interface State {
@@ -47,6 +47,7 @@ class RestaurantReviewsTab extends React.Component<Props, State> {
 
     return (
       <FlatList
+        contentContainerStyle={{ paddingBottom: 32 }}
         ListHeaderComponent={
           <Container padded="more">
             <Text h1>Meine Restaurantbewertungen</Text>

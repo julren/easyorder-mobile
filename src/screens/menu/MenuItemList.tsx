@@ -59,6 +59,7 @@ class MenuItemList extends Component<IProps, IState> {
     return (
       <React.Fragment>
         <FlatList
+          contentContainerStyle={{ paddingBottom: 32 }}
           data={menuItems}
           keyExtractor={(item, index) => item.id}
           renderItem={({ item }) => (

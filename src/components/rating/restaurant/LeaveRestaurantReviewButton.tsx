@@ -97,7 +97,7 @@ class LeaveRestaurantReviewButton extends Component<IProps, IState> {
         <Button
           title={review ? "Bewertung aktualisieren" : "Restaurant bewerten"}
           onPress={this.openModal}
-          containerStyle={{ margin: 16 }}
+          containerStyle={{ marginHorizontal: 16, marginBottom: 16 }}
         />
         <Overlay
           onBackdropPress={this.closeModal}

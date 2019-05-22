@@ -7,10 +7,11 @@ import { GlobalContextProvider } from "./src/contexts/GlobalContext";
 import { ThemeProvider } from "react-native-elements";
 import customTheme from "./src/config/customTheme";
 
-/* Support Expo */
 import { setExpoStatusBarHeight } from "react-navigation-collapsible";
 import { Constants } from "expo";
 import InAppNotificationProvider from "./src/components/InAppNotificationProvider";
+
+// Needed for react-navigation-collapsible
 setExpoStatusBarHeight(Constants.statusBarHeight);
 
 export default class App extends React.Component {
@@ -20,7 +21,7 @@ export default class App extends React.Component {
 
   render() {
     const navigationPersistenceKey = __DEV__
-      ? "ReactNavigationStateDEV112"
+      ? "ReactNavigationStateDEV113"
       : null;
 
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -58,14 +59,22 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        "OpenSans": require("./assets/fonts/OpenSans-Regular.ttf"),
         "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         "Pacifico": require("./assets/fonts/Pacifico-Regular.ttf"),
         "ProximaNova": require("./assets/fonts/Proxima-Nova-Regular.ttf"),
         "ProximaNova_light": require("./assets/fonts/Proxima-Nova-Light.ttf"),
         "ProximaNova_bold": require("./assets/fonts/Proxima-Nova-Bold.ttf"),
-        "SourceSansPro": require("./assets/fonts/SourceSansPro-Regular.otf"),
-        "Ionicons": require("@expo/vector-icons/fonts/Ionicons.ttf"),
+        "Roboto": require("./assets/fonts/roboto/Roboto-Regular.ttf"),
+        "Roboto-Bold": require("./assets/fonts/roboto/Roboto-Bold.ttf"),
+        "Roboto-Medium": require("./assets/fonts/roboto/Roboto-Medium.ttf"),
+        "Roboto-Light": require("./assets/fonts/roboto/Roboto-Light.ttf"),
+        "Ionicons": require("@expo/vector-icons/fonts/Ionicons.ttf"),       
+         "OpenSans": require("./assets/fonts/open-sans/OpenSans-Regular.ttf"),
+         "OpenSans-SemiBold": require("./assets/fonts/open-sans/OpenSans-SemiBold.ttf"),
+         "OpenSans-Light": require("./assets/fonts/open-sans/OpenSans-Light.ttf"),
+         "OpenSans-Bold": require("./assets/fonts/open-sans/OpenSans-Bold.ttf"),
+
+
 
       })
     ]);
@@ -84,6 +93,7 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: customTheme.colors.grey5
   }
 });

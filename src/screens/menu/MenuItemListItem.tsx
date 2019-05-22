@@ -39,7 +39,7 @@ class MenuItemListItem extends PureComponent<IProps> {
               </Text>
             )}
 
-            <Text style={{ fontSize: 16 }}>{menuItem.name}</Text>
+            <Text h3>{menuItem.name}</Text>
           </View>
         }
         titleStyle={{ fontSize: 16, marginBottom: 4 }}

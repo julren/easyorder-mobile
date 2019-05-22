@@ -2,9 +2,10 @@ import React, { PureComponent } from "react";
 import { View } from "react-native";
 import { Button, Icon, Input, ListItem, Text } from "react-native-elements";
 import StarRating from "react-native-star-rating";
-import { Container, Separator } from "../../../components";
 import { GlobalContextConsumer } from "../../../contexts/GlobalContext";
 import { MenuItem } from "../../../models/MenuItem";
+import Container from "../../../components/basic/Container";
+import Separator from "../../../components/basic/Separator";
 
 interface IProps {
   menuItem: MenuItem;

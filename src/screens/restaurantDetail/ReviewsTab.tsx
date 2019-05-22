@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { ActivityIndicator, ScrollView } from "react-native";
-import Separator from "../../../components/basic/Separator";
-import LeaveRestaurantReviewButton from "../../../components/rating/restaurant/LeaveRestaurantReviewButton";
-import RestaurantReviewsList from "../../../components/rating/restaurant/RestaurantReviewsList";
-import ReviewRatingDistributionChart from "../../../components/rating/ReviewRatingDistributionChart";
-import { firebaseRestaurantReviews } from "../../../config/firebase";
-import { Restaurant } from "../../../models/Restaurant";
-import { RestaurantReview } from "../../../models/RestaurantReview";
+import { ActivityIndicator, ScrollView, View } from "react-native";
+import Separator from "../../components/basic/Separator";
+import LeaveRestaurantReviewButton from "../../components/rating/restaurant/LeaveRestaurantReviewButton";
+import RestaurantReviewsList from "../../components/rating/restaurant/RestaurantReviewsList";
+import ReviewRatingDistributionChart from "../../components/rating/ReviewRatingDistributionChart";
+import { firebaseRestaurantReviews } from "../../config/firebase";
+import { Restaurant } from "../../models/Restaurant";
+import { RestaurantReview } from "../../models/RestaurantReview";
 
 interface IProps {
   restaurant: Restaurant;
@@ -55,21 +55,15 @@ class ReviewsTab extends Component<IProps, IState> {
     if (loading) return <ActivityIndicator />;
 
     return (
-      <ScrollView
-        style={{
-          flex: 1,
-          marginTop: 5,
-          marginBottom: 15
-        }}
-      >
+      <View>
         <ReviewRatingDistributionChart rating={restaurant.rating} />
-        <Separator borderBottom borderTop heading="Bewertungen" />
-        <RestaurantReviewsList restaurantReviews={this.state.reviews} />
         <LeaveRestaurantReviewButton
           restaurant={restaurant}
           onChange={this.getReviews}
         />
-      </ScrollView>
+        <Separator borderBottom borderTop heading="Bewertungen" />
+        <RestaurantReviewsList restaurantReviews={this.state.reviews} />
+      </View>
     );
   }
 }

@@ -4,12 +4,13 @@ import { Button, withTheme } from "react-native-elements";
 // @ts-ignore
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import { NavigationScreenProp } from "react-navigation";
-import CacheImage from "../../../components/basic/CachedImage";
-import Tab from "../../../components/basic/Tab";
-import Tabs from "../../../components/basic/Tabs";
-import { Restaurant } from "../../../models/Restaurant";
+import CacheImage from "../../components/basic/CachedImage";
+
+import { Restaurant } from "../../models/Restaurant";
 import RestaurantInfoTab from "./RestaurantInfoTab";
 import ReviewsTab from "./ReviewsTab";
+import Tabs from "../../components/basic/Tabs";
+import Tab from "../../components/basic/Tab";
 
 const PARALLAX_HEADER_HEIGHT = 200;
 
@@ -92,7 +93,7 @@ class RestaurantDetailScreen extends Component<Props> {
           <Tab tabLabel="Infos" fixedView>
             <RestaurantInfoTab restaurant={restaurant} {...this.props} />
           </Tab>
-          <Tab tabLabel="Bewertungen" fixedView>
+          <Tab tabLabel="Bewertungen" fixedView style={{ height: 100 }}>
             <ReviewsTab restaurant={restaurant} />
           </Tab>
         </Tabs>

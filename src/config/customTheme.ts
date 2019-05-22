@@ -31,21 +31,42 @@ export default {
     subtitleStyle: { color: colors.grey3, fontSize: 14 }
   },
   Text: {
-    h1Style: {
-      fontSize: 24,
-      fontWeight: "bold"
+    style: {
+      color: "#282828"
     },
-    h2Style: { fontSize: 21, fontWeight: "bold" },
-    h3Style: { fontSize: 18, fontWeight: "bold" }
+    h1Style: {
+      color: "#282828",
+      fontSize: 22,
+      fontWeight: "700"
+    },
+    h2Style: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: "#282828"
+    },
+    h3Style: { fontSize: 16, fontWeight: "500", color: "#282828" },
+    h4Style: {
+      fontSize: 14,
+      fontWeight: "500"
+    }
   },
   Input: {
     containerStyle: { paddingVertical: 5 },
+    inputContainerStyle: {
+      borderWidth: 1,
+      borderColor: colors.grey4,
+      paddingHorizontal: 8,
+      paddingVertical: 4
+    },
     leftIconContainerStyle: {
       marginLeft: 0,
-      marginRight: 10
+      marginRight: 16
     },
     leftIcon: {
-      iconStyle: { color: colors.grey2 }
+      iconStyle: { color: colors.grey3 }
+    },
+    inputStyle: {
+      fontSize: 14
     }
   },
   Icon: {}

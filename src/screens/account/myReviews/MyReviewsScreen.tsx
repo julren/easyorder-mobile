@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Tab, Tabs } from "../../../components";
 import MenuItemReviewsTab from "./MenuItemReviewsTab";
 import RestaurantReviewsTab from "./RestaurantReviewsTab";
+import Tabs from "../../../components/basic/Tabs";
+import Tab from "../../../components/basic/Tab";
 
 export interface Props {}
 

@@ -9,6 +9,7 @@ class Tabs extends PureComponent {
         {({ theme }) => (
           <ScrollableTabView
             {...this.props}
+            prerenderingSiblingsNumber={1}
             tabBarActiveTextColor={theme.colors.primary}
             tabBarTextStyle={{ paddingTop: 10 }}
             tabBarUnderlineStyle={{

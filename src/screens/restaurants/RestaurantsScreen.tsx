@@ -13,6 +13,8 @@ import withGlobalContext, {
 } from "../../contexts/withGlobalContext";
 import { Restaurant } from "../../models";
 import RestaurantCard from "./RestaurantCard";
+import TextNote from "../../components/basic/TextNote";
+import utils from "../../utils/utils";
 
 interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
@@ -20,7 +22,7 @@ interface IState {
   restaurants: Restaurant[];
   currentLocationGeoHash: string;
   location: any;
-  errorMessage: any;
+  loading: boolean;
 }
 
 /**
@@ -53,9 +55,8 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
       restaurants: [],
       currentLocationGeoHash: "",
       location: undefined,
-      errorMessage: ""
+      loading: true
     };
-    this.props.navigation.setParams({ title: "Restaurants" });
   }
 
   async componentDidMount() {
@@ -70,22 +71,20 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
 
       this.setState({ currentLocationGeoHash: currentLocationGeoHash });
 
-      this.getLocationAddress(location);
+      this.getLocationInfosForCoords(location);
       this.getRestaurants(location);
     }
   }
 
   getRestaurants = location => {
-    const currentLocationGeohash = geohash.encode(
+    const geoHashNearbyBoundingBox = geohash.encode(
       location.coords.latitude,
       location.coords.longitude,
       3
     );
-    console.log("location", location);
-    console.log("currentLocationGeohash", currentLocationGeohash);
 
     firebaseRestaurants
-      .where("address.geohash", ">=", currentLocationGeohash)
+      .where("address.geohash", ">=", geoHashNearbyBoundingBox)
       .orderBy("address.geohash")
       .get()
       .then(querySnapshot => {
@@ -93,8 +92,7 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
         querySnapshot.forEach(function(doc) {
           restaurantsData.push({ id: doc.id, ...doc.data() });
         });
-        console.log("found num restaurants: ", restaurantsData.length);
-        this.setState({ restaurants: restaurantsData });
+        this.setState({ restaurants: restaurantsData, loading: false });
         this.props.navigation.setParams({ restaurants: restaurantsData });
       })
       .catch(error => {
@@ -105,14 +103,17 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
   getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== "granted") {
-      return this.setState({
-        errorMessage: "Permission to access location was denied"
-      });
+      alert("Bitte gewähren Sie der App Sie Zugriff auf Ihren Standort");
     }
     return Location.getCurrentPositionAsync({ accuracy: Accuracy.Balanced });
   };
 
-  getLocationAddress = async location => {
+  getLocationInfosForCoords = async location => {
+    utils.getLocationInfosForCoords(
+      location.coords.latitude,
+      location.coords.longitude
+    );
+
     const locationDetails = await fetch(
       `https://nominatim.openstreetmap.org/reverse.php?format=html&lat=${
         location.coords.latitude
@@ -131,9 +132,14 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
   render() {
     // Consumes Cart Context to be able to clear cart when the user goes back to list from restaurant view
     const { globalContext } = this.props;
-    const { restaurants, currentLocationGeoHash, location } = this.state;
+    const {
+      restaurants,
+      currentLocationGeoHash,
+      location,
+      loading
+    } = this.state;
 
-    if (restaurants.length == 0) return <PageLoadingIndicator />;
+    if (loading) return <PageLoadingIndicator />;
 
     return (
       <Container>
@@ -142,23 +148,9 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
           onWillFocus={payload => globalContext.resetSelectedRestaurant()}
         />
 
-        {/* Liste der Restaurantdarstellung rendern */}
-
         <FlatList
-          ListHeaderComponent={
-            <Container>
-              <Text h1>Restaurants in der Nähe</Text>
-              <Text>
-                {location
-                  ? `${location.address.road}, ${
-                      location.address.town
-                        ? location.address.town
-                        : location.address.county
-                    }`
-                  : null}
-              </Text>
-            </Container>
-          }
+          ListHeaderComponent={<ListHeaderComponent location={location} />}
+          ListEmptyComponent={<ListEmptyComponent />}
           contentContainerStyle={{ padding: 8 }}
           keyExtractor={item => item.id}
           data={restaurants}
@@ -181,3 +173,24 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
 }
 
 export default withGlobalContext(RestaurantsScreen);
+
+const ListHeaderComponent = ({ location }) => (
+  <Container>
+    <Text h1>Restaurants in der Nähe</Text>
+    <Text>
+      {location
+        ? `${location.address.road}, ${
+            location.address.town
+              ? location.address.town
+              : location.address.county
+          }`
+        : null}
+    </Text>
+  </Container>
+);
+
+const ListEmptyComponent = () => (
+  <Container style={{ marginTop: 18 }}>
+    <TextNote>☹️ Keine Restaurants in der Nähe</TextNote>
+  </Container>
+);

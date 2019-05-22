@@ -2,7 +2,6 @@ import React, { PureComponent } from "react";
 import { Dimensions, Modal } from "react-native";
 import { Button, Overlay, Text } from "react-native-elements";
 import { NavigationScreenProps } from "react-navigation";
-import { Tab, Tabs } from "../../components";
 import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
 import { firebaseRestaurants } from "../../config/firebase";
 import withGlobalContext, {
@@ -14,6 +13,8 @@ import MenuItemList from "./MenuItemList";
 import MiniCartOverlay from "./MiniCartOverlay";
 import ScannedTableOverlay from "./ScannedTableOverlay";
 import ScanTableCodeModal from "./ScanTableCodeModal";
+import Tabs from "../../components/basic/Tabs";
+import Tab from "../../components/basic/Tab";
 
 interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 

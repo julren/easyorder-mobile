@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
 import { View } from "react-native";
 import { Button, Image, Text } from "react-native-elements";
-import { TextNote } from "../../components";
 import withGlobalContext, {
   WithGlobalContextProps
 } from "../../contexts/withGlobalContext";
 import TableCodeScanner from "../checkin/TableCodeScanner";
 import CheckmarkAnimation from "./CheckmarkAnimation";
+import TextNote from "../../components/basic/TextNote";
 
 interface IProps extends WithGlobalContextProps {
   onDone: () => void;

@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Container, Separator } from "../../../components";
 import LeaveMenuItemReviewButton from "../../../components/rating/menuItem/LeaveMenuItemReviewButton";
 import MenuItemReviewsList from "../../../components/rating/menuItem/MenuItemReviewsList";
 import ReviewRatingDistributionChart from "../../../components/rating/ReviewRatingDistributionChart";
 import { firebaseMenuItemReviews } from "../../../config/firebase";
 import { MenuItem } from "../../../models";
 import { MenuItemReview } from "../../../models/MenuItemReview";
+
+import Container from "../../../components/basic/Container";
+import Separator from "../../../components/basic/Separator";
 
 interface IProps {
   menuItem: MenuItem;

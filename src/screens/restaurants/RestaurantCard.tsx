@@ -17,14 +17,12 @@ interface IProps {
 
 class RestaurantCard extends Component<IProps> {
   render() {
-    // TODO: distance, rating
-
     const {
       restaurant,
       onRestaurantSelect,
       currentLocationGeoHash
     } = this.props;
-    const { name, priceClass, cuisine, address } = restaurant;
+    const { name, priceClass, cuisine, address, description } = restaurant;
     const { coverPhoto, logo } = restaurant.media;
 
     const distance = currentLocationGeoHash
@@ -43,6 +41,9 @@ class RestaurantCard extends Component<IProps> {
             title={
               <View>
                 <Text h2>{name}</Text>
+                <Text style={{ color: "grey", fontSize: 12 }}>
+                  {description}
+                </Text>
                 <Row>
                   {/* <Text style={{ color: "grey", fontSize: 12, marginRight: 4 }}>
                     {restaurant.rating
@@ -66,9 +67,7 @@ class RestaurantCard extends Component<IProps> {
                 {distance ? (
                   <Text
                     style={{ color: "grey", fontSize: 12 }}
-                  >{`${distance.toFixed(1)} km entfernt · ${cuisine} · ${
-                    displayNameForPriceCategory[priceClass]
-                  }`}</Text>
+                  >{`${distance.toFixed(1)} km entfernt`}</Text>
                 ) : null}
               </View>
             }

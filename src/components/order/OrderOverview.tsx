@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
-import { Order } from "../../models/Order";
-import { NavigationScreenProps } from "react-navigation";
-import { ActivityIndicator, ScrollView, View } from "react-native";
-import { ListItem, Text, Image } from "react-native-elements";
-import Separator from "../basic/Separator";
-import ErrorMessage from "../basic/ErrorMessage";
-import TextNote from "../basic/TextNote";
+import { View } from "react-native";
+import { ListItem, Text } from "react-native-elements";
 import { displayNameForOrderStatus } from "../../config/displayNamesForValues";
+import { Order } from "../../models/Order";
+import ErrorMessage from "../basic/ErrorMessage";
+import Separator from "../basic/Separator";
+import TextNote from "../basic/TextNote";
+import CacheImage from "../basic/CachedImage";
 interface IProps {
   order: Order;
 }
@@ -79,13 +79,14 @@ class OrderOverview extends PureComponent<IProps> {
               bottomDivider
               title={`${item.quantity}x ${item.item.name}`}
               subtitle={item.item.description ? item.item.description : null}
-              leftAvatar={{
-                rounded: false,
-                source: {
-                  uri: item.item.photo
-                },
-                size: "medium"
-              }}
+              leftAvatar={
+                <CacheImage
+                  source={{
+                    uri: item.item.photo
+                  }}
+                  style={{ width: 40, height: 40 }}
+                />
+              }
               rightElement={
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text>{item.item.price.toFixed(2)}€</Text>

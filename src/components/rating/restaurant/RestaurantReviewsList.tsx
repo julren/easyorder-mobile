@@ -14,6 +14,7 @@ class RestaurantReviewsList extends PureComponent<IProps> {
     const { restaurantReviews = [] } = this.props;
     return (
       <FlatList
+        scrollEnabled={false}
         data={restaurantReviews}
         keyExtractor={item => item.id}
         ListEmptyComponent={ListEmptyComponent}
@@ -33,7 +34,7 @@ const ListEmptyComponent = () => (
     }}
   >
     <Text style={{ fontSize: 36 }}>⭐️</Text>
-    <Text>Keine Gerichtebewertungen bisher.</Text>
+    <Text>Keine Restaurantbewertungen bisher.</Text>
   </View>
 );
 
