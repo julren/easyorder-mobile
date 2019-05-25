@@ -118,13 +118,13 @@ class TableCodeScanner extends Component<
         <React.Fragment>
           <Text
             style={{
-              color: "red",
+              opacity: 0,
               position: "absolute",
               top: 150
             }}
             onPress={() =>
               this.handleBarCodeScanned({
-                data: `{"restaurantId":"WTpxRrjqspaedb8EnBTMRO1KVDM2","restaurantName":"La Dolce Vita","tableId":"ACM9f1hLwYKZIrvDPQAg","tableName":"Tisch 4"}`,
+                data: `{"restaurantId":"3rY6g0zLuaNi3j61dUu0XTa6okY2","restaurantName":"Tigerlilly Supperclub","tableId":"944vNxPkRBx4ZgVusOAE","tableName":"Tisch 4"}`,
                 type: "test"
               })
             }

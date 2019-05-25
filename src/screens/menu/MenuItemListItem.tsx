@@ -45,10 +45,12 @@ class MenuItemListItem extends PureComponent<IProps> {
         titleStyle={{ fontSize: 16, marginBottom: 4 }}
         subtitle={<LeftElement menuItem={menuItem} />}
         rightAvatar={
-          <CacheImage
-            source={{ uri: menuItem.photo }}
-            style={{ width: 80, height: 80 }}
-          />
+          menuItem.photo ? (
+            <CacheImage
+              source={{ uri: menuItem.photo }}
+              style={{ width: 80, height: 80 }}
+            />
+          ) : null
         }
       />
     );

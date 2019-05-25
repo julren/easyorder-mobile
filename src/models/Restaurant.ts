@@ -29,4 +29,5 @@ export interface Restaurant {
   priceClass: number;
 
   rating: Rating;
+  distanceFromUser?: any;
 }

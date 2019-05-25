@@ -40,6 +40,7 @@ class OrdersScreen extends Component<IProps, IState> {
     try {
       firebaseOrders
         .where("customerID", "==", firebase.auth().currentUser.uid)
+        .orderBy("orderDate", "asc")
         .get()
         .then(querySnapshot => {
           const orders = [];

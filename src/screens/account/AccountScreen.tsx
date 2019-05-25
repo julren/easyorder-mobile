@@ -6,7 +6,7 @@ import LogoutButton from "../../components/basic/LogoutButton";
 import Separator from "../../components/basic/Separator";
 import firebase from "../../config/firebase";
 
-const restaurantBg = require("../../../assets/images/restaurantbackground.jpg");
+const restaurantBg = require("../../../assets/images/restaurant-bg-tigerlilly.jpg");
 
 export default class AccountScreen extends Component<Props, State> {
   constructor(props) {
@@ -29,6 +29,7 @@ export default class AccountScreen extends Component<Props, State> {
   }
 
   render() {
+    const { user } = this.state;
     return (
       <ScrollView>
         <ImageBackground
@@ -46,13 +47,12 @@ export default class AccountScreen extends Component<Props, State> {
               alignItems: "center"
             }}
           >
-            <Icon
-              name="emoticon-happy"
-              type="material-community"
-              iconStyle={{ color: "#fff", fontSize: 50 }}
-            />
+            <Text style={{ fontSize: 45 }}>😋</Text>
             <Text h1 h1Style={{ color: "#fff", fontWeight: "bold" }}>
-              {this.state.user.email}
+              {user.displayName ? user.displayName : user.email}
+            </Text>
+            <Text h2 h2Style={{ color: "#fff" }}>
+              {user.email}
             </Text>
           </View>
         </ImageBackground>

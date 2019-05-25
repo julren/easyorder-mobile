@@ -11,10 +11,6 @@ const calcGrandTotal = cart => {
   return grandTotal;
 };
 
-const calcMwst = cart => {
-  return ((calcGrandTotal(cart) * 0, 19) * 100) / 100;
-};
-
 const calcNumCartItems = cart => {
   let numCartItems = 0;
 
@@ -27,6 +23,5 @@ const calcNumCartItems = cart => {
 
 export default {
   calcGrandTotal: calcGrandTotal,
-  calcMwst: calcMwst,
   calcNumCartItems: calcNumCartItems
 };

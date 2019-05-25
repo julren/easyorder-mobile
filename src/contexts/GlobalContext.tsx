@@ -18,11 +18,11 @@ interface IState {
   cart: {
     item: MenuItem;
     quantity: number;
+    comment: string;
   }[];
   selectedRestaurant: Restaurant;
   table: Table;
   paymentMethod: PaymentMethod;
-  mwst: number;
   grandTotal: number;
   status: string;
   numCartItems: number;
@@ -43,7 +43,6 @@ class GlobalContextProvider extends Component<
         name: "",
         details: {}
       },
-      mwst: 0,
       grandTotal: 0,
       status: "",
       numCartItems: 0
@@ -69,7 +68,22 @@ class GlobalContextProvider extends Component<
     this.setState({ table: table });
   };
 
-  addCartItem = (item: MenuItem, quantity: number) => {
+  clearContext = () => {
+    this.setState({
+      cart: [],
+      selectedRestaurant: undefined,
+      table: undefined,
+      paymentMethod: {
+        name: "",
+        details: {}
+      },
+      grandTotal: 0,
+      status: "",
+      numCartItems: 0
+    });
+  };
+
+  addCartItem = (item: MenuItem, quantity: number, comment: string) => {
     let cart = this.state.cart;
 
     const itemIndexInCart = cart.findIndex(
@@ -79,8 +93,10 @@ class GlobalContextProvider extends Component<
     if (itemIndexInCart >= 0) {
       cart[itemIndexInCart].quantity += quantity;
     } else {
-      cart.push({ item: item, quantity: quantity });
+      cart.push({ item: item, quantity: quantity, comment: comment });
     }
+
+    console.log(cart);
 
     this.updateCart(cart);
   };
@@ -116,8 +132,10 @@ class GlobalContextProvider extends Component<
       cart: [],
       selectedRestaurant: undefined,
       table: undefined,
-      paymentMethod: undefined,
-      mwst: 0,
+      paymentMethod: {
+        name: "",
+        details: {}
+      },
       grandTotal: 0,
       status: "",
       numCartItems: 0
@@ -175,13 +193,12 @@ class GlobalContextProvider extends Component<
     this.setState({
       cart: newCart,
       grandTotal: globalContexUtils.calcGrandTotal(newCart),
-      mwst: globalContexUtils.calcMwst(newCart),
       numCartItems: globalContexUtils.calcNumCartItems(newCart)
     });
   };
 
   resetTable = () => {
-    this.setState({ table: undefined });
+    this.setState({ table: undefined, cart: [] });
   };
 
   placeOrder = async () => {
@@ -189,7 +206,6 @@ class GlobalContextProvider extends Component<
       selectedRestaurant,
       cart,
       grandTotal,
-      mwst,
       paymentMethod,
       table
     } = this.state;
@@ -198,7 +214,6 @@ class GlobalContextProvider extends Component<
       customerID: firebase.auth().currentUser.uid,
       grandTotal: grandTotal,
       items: cart,
-      mwst: mwst,
       paymentMethod: paymentMethod,
       restaurant: {
         restaurantID: selectedRestaurant.id,
@@ -216,6 +231,7 @@ class GlobalContextProvider extends Component<
         .add(order)
         .then(docRef => {
           docRef.get().then(doc => {
+            this.clearContext();
             resolve({
               ...doc.data(),
               id: doc.id,

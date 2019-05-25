@@ -30,7 +30,7 @@ class LogInScreen extends Component<IProps> {
     this.props.navigation.replace("SignUp");
   };
 
-  setUpPush = async () => {
+  askForPushPermission = async () => {
     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
     if (status !== "granted") {
       alert(
@@ -43,8 +43,8 @@ class LogInScreen extends Component<IProps> {
     return token;
   };
 
-  getUser = async uid => {
-    const expoPushToken = await this.setUpPush();
+  setUpPush = async uid => {
+    const expoPushToken = await this.askForPushPermission();
 
     await firebaseUsers.doc(uid).set({ expoPushToken: expoPushToken });
     debugger;
@@ -69,13 +69,11 @@ class LogInScreen extends Component<IProps> {
       .signInWithEmailAndPassword(email, password)
       .then(resp => {
         console.log("Login sucessfull");
-        debugger;
 
-        return this.getUser(resp.user.uid);
+        return this.setUpPush(resp.user.uid);
       })
       .then(user => {
         this.props.globalContext.setUser(user);
-        debugger;
 
         Keyboard.dismiss();
         actions.setSubmitting(false);

@@ -10,7 +10,7 @@ export interface State {}
 
 class MyReviewsScreen extends Component<Props, State> {
   static navigationOptions = {
-    title: "Meine Bewertungen"
+    title: "Bewertungen"
   };
 
   constructor(props: Props) {

@@ -11,11 +11,11 @@ export interface GlobalContextProps {
   cart: {
     item: MenuItem;
     quantity: number;
+    comment: string;
   }[];
   selectedRestaurant: Restaurant;
   table: Table;
   paymentMethod: PaymentMethod;
-  mwst: number;
   grandTotal: number;
   status: string;
   numCartItems: number;
@@ -27,7 +27,7 @@ export interface GlobalContextProps {
   setPaymentMethod: (paymentMethod: PaymentMethod) => void;
   setTable: (tableID: string) => void;
 
-  addCartItem: (item: MenuItem, quantity: number) => void;
+  addCartItem: (item: MenuItem, quantity: number, comment: string) => void;
   removeCartItem: (cartItem: { item: MenuItem; quantity: number }) => void;
   getNumOfItemInCart: (item: MenuItem) => number;
   updateCartItemQuantity: (item: MenuItem, quantity: number) => void;

@@ -16,7 +16,11 @@ class SelectPaymentForm extends PureComponent<IProps> {
       <View>
         <ListItem
           title="Bar"
-          checkmark={selectedPaymentMethod.name == "cash" ? true : false}
+          checkmark={
+            selectedPaymentMethod && selectedPaymentMethod.name == "cash"
+              ? true
+              : false
+          }
           leftIcon={{ type: "font-awesome", name: "money" }}
           onPress={() => {
             onSelect({ name: "cash" });
@@ -25,7 +29,11 @@ class SelectPaymentForm extends PureComponent<IProps> {
 
         <ListItem
           title="PayPal"
-          checkmark={selectedPaymentMethod.name == "paypal" ? true : false}
+          checkmark={
+            selectedPaymentMethod && selectedPaymentMethod.name == "paypal"
+              ? true
+              : false
+          }
           leftIcon={{ type: "font-awesome", name: "cc-paypal" }}
           onPress={() => {
             onSelect({ name: "paypal" });
@@ -44,7 +52,11 @@ class SelectPaymentForm extends PureComponent<IProps> {
           //     />
           //   )
           // }
-          checkmark={selectedPaymentMethod.name == "creditcard" ? true : false}
+          checkmark={
+            selectedPaymentMethod && selectedPaymentMethod.name == "creditcard"
+              ? true
+              : false
+          }
           leftIcon={{ type: "font-awesome", name: "credit-card" }}
           onPress={() => {
             onSelect({ name: "creditcard" });

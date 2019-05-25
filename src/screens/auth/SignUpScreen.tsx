@@ -12,12 +12,14 @@ import * as Yup from "yup";
 
 import { Formik, Field } from "formik";
 
-import firebase from "../../config/firebase";
+import firebase, { firebaseUsers } from "../../config/firebase";
 import { BrandLogo } from "../../components/basic/BrandLogo";
 
 import Container from "../../components/basic/Container";
 import { Button, Input, Icon, Text } from "react-native-elements";
 import AuthPageWrapper from "./AuthPageWrapper";
+import { Permissions } from "expo";
+import { Notifications } from "expo";
 
 const SignupValidationSchema = Yup.object().shape({
   displayName: Yup.string().required("Required"),
@@ -42,18 +44,52 @@ export default class SignUpScreen extends Component<IProps> {
     this.props.navigation.replace("LogIn");
   };
 
+  askForPushPermission = async () => {
+    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    if (status !== "granted") {
+      alert(
+        "Bitte aktivieren Sie Pushbenachrichtigungen in den Einstellungen."
+      );
+      return null;
+    }
+
+    let token = await Notifications.getExpoPushTokenAsync();
+    return token;
+  };
+
+  setUpPush = async uid => {
+    const expoPushToken = await this.askForPushPermission();
+
+    await firebaseUsers.doc(uid).set({ expoPushToken: expoPushToken });
+    debugger;
+    return firebaseUsers
+      .doc(uid)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          return { id: doc.id, ...doc.data() };
+        } else {
+          return null;
+        }
+      });
+  };
+
   onSubmit = (values, actions) => {
     const { email, password, displayName } = values;
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
+      .then(async resp => {
+        await this.setUpPush(resp.user.uid);
+        return resp;
+      })
       .then(resp => {
         return resp.user.updateProfile({
           displayName: displayName,
           photoURL: ""
         });
       })
-      .then(resp => {
+      .then(() => {
         Keyboard.dismiss();
         actions.setSubmitting(false);
       })

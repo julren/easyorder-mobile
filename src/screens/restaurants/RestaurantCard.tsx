@@ -10,27 +10,22 @@ import { displayNameForPriceCategory } from "../../config/displayNamesForValues"
 import { Restaurant } from "../../models/Restaurant";
 
 interface IProps {
-  currentLocationGeoHash: string;
   restaurant: Restaurant;
   onRestaurantSelect: (e) => void;
 }
 
 class RestaurantCard extends Component<IProps> {
   render() {
+    const { restaurant, onRestaurantSelect } = this.props;
     const {
-      restaurant,
-      onRestaurantSelect,
-      currentLocationGeoHash
-    } = this.props;
-    const { name, priceClass, cuisine, address, description } = restaurant;
+      name,
+      priceClass,
+      cuisine,
+      address,
+      description,
+      distanceFromUser
+    } = restaurant;
     const { coverPhoto, logo } = restaurant.media;
-
-    const distance = currentLocationGeoHash
-      ? geohashDistance.inKm(
-          currentLocationGeoHash,
-          geohash.encode(address.lat, address.lon, 7)
-        )
-      : undefined;
 
     return (
       <TouchableOpacity onPress={onRestaurantSelect}>
@@ -64,10 +59,10 @@ class RestaurantCard extends Component<IProps> {
                     )
                   </Text>
                 </Row>
-                {distance ? (
+                {distanceFromUser ? (
                   <Text
                     style={{ color: "grey", fontSize: 12 }}
-                  >{`${distance.toFixed(1)} km entfernt`}</Text>
+                  >{`${distanceFromUser.toFixed(1)} km entfernt`}</Text>
                 ) : null}
               </View>
             }

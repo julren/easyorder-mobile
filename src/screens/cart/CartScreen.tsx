@@ -32,6 +32,7 @@ class CartScreen extends Component<IProps, IState> {
       cart,
       table = { name: "Testtisch 12" },
       paymentMethod,
+      numCartItems,
       selectedRestaurant = { name: "Ature" }
     } = this.props.globalContext;
 
@@ -82,6 +83,7 @@ class CartScreen extends Component<IProps, IState> {
         <Button
           containerStyle={{ paddingHorizontal: 8, paddingVertical: 16 }}
           title="Zur Kasse"
+          disabled={numCartItems <= 0}
           onPress={() => this.props.navigation.navigate("Checkout")}
         />
       </React.Fragment>

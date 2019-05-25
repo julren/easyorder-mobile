@@ -2,8 +2,8 @@ import { Location, Permissions } from "expo";
 import { Accuracy } from "expo-location";
 import geohash from "ngeohash";
 import React from "react";
-import { FlatList } from "react-native";
-import { Button, Text } from "react-native-elements";
+import { FlatList, View } from "react-native";
+import { Button, Text, Icon } from "react-native-elements";
 import { NavigationEvents, NavigationScreenProps } from "react-navigation";
 import Container from "../../components/basic/Container";
 import PageLoadingIndicator from "../../components/basic/PageLoadingIndicator";
@@ -15,6 +15,8 @@ import { Restaurant } from "../../models";
 import RestaurantCard from "./RestaurantCard";
 import TextNote from "../../components/basic/TextNote";
 import utils from "../../utils/utils";
+import Row from "../../components/basic/Row";
+import geohashDistance from "geohash-distance";
 
 interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
@@ -69,14 +71,12 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
         7
       );
 
-      this.setState({ currentLocationGeoHash: currentLocationGeoHash });
-
       this.getLocationInfosForCoords(location);
-      this.getRestaurants(location);
+      this.getRestaurants(location, currentLocationGeoHash);
     }
   }
 
-  getRestaurants = location => {
+  getRestaurants = (location, currentLocationGeoHash) => {
     const geoHashNearbyBoundingBox = geohash.encode(
       location.coords.latitude,
       location.coords.longitude,
@@ -88,12 +88,31 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
       .orderBy("address.geohash")
       .get()
       .then(querySnapshot => {
-        let restaurantsData = [];
+        let restaurants = [];
         querySnapshot.forEach(function(doc) {
-          restaurantsData.push({ id: doc.id, ...doc.data() });
+          const distanceFromUser = geohashDistance.inKm(
+            currentLocationGeoHash,
+            geohash.encode(doc.data().address.lat, doc.data().address.lon, 7)
+          );
+
+          restaurants.push({
+            id: doc.id,
+            distanceFromUser: distanceFromUser,
+            ...doc.data()
+          });
         });
-        this.setState({ restaurants: restaurantsData, loading: false });
-        this.props.navigation.setParams({ restaurants: restaurantsData });
+
+        const sortedByDistanceRestaurants = restaurants.sort(
+          (a, b) => a.distanceFromUser - b.distanceFromUser
+        );
+
+        this.setState({
+          restaurants: sortedByDistanceRestaurants,
+          loading: false
+        });
+        this.props.navigation.setParams({
+          restaurants: sortedByDistanceRestaurants
+        });
       })
       .catch(error => {
         console.error("Error getting restaurants..: ", error);
@@ -156,7 +175,6 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
           data={restaurants}
           renderItem={({ item }) => (
             <RestaurantCard
-              currentLocationGeoHash={currentLocationGeoHash}
               restaurant={item}
               onRestaurantSelect={() => {
                 this.props.globalContext.setSelectedRestaurant(item);
@@ -177,15 +195,22 @@ export default withGlobalContext(RestaurantsScreen);
 const ListHeaderComponent = ({ location }) => (
   <Container>
     <Text h1>Restaurants in der Nähe</Text>
-    <Text>
-      {location
-        ? `${location.address.road}, ${
-            location.address.town
-              ? location.address.town
-              : location.address.county
-          }`
-        : null}
-    </Text>
+    <Row>
+      <Icon
+        name="location-on"
+        containerStyle={{ marginRight: 4 }}
+        iconStyle={{ fontSize: 16 }}
+      />
+      <Text>
+        {location
+          ? `${location.address.road}, ${
+              location.address.town
+                ? location.address.town
+                : location.address.county
+            }`
+          : null}
+      </Text>
+    </Row>
   </Container>
 );
 

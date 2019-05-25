@@ -18,7 +18,7 @@ class BuyNowOverlay extends PureComponent<IProps> {
             onPress={onPress}
             containerStyle={{ paddingHorizontal: 8, paddingVertical: 16 }}
             title="Jetzt kaufen"
-            disabled={paymentMethod.name ? false : true}
+            disabled={paymentMethod && numCartItems > 0 ? false : true}
           />
         )}
       </GlobalContextConsumer>

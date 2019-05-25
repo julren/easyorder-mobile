@@ -14,11 +14,13 @@ interface IProps {
 
 interface IState {
   quantity: number;
+  comment: string;
 }
 
 class MenuItemDetailsTab extends PureComponent<IProps, IState> {
   state = {
-    quantity: 1
+    quantity: 1,
+    comment: ""
   };
   render() {
     const { menuItem, onAdded } = this.props;
@@ -52,7 +54,7 @@ class MenuItemDetailsTab extends PureComponent<IProps, IState> {
                         containerStyle={{ justifyContent: "flex-start" }}
                         starSize={14}
                         maxStarts={5}
-                        rating={menuItem.rating.avgRating}
+                        rating={menuItem.rating ? menuItem.rating.avgRating : 0}
                         fullStarColor="#FFD700"
                         emptyStarColor="#d3d3d3"
                         disabled
@@ -90,6 +92,9 @@ class MenuItemDetailsTab extends PureComponent<IProps, IState> {
                         minHeight: 40
                       }}
                       placeholder="Keine Zwiebeln, ...."
+                      onChangeText={text => {
+                        this.setState({ comment: text });
+                      }}
                     />
                   </View>
                 }
@@ -144,7 +149,11 @@ class MenuItemDetailsTab extends PureComponent<IProps, IState> {
                       buttonStyle={{ padding: 16 }}
                       title="Hinzufügen"
                       onPress={() => {
-                        addCartItem(this.props.menuItem, this.state.quantity);
+                        addCartItem(
+                          this.props.menuItem,
+                          this.state.quantity,
+                          this.state.comment
+                        );
                         onAdded();
                       }}
                     />

@@ -10,7 +10,6 @@ export interface Order {
     item: MenuItem;
     quantity: number;
   }[];
-  mwst: number;
   orderDate: any;
   paymentMethod: PaymentMethod;
   restaurant: {

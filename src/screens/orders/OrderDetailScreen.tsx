@@ -9,7 +9,7 @@ interface IProps extends NavigationScreenProps {}
 
 class OrderDetailScreen extends PureComponent<IProps> {
   static navigationOptions = {
-    title: "Bestellungsübersicht"
+    title: "Bestellübersicht"
   };
 
   constructor(props) {

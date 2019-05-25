@@ -33,7 +33,7 @@ const ListEmptyComponent = () => (
     }}
   >
     <Text style={{ fontSize: 36 }}>⭐️</Text>
-    <Text>Keine Restaurantbewertungen bisher.</Text>
+    <Text>Keine Gerichtbewertungen bisher.</Text>
   </View>
 );
 

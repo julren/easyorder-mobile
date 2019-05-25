@@ -31,6 +31,12 @@ class MenuScreen extends PureComponent<IProps, IState> {
     const restaurant = navigation.getParam("restaurant", undefined);
 
     return {
+      // headerStyle: {
+      //   elevation: 0, // remove shadow on Android
+      //   shadowOpacity: 0, // remove shadow on iOS
+      //   borderBottomWidth: 0,
+      //   backgroundColor: "#008ACD"
+      // },
       title: "Speisekarte",
       headerRight: (
         <Button
@@ -65,6 +71,7 @@ class MenuScreen extends PureComponent<IProps, IState> {
     firebaseRestaurants
       .doc(restaurant.id)
       .collection("menuSections")
+      .orderBy("orderNum")
       .get()
       .then(querySnapshot => {
         let menuSections = [];

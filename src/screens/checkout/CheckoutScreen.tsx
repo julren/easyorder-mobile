@@ -18,7 +18,9 @@ interface IState {
 }
 
 class CheckoutScreen extends Component<IProps, IState> {
-  static navigationOptions = {};
+  static navigationOptions = {
+    title: "Bestellung abschließen"
+  };
 
   constructor(props) {
     super(props);
@@ -130,7 +132,7 @@ class CheckoutScreen extends Component<IProps, IState> {
           <React.Fragment>
             <Separator heading="Zahlungsweise" borderBottom />
 
-            {paymentMethod.name ? (
+            {paymentMethod ? (
               <ListItem
                 title="Zahlungsweise"
                 rightIcon={{

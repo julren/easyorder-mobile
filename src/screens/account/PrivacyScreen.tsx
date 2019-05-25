@@ -23,13 +23,15 @@ class PrivacyScreen extends React.Component<Props, State> {
           <Text>
             {`
 Verantwortlicher für die Datenverarbeitung ist:
-Für-Gründer.de GmbH
-Kaiserstraße 79
-60329
-Frankfurt
-info@fuer-gruender.de
+Mustermann PartG mbB
+Musterweg 7
+12345 Musterstadt
+Tel.: 01234 / 56789-00
+Fax: 01234 / 56789-10
 
-Wir freuen uns über Ihr Interesse an unserem Online-Shop. Der Schutz Ihrer Privatsphäre ist für uns sehr wichtig. Nachstehend informieren wir Sie ausführlich über den Umgang mit Ihren Daten.
+E-Mail: rechtsanwalt@muster-online.de
+
+Wir freuen uns über Ihr Interesse an EasyOrder. Der Schutz Ihrer Privatsphäre ist für uns sehr wichtig. Nachstehend informieren wir Sie ausführlich über den Umgang mit Ihren Daten.
 
 1. Zugriffsdaten und Hosting
 

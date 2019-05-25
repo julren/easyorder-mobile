@@ -16,7 +16,7 @@ class OrderConfirmationScreen extends Component<IProps, IState> {
       headerLeft: null,
       headerRight: (
         <Button
-          titleStyle={{ color: "#fff" }}
+          titleStyle={{ color: "#fff", padding: 0 }}
           type="clear"
           title="Fertig"
           onPress={() => {
@@ -60,7 +60,7 @@ class OrderConfirmationScreen extends Component<IProps, IState> {
               name="check-circle-outline"
               iconStyle={{ color: "#fff", fontSize: 50 }}
             />
-            <Text h2 style={{ color: "#fff" }}>
+            <Text h2 h2Style={{ color: "#fff" }}>
               Vielen Dank für deine Bestellung!
             </Text>
           </View>
