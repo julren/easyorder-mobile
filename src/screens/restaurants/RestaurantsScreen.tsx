@@ -1,4 +1,4 @@
-import { Location, Permissions } from "expo";
+import * as Expo from "expo";
 import { Accuracy } from "expo-location";
 import geohash from "ngeohash";
 import React from "react";
@@ -19,6 +19,19 @@ import Row from "../../components/basic/Row";
 import geohashDistance from "geohash-distance";
 
 interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
+
+// Nutzer nach Standortfreigabe fragen
+async function getLocationAsync() {
+  let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
+
+  if (status === "granted") {
+    return Expo.Location.getCurrentPositionAsync({
+      accuracy: Accuracy.Balanced
+    });
+  } else {
+    alert("Bitte gewähren Sie der App Sie Zugriff auf Ihren Standort");
+  }
+}
 
 interface IState {
   restaurants: Restaurant[];
@@ -119,12 +132,17 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
       });
   };
 
+  // Nutzer nach Standortfreigabe fragen
   getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== "granted") {
+    let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
+
+    if (status === "granted") {
+      return Expo.Location.getCurrentPositionAsync({
+        accuracy: Accuracy.Balanced
+      });
+    } else {
       alert("Bitte gewähren Sie der App Sie Zugriff auf Ihren Standort");
     }
-    return Location.getCurrentPositionAsync({ accuracy: Accuracy.Balanced });
   };
 
   getLocationInfosForCoords = async location => {

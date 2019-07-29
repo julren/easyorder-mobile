@@ -133,7 +133,7 @@ class MenuScreen extends PureComponent<IProps, IState> {
             ))}
           </Tabs>
         ) : (
-          <Text>(Keine MenuSections angelegt)</Text>
+          <Text>(Keine Speisekarte angelegt. Anderes Restaurant wählen, z.B. Tigerlilly.)</Text>
         )}
         <Modal
           animationType="slide"

@@ -46,7 +46,9 @@ class LogInScreen extends Component<IProps> {
   setUpPush = async uid => {
     const expoPushToken = await this.askForPushPermission();
 
-    await firebaseUsers.doc(uid).set({ expoPushToken: expoPushToken });
+    await firebaseUsers
+      .doc(uid)
+      .set({ expoPushToken: expoPushToken }, { merge: true });
     debugger;
     return firebaseUsers
       .doc(uid)

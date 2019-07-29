@@ -33,7 +33,7 @@ class CreditCardScreen extends React.Component<Props, State> {
   onSave = creditCardInfo => {
     firebaseUsers
       .doc(firebase.auth().currentUser.uid)
-      .set({ creditCardInfo: creditCardInfo });
+      .set({ creditCardInfo: creditCardInfo }, { merge: true });
     this.props.navigation.pop();
   };
 

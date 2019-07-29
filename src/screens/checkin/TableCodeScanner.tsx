@@ -1,4 +1,5 @@
 import { BarCodeScanner, Permissions } from "expo";
+import * as Expo from "expo";
 import React, { Component } from "react";
 import { ActivityIndicator, Dimensions, StyleSheet } from "react-native";
 import { Icon, Text } from "react-native-elements";
@@ -35,7 +36,7 @@ class TableCodeScanner extends Component<
   }
 
   getCameraPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    const { status } = await Expo.Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
   };
 
@@ -118,7 +119,8 @@ class TableCodeScanner extends Component<
         <React.Fragment>
           <Text
             style={{
-              opacity: 0,
+              color: "white",
+              opacity: 5,
               position: "absolute",
               top: 150
             }}
