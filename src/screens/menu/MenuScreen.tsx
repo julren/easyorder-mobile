@@ -68,24 +68,29 @@ class MenuScreen extends PureComponent<IProps, IState> {
     if (!restaurant) return;
     this.props.globalContext.setSelectedRestaurant(restaurant);
 
-    firebaseRestaurants
-      .doc(restaurant.id)
-      .collection("menuSections")
-      .orderBy("orderNum")
-      .get()
-      .then(querySnapshot => {
-        let menuSections = [];
+    const didBlurSubscription = this.props.navigation.addListener(
+      "willFocus",
+      payload => {
+        firebaseRestaurants
+          .doc(restaurant.id)
+          .collection("menuSections")
+          .orderBy("orderNum")
+          .get()
+          .then(querySnapshot => {
+            let menuSections = [];
 
-        querySnapshot.forEach(doc => {
-          menuSections.push({ id: doc.id, ...doc.data() });
-        });
+            querySnapshot.forEach(doc => {
+              menuSections.push({ id: doc.id, ...doc.data() });
+            });
 
-        this.setState({
-          loading: false,
-          menuSections: menuSections,
-          restaurant: restaurant
-        });
-      });
+            this.setState({
+              loading: false,
+              menuSections: menuSections,
+              restaurant: restaurant
+            });
+          });
+      }
+    );
   }
 
   closeModal = () => {
@@ -133,7 +138,10 @@ class MenuScreen extends PureComponent<IProps, IState> {
             ))}
           </Tabs>
         ) : (
-          <Text>(Keine Speisekarte angelegt. Anderes Restaurant wählen, z.B. Tigerlilly.)</Text>
+          <Text>
+            (Keine Speisekarte angelegt. Anderes Restaurant wählen, z.B.
+            Tigerlilly.)
+          </Text>
         )}
         <Modal
           animationType="slide"

@@ -21,7 +21,7 @@ export default class App extends React.Component {
 
   render() {
     const navigationPersistenceKey = __DEV__
-      ? "ReactNavigationStateDEV113"
+      ? "ReactNavigationStateDEV117"
       : null;
 
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

@@ -1,5 +1,9 @@
 import React from "react";
-import { NavigationScreenProps } from "react-navigation";
+import {
+  NavigationScreenProps,
+  StackActions,
+  NavigationActions
+} from "react-navigation";
 import { firebaseRestaurants } from "../../config/firebase";
 import withGlobalContext, {
   WithGlobalContextProps
@@ -31,10 +35,11 @@ class CheckInScreen extends React.Component<IProps, IState> {
   onScanned = async result => {
     const { restaurantDoc, tableDoc } = result;
 
-    this.props.globalContext.setTable({ id: tableDoc.id, ...tableDoc.data() });
     this.props.navigation.navigate("Menu", {
       restaurant: { id: restaurantDoc.id, ...restaurantDoc.data() }
     });
+
+    this.props.globalContext.setTable({ id: tableDoc.id, ...tableDoc.data() });
   };
 
   constructor(props) {

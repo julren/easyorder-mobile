@@ -115,7 +115,11 @@ const CheckInStack = createStackNavigator(
           {...tabBarIconProps}
           type="material-community"
         />
-      )
+      ),
+      tabBarOnPress: ({ navigation, defaultHandler }: any) => {
+        navigation.navigate("Restaurants");
+        defaultHandler();
+      }
     }
   }
 );
