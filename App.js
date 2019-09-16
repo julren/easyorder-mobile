@@ -59,23 +59,8 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         "Pacifico": require("./assets/fonts/Pacifico-Regular.ttf"),
-        "ProximaNova": require("./assets/fonts/Proxima-Nova-Regular.ttf"),
-        "ProximaNova_light": require("./assets/fonts/Proxima-Nova-Light.ttf"),
-        "ProximaNova_bold": require("./assets/fonts/Proxima-Nova-Bold.ttf"),
-        "Roboto": require("./assets/fonts/roboto/Roboto-Regular.ttf"),
-        "Roboto-Bold": require("./assets/fonts/roboto/Roboto-Bold.ttf"),
-        "Roboto-Medium": require("./assets/fonts/roboto/Roboto-Medium.ttf"),
-        "Roboto-Light": require("./assets/fonts/roboto/Roboto-Light.ttf"),
-        "Ionicons": require("@expo/vector-icons/fonts/Ionicons.ttf"),       
-         "OpenSans": require("./assets/fonts/open-sans/OpenSans-Regular.ttf"),
-         "OpenSans-SemiBold": require("./assets/fonts/open-sans/OpenSans-SemiBold.ttf"),
-         "OpenSans-Light": require("./assets/fonts/open-sans/OpenSans-Light.ttf"),
-         "OpenSans-Bold": require("./assets/fonts/open-sans/OpenSans-Bold.ttf"),
-
-
-
+        "Ionicons": require("@expo/vector-icons/fonts/Ionicons.ttf")
       })
     ]);
   };
