@@ -4,7 +4,7 @@ Gastronomen können ihr Lokal auf der Plattform anmelden, ihre Speisekarte verwa
 
 **Technische Basis**: Die WebApp wurde mit React umgesetzt, die Smartphone-App mit React Native. Als Backend kommt Firebase zum Einsatz.
 
-**Wichtigste Features der WebApp für Gastronomen:**
+**Wichtigste Features der MobileApp für Gastronomen:**
 
 * Registrieren / Login
 * Restaurant in der Nähe finden
