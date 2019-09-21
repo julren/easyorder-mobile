@@ -18,10 +18,10 @@ Gastronomen können ihr Lokal auf der Plattform anmelden, ihre Speisekarte verwa
 
 **Mehr Screenshots in** `/screenshots`
 
-![alt text](https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%202.png "EasyOrder")
-![alt text](https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%204.png "EasyOrder")
-![alt text](https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%2025.png "EasyOrder") 
-![alt text](https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%2013.png "EasyOrder")
+![EasyOrder](https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%202.png )
+![EasyOrder](https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%204.png )
+![EasyOrder](https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%2025.png ) 
+![EasyOrder](https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%2013.png )
 
 This React Native App was bootstrapped with [Expo](https://expo.io/).
 
