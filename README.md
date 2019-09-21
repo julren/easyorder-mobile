@@ -20,9 +20,8 @@ Gastronomen können ihr Lokal auf der Plattform anmelden, ihre Speisekarte verwa
 
 <img src="https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%202.png" width="350" title="EasyOrder">
 <img src="https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%204.png" width="350" title="EasyOrder">
-<img src="https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%2010.png" width="350" title="EasyOrder">
-
 <img src="https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%2025.png" width="350" title="EasyOrder"> 
+<img src="https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%2010.png" width="350" title="EasyOrder">
 <img src="https://raw.githubusercontent.com/julren/easyorder-mobile/master/screenshots/Screenshot-EasyOrder-Smartphone-App%2013.png" width="350" title="EasyOrder">
 
 
