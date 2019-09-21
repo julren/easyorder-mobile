@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, ViewStyle } from "react-native";
-import { Font } from "expo";
+import * as Font from 'expo-font';
 import { ThemeConsumer } from "react-native-elements";
 
 interface IProps {

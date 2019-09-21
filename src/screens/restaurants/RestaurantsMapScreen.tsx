@@ -1,4 +1,4 @@
-import { MapView } from "expo";
+import MapView from 'react-native-maps';
 import React, { Component } from "react";
 import { ListItem } from "react-native-elements";
 import { NavigationScreenProps } from "react-navigation";

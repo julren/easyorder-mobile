@@ -3,7 +3,7 @@
     "name": "easyorder-mobile",
     "slug": "easyorder-mobile",
     "privacy": "unlisted",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,5 +20,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.juliusrenner.easyorder"
     }
-  }
+  },
+  "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+  "react": "16.8.3"
 }

@@ -1,4 +1,5 @@
-import { Notifications, Permissions } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from 'expo-permissions';
 import { Field, Formik } from "formik";
 import React, { Component } from "react";
 import { Alert, Keyboard, StyleSheet, View } from "react-native";

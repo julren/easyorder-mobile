@@ -1,4 +1,5 @@
-import { BarCodeScanner, Permissions } from "expo";
+import * as Permissions from 'expo-permissions';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Expo from "expo";
 import React, { Component } from "react";
 import { ActivityIndicator, Dimensions, StyleSheet } from "react-native";
@@ -36,7 +37,7 @@ class TableCodeScanner extends Component<
   }
 
   getCameraPermission = async () => {
-    const { status } = await Expo.Permissions.askAsync(Permissions.CAMERA);
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
   };
 

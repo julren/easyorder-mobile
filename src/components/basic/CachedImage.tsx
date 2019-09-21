@@ -1,7 +1,7 @@
 import React from "react";
 import { ImageStyle, Image } from "react-native";
 import shorthash from "shorthash";
-import { FileSystem } from "expo";
+import * as FileSystem from 'expo-file-system';
 import { ImageProps } from "react-native-elements";
 
 interface IProps extends ImageProps {

@@ -1,4 +1,4 @@
-import { MapView } from "expo";
+import MapView from 'react-native-maps';
 import React, { PureComponent } from "react";
 import { StyleSheet, View } from "react-native";
 import { ListItem, Text } from "react-native-elements";

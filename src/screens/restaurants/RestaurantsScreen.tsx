@@ -1,4 +1,5 @@
-import * as Expo from "expo";
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
 import { Accuracy } from "expo-location";
 import geohash from "ngeohash";
 import React from "react";
@@ -22,10 +23,10 @@ interface IProps extends NavigationScreenProps<any>, WithGlobalContextProps {}
 
 // Nutzer nach Standortfreigabe fragen
 async function getLocationAsync() {
-  let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
+  let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
   if (status === "granted") {
-    return Expo.Location.getCurrentPositionAsync({
+    return Location.getCurrentPositionAsync({
       accuracy: Accuracy.Balanced
     });
   } else {
@@ -134,10 +135,10 @@ class RestaurantsScreen extends React.Component<IProps, IState> {
 
   // Nutzer nach Standortfreigabe fragen
   getLocationAsync = async () => {
-    let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
     if (status === "granted") {
-      return Expo.Location.getCurrentPositionAsync({
+      return Location.getCurrentPositionAsync({
         accuracy: Accuracy.Balanced
       });
     } else {

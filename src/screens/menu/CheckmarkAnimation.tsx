@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
-import { DangerZone } from "expo";
-let { Lottie } = DangerZone;
+import Lottie from "lottie-react-native";
 
 interface IState {
   animation: any;

@@ -1,14 +1,16 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
-import { AppLoading, Asset, Font, Icon } from "expo";
+import { AppLoading } from "expo";
+import * as Icon from "@expo/vector-icons";
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
 import AppNavigator from "./src/navigation/AppNavigator";
 import { GlobalContextProvider } from "./src/contexts/GlobalContext";
 
 import { ThemeProvider } from "react-native-elements";
 import customTheme from "./src/config/customTheme";
-
+import Constants from "expo-constants";
 import { setExpoStatusBarHeight } from "react-navigation-collapsible";
-import { Constants } from "expo";
 import InAppNotificationProvider from "./src/components/InAppNotificationProvider";
 
 // Needed for react-navigation-collapsible
@@ -40,7 +42,7 @@ export default class App extends React.Component {
           <ThemeProvider theme={customTheme}>
             <InAppNotificationProvider>
               <GlobalContextProvider>
-                <AppNavigator persistenceKey={navigationPersistenceKey} />
+                <AppNavigator />
               </GlobalContextProvider>
             </InAppNotificationProvider>
           </ThemeProvider>
@@ -60,7 +62,6 @@ export default class App extends React.Component {
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
         "Pacifico": require("./assets/fonts/Pacifico-Regular.ttf"),
-        "Ionicons": require("@expo/vector-icons/fonts/Ionicons.ttf")
       })
     ]);
   };

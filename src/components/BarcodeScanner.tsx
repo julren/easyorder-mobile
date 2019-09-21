@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
-import { BarCodeScanner, Permissions } from "expo";
+import * as Permissions from 'expo-permissions';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button, Text } from "react-native-elements";
 
 export default class BarcodeScanner extends Component<Props> {

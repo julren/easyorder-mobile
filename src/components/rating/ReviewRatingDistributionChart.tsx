@@ -62,8 +62,10 @@ class ReviewRatingDistributionChart extends PureComponent<IProps> {
                     <View
                       style={{
                         flex:
-                          (ratingDistribution[key] * parseInt(key)) /
-                          totalRatingPoints,
+                          totalRatingPoints > 0
+                            ? (ratingDistribution[key] * parseInt(key)) /
+                              totalRatingPoints
+                            : 0,
                         borderRadius: 10,
                         backgroundColor: "#FFD700"
                       }}

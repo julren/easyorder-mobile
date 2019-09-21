@@ -18,8 +18,9 @@ import { BrandLogo } from "../../components/basic/BrandLogo";
 import Container from "../../components/basic/Container";
 import { Button, Input, Icon, Text } from "react-native-elements";
 import AuthPageWrapper from "./AuthPageWrapper";
-import { Permissions } from "expo";
 import { Notifications } from "expo";
+
+import * as Permissions from "expo-permissions";
 
 const SignupValidationSchema = Yup.object().shape({
   displayName: Yup.string().required("Required"),
